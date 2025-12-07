@@ -94,7 +94,7 @@ export default function HomePage() {
 
         <div className="container mx-auto px-4 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1.1fr)] items-start gap-10 lg:gap-14">
-            <div className="max-w-2xl">
+            <div className="max-w-2xl lg:pl-32 xl:pl-20">
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}

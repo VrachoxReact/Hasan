@@ -83,7 +83,7 @@ export default function Header() {
       {/* Floating Logo - elegantly positioned overlapping header bottom */}
       <Link
         href="/"
-        className="fixed top-2 left-6 md:left-10 z-[60] group"
+        className="fixed top-2 left-4 md:left-6 z-[60] group"
         aria-label="Produkt Auto - Početna"
       >
         <motion.div
@@ -94,17 +94,16 @@ export default function Header() {
           className="relative"
         >
           {/* Glow effect behind logo */}
-          <div className="absolute inset-0 bg-accent/20 rounded-3xl blur-xl scale-110 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          <div className="absolute inset-0 bg-accent/20 rounded-2xl blur-xl scale-110 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
           {/* Logo container */}
-          <div className="relative bg-white rounded-3xl p-5 shadow-[0_10px_40px_rgba(0,0,0,0.3)] ring-4 ring-white/50 group-hover:ring-accent/60 group-hover:shadow-[0_15px_50px_rgba(96,165,250,0.4)] transition-all duration-300">
+          <div className="relative bg-white rounded-2xl p-3 md:p-4 shadow-[0_8px_30px_rgba(0,0,0,0.25)] ring-2 ring-white/50 group-hover:ring-accent/60 group-hover:shadow-[0_12px_40px_rgba(96,165,250,0.4)] transition-all duration-300">
             <Image
               src="/logoweb.png"
               alt="Produkt Auto logo"
-              width={160}
-              height={160}
-              className="object-contain"
-              style={{ width: "160px", height: "160px" }}
+              width={100}
+              height={100}
+              className="object-contain w-20 h-20 md:w-[100px] md:h-[100px]"
               priority
             />
           </div>
@@ -121,7 +120,7 @@ export default function Header() {
         <div className="container mx-auto px-4">
           <nav className="flex items-center justify-between h-16 md:h-20">
             {/* Spacer for logo area */}
-            <div className="w-40 md:w-48" />
+            <div className="w-28 md:w-32" />
 
             {/* Desktop Navigation - centered */}
             <div className="hidden md:flex items-center gap-1 absolute left-1/2 -translate-x-1/2">
