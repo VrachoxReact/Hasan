@@ -36,7 +36,7 @@ export default function PriceDisplay({
       container: "",
       oldPrice: components.price.oldPrice,
       currentPrice: components.price.card,
-      discountPrice: "text-2xl font-bold text-success drop-shadow-lg",
+      discountPrice: "text-3xl font-bold text-success drop-shadow-lg",
     },
     list: {
       container: "",

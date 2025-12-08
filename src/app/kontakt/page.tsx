@@ -200,16 +200,27 @@ export default function KontaktPage() {
       />
 
       {/* Hero Section */}
-      <section
-        className={`bg-gradient-to-br from-primary to-primary/80 ${spacing.section.medium}`}
-      >
-        <div className="container mx-auto px-4">
+      <section className="relative py-24 md:py-32 lg:py-40 overflow-hidden">
+        {/* Background Image */}
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-105"
+          style={{
+            backgroundImage:
+              "url('https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=2000&q=80')",
+          }}
+        />
+        {/* Lighter Overlay for better image visibility */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/40 to-black/60" />
+
+        <div className="container mx-auto px-4 relative z-10">
           <FadeIn>
-            <div className="text-center max-w-2xl mx-auto">
-              <h1 className={`${typography.h1} text-white mb-4`}>
+            <div className="text-center max-w-3xl mx-auto">
+              <h1 className={`${typography.h1} text-white mb-6 drop-shadow-lg`}>
                 Kontaktirajte nas
               </h1>
-              <p className={`${typography.bodyLarge} text-white/90`}>
+              <p
+                className={`${typography.bodyLarge} text-white/95 drop-shadow-md`}
+              >
                 Imate pitanja ili želite zakazati pregled vozila? Javite nam se
                 - tu smo za vas!
               </p>
@@ -270,12 +281,12 @@ export default function KontaktPage() {
 
       {/* Form & Map Section */}
       <section className="py-16 md:py-24">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <div className="container mx-auto px-4 max-w-[1400px]">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
             {/* Contact Form */}
             <SlideIn direction="left">
               <motion.div
-                whileHover={{ scale: 1.01 }}
+                whileHover={{ scale: 1.02 }}
                 transition={{ duration: 0.3 }}
                 className="relative"
               >
@@ -306,7 +317,7 @@ export default function KontaktPage() {
                     style={{ backgroundSize: "200% 200%" }}
                   />
 
-                  <CardContent className="p-6 md:p-8">
+                  <CardContent className="p-10 md:p-16">
                     <motion.div
                       initial={{ opacity: 0, y: -20 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -316,9 +327,9 @@ export default function KontaktPage() {
                       <motion.div
                         whileHover={{ rotate: 360, scale: 1.1 }}
                         transition={{ duration: 0.6 }}
-                        className="relative w-14 h-14 rounded-xl bg-gradient-to-br from-accent to-accent/70 flex items-center justify-center shadow-lg shadow-accent/50"
+                        className="relative w-16 h-16 rounded-xl bg-gradient-to-br from-accent to-accent/70 flex items-center justify-center shadow-lg shadow-accent/50"
                       >
-                        <MessageSquare className="w-7 h-7 text-white" />
+                        <MessageSquare className="w-9 h-9 text-white" />
                         <motion.div
                           className="absolute -top-1 -right-1"
                           animate={{
@@ -451,6 +462,7 @@ export default function KontaktPage() {
                               label="Ime i prezime *"
                               icon={User}
                               value={formData.ime}
+                              className="h-20 text-lg"
                               onChange={(e) => {
                                 setFormData({
                                   ...formData,
@@ -466,6 +478,7 @@ export default function KontaktPage() {
                               type="email"
                               icon={Mail}
                               value={formData.email}
+                              className="h-20 text-lg"
                               onChange={(e) => {
                                 setFormData({
                                   ...formData,
@@ -484,6 +497,7 @@ export default function KontaktPage() {
                               type="tel"
                               icon={Phone}
                               value={formData.telefon}
+                              className="h-20 text-lg"
                               onChange={(e) => {
                                 setFormData({
                                   ...formData,
@@ -494,37 +508,36 @@ export default function KontaktPage() {
                               }}
                               error={errors.telefon}
                             />
-                            <div className="relative">
-                              <div className="absolute left-4 top-1/2 -translate-y-1/2 z-10 pointer-events-none">
-                                <Euro className="w-5 h-5 text-muted-foreground" />
-                              </div>
-                              <Select
-                                value={formData.budzet}
-                                onValueChange={(value) =>
-                                  setFormData({ ...formData, budzet: value })
-                                }
-                              >
-                                <SelectTrigger className="h-14 pl-12 rounded-xl border-input focus:border-accent focus:ring-2 focus:ring-accent/20">
+                            <Select
+                              value={formData.budzet}
+                              onValueChange={(value) =>
+                                setFormData({ ...formData, budzet: value })
+                              }
+                            >
+                              <SelectTrigger className="w-full h-20 px-5 text-lg rounded-xl border border-input bg-background transition-all duration-200 focus:border-accent focus:ring-2 focus:ring-accent/20 outline-none">
+                                <div className="flex items-center gap-3">
+                                  <Euro className="w-5 h-5 text-muted-foreground shrink-0" />
                                   <SelectValue placeholder="Odaberite budžet" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  {budgetOptions.map((option) => (
-                                    <SelectItem
-                                      key={option.value}
-                                      value={option.value}
-                                    >
-                                      {option.label}
-                                    </SelectItem>
-                                  ))}
-                                </SelectContent>
-                              </Select>
-                            </div>
+                                </div>
+                              </SelectTrigger>
+                              <SelectContent>
+                                {budgetOptions.map((option) => (
+                                  <SelectItem
+                                    key={option.value}
+                                    value={option.value}
+                                  >
+                                    {option.label}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
                           </div>
 
                           <FloatingTextarea
                             label="Vaša poruka *"
                             icon={MessageSquare}
                             value={formData.poruka}
+                            className="min-h-[280px] text-lg leading-relaxed"
                             onChange={(e) => {
                               setFormData({
                                 ...formData,
@@ -535,7 +548,7 @@ export default function KontaktPage() {
                             }}
                             error={errors.poruka}
                             showCharCount
-                            maxLength={500}
+                            maxLength={1000}
                           />
 
                           <motion.div
@@ -545,7 +558,7 @@ export default function KontaktPage() {
                             <Button
                               type="submit"
                               size="lg"
-                              className="w-full h-14 bg-gradient-to-r from-accent via-accent/90 to-accent hover:from-accent/90 hover:via-accent hover:to-accent/90 text-white font-semibold rounded-xl transition-all duration-300 shadow-lg shadow-accent/30 hover:shadow-xl hover:shadow-accent/40 group relative overflow-hidden"
+                              className="w-full h-20 text-xl bg-gradient-to-r from-accent via-accent/90 to-accent hover:from-accent/90 hover:via-accent hover:to-accent/90 text-white font-semibold rounded-xl transition-all duration-300 shadow-lg shadow-accent/30 hover:shadow-xl hover:shadow-accent/40 group relative overflow-hidden"
                               disabled={isSubmitting}
                             >
                               {/* Animated shine effect */}

@@ -50,10 +50,10 @@ export const spacing = {
 export const components = {
   // Price Display
   price: {
-    card: "text-2xl font-bold text-white drop-shadow-lg",
+    card: "text-3xl font-bold text-white drop-shadow-lg",
     list: "text-2xl font-bold text-accent",
     detail: "text-3xl font-bold text-accent",
-    oldPrice: "text-sm text-white/70 line-through drop-shadow-lg",
+    oldPrice: "text-base text-white/70 line-through drop-shadow-lg",
   },
 
   // Buttons

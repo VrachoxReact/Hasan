@@ -33,6 +33,10 @@ export function getIstaknutaVozila(): Vozilo[] {
   return vozilaData.vozila.filter((v) => v.istaknuto) as Vozilo[];
 }
 
+export function getEkskluzivnaVozila(): Vozilo[] {
+  return vozilaData.vozila.filter((v) => v.ekskluzivno) as Vozilo[];
+}
+
 export function filterVozila(
   vozila: Vozilo[],
   filters: FilterOptions

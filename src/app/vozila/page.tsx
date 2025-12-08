@@ -225,13 +225,6 @@ function FilterContent({
           <span>{formatCijena(priceRange[0])}</span>
           <span>{formatCijena(priceRange[1])}</span>
         </div>
-        <div
-          className={`flex justify-between ${typography.tiny} text-muted-foreground/60 mt-1`}
-        >
-          <span>15.000 €</span>
-          <span>30.000 €</span>
-          <span>60.000 €</span>
-        </div>
       </div>
 
       {/* Kilometraža */}
@@ -472,7 +465,7 @@ export default function VozilaPage() {
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Desktop Sidebar Filters */}
           <aside className="hidden lg:block w-72 shrink-0">
-            <div className="sticky top-24 bg-card rounded-xl border border-border p-6">
+            <div className="sticky top-24 bg-card rounded-xl border border-border p-6 max-h-[calc(100vh-120px)] overflow-y-auto filter-scrollbar">
               <h2
                 className={`${typography.h4} text-foreground mb-4 flex items-center gap-2`}
               >

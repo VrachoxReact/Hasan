@@ -193,10 +193,10 @@ const FloatingTextarea = React.forwardRef<
           }}
           className={cn(
             // Base styles
-            "peer w-full min-h-[140px] rounded-xl border bg-background text-foreground",
-            "text-base transition-all duration-200 outline-none resize-none",
+            "peer w-full min-h-[180px] rounded-xl border bg-background text-foreground",
+            "text-base leading-relaxed transition-all duration-200 outline-none resize-y",
             // Padding with/without icon
-            Icon ? "pl-12 pr-4 pt-6 pb-3" : "px-4 pt-6 pb-3",
+            Icon ? "pl-12 pr-4 pt-8 pb-10" : "px-4 pt-8 pb-10",
             // Border styles
             "border-input",
             // Focus styles
@@ -240,11 +240,16 @@ const FloatingTextarea = React.forwardRef<
 
         {/* Character Count */}
         {showCharCount && (
-          <div className="absolute bottom-3 right-4 text-xs text-muted-foreground">
-            <span className={charCount >= maxLength ? "text-destructive" : ""}>
+          <div className="absolute bottom-4 right-4 text-sm text-muted-foreground bg-background/80 px-2 py-1 rounded-md">
+            <span
+              className={cn(
+                charCount >= maxLength ? "text-destructive font-medium" : "",
+                charCount >= maxLength * 0.9 ? "text-amber-500" : ""
+              )}
+            >
               {charCount}
             </span>
-            /{maxLength}
+            <span className="text-muted-foreground/60">/{maxLength}</span>
           </div>
         )}
 
