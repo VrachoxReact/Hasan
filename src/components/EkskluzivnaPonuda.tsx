@@ -17,7 +17,7 @@ export default function EkskluzivnaPonuda() {
 
   return (
     <section
-      className={`${spacing.section} bg-gradient-to-b from-accent/5 to-background`}
+      className={`${spacing.section} bg-gradient-to-b from-accent/5 to-background pt-16 mt-8`}
     >
       <div className="container mx-auto px-4">
         {/* Section Header */}
@@ -26,7 +26,7 @@ export default function EkskluzivnaPonuda() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-12 pt-8"
+          className="text-center mb-12"
         >
           <h2 className={`${typography.h2} text-foreground mb-4`}>
             Ekskluzivna ponuda

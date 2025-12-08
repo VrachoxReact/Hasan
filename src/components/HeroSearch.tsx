@@ -82,14 +82,14 @@ export default function HeroSearch() {
       initial={{ opacity: 0, y: 30, scale: 0.98 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ duration: 0.6, delay: 0.4 }}
-      className="rounded-2xl bg-white dark:bg-card shadow-2xl border border-border/50"
+      className="rounded-xl bg-white dark:bg-card shadow-2xl border border-border/50"
     >
-      {/* Filter Row */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 p-3">
-        {/* Proizvođač */}
-        <div>
+      <div className="p-2.5">
+        {/* All fields in one row on larger screens */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-2 mb-2">
+          {/* Proizvođač */}
           <Select value={marka} onValueChange={handleMarkaChange}>
-            <SelectTrigger className="h-10 bg-background border-border text-sm">
+            <SelectTrigger className="h-9 bg-background border-border text-xs">
               <SelectValue placeholder="Proizvođač" />
             </SelectTrigger>
             <SelectContent>
@@ -100,12 +100,10 @@ export default function HeroSearch() {
               ))}
             </SelectContent>
           </Select>
-        </div>
 
-        {/* Model */}
-        <div>
+          {/* Model */}
           <Select value={model} onValueChange={setModel} disabled={!marka}>
-            <SelectTrigger className="h-10 bg-background border-border text-sm">
+            <SelectTrigger className="h-9 bg-background border-border text-xs">
               <SelectValue placeholder="Model" />
             </SelectTrigger>
             <SelectContent>
@@ -116,12 +114,10 @@ export default function HeroSearch() {
               ))}
             </SelectContent>
           </Select>
-        </div>
 
-        {/* Godina od */}
-        <div>
+          {/* Godina od */}
           <Select value={godina} onValueChange={setGodina}>
-            <SelectTrigger className="h-10 bg-background border-border text-sm">
+            <SelectTrigger className="h-9 bg-background border-border text-xs">
               <SelectValue placeholder="Godina od" />
             </SelectTrigger>
             <SelectContent>
@@ -132,12 +128,10 @@ export default function HeroSearch() {
               ))}
             </SelectContent>
           </Select>
-        </div>
 
-        {/* Tip goriva */}
-        <div>
+          {/* Tip goriva */}
           <Select value={gorivo} onValueChange={setGorivo}>
-            <SelectTrigger className="h-10 bg-background border-border text-sm">
+            <SelectTrigger className="h-9 bg-background border-border text-xs">
               <SelectValue placeholder="Tip goriva" />
             </SelectTrigger>
             <SelectContent>
@@ -148,12 +142,10 @@ export default function HeroSearch() {
               ))}
             </SelectContent>
           </Select>
-        </div>
 
-        {/* Mjenjač */}
-        <div>
+          {/* Mjenjač */}
           <Select value={mjenjac} onValueChange={setMjenjac}>
-            <SelectTrigger className="h-10 bg-background border-border text-sm">
+            <SelectTrigger className="h-9 bg-background border-border text-xs">
               <SelectValue placeholder="Vrsta mjenjača" />
             </SelectTrigger>
             <SelectContent>
@@ -164,36 +156,32 @@ export default function HeroSearch() {
               ))}
             </SelectContent>
           </Select>
-        </div>
-      </div>
 
-      {/* Price Slider Row */}
-      <div className="px-3 pb-3 flex flex-col md:flex-row md:items-center gap-2 md:gap-4">
-        <div className="flex-1">
-          <div className="flex justify-between items-center mb-1.5">
-            <span className="text-xs font-medium text-foreground">
-              {formatPrice(priceRange[0])}€ - {formatPrice(priceRange[1])}€
-            </span>
-          </div>
+          {/* Search Button - takes last column */}
+          <Button
+            onClick={handleSearch}
+            size="sm"
+            className="h-9 px-3 text-xs font-semibold bg-accent hover:bg-accent/90 text-white"
+          >
+            <Search className="w-4 h-4 mr-1.5" />
+            {matchingCount}
+          </Button>
+        </div>
+
+        {/* Price Slider Row - Compact */}
+        <div className="flex items-center gap-3">
+          <span className="text-[11px] font-medium text-foreground whitespace-nowrap">
+            {formatPrice(priceRange[0])}€ - {formatPrice(priceRange[1])}€
+          </span>
           <Slider
             value={priceRange}
             onValueChange={setPriceRange}
             min={0}
             max={MAX_PRICE}
             step={1000}
-            className="w-full"
+            className="flex-1"
           />
         </div>
-
-        {/* Search Button */}
-        <Button
-          onClick={handleSearch}
-          size="default"
-          className="h-10 px-5 text-sm font-semibold bg-accent hover:bg-accent/90 text-white min-w-[150px]"
-        >
-          <Search className="w-5 h-5 mr-2" />
-          {matchingCount} Automobila
-        </Button>
       </div>
     </motion.div>
   );
