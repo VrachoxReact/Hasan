@@ -42,24 +42,27 @@ export default function PriceDisplay({
   const variantStyles = {
     card: {
       container: "",
-      oldPrice: components.price.oldPrice,
+      oldPrice: "text-lg text-white/70 line-through drop-shadow-lg font-bold",
       currentPrice: components.price.card,
-      discountPrice: "text-3xl font-bold text-success drop-shadow-lg",
-      savingsText: "text-xs font-semibold text-green-400 drop-shadow",
+      discountPrice: "text-3xl font-bold text-green-500 drop-shadow-lg",
+      savingsLabel: "text-xs font-semibold text-orange-500 drop-shadow",
+      savingsAmount: "text-xs font-semibold text-green-500 drop-shadow",
     },
     list: {
       container: "",
-      oldPrice: "text-base text-muted-foreground line-through",
+      oldPrice: "text-lg text-gray-600 line-through font-semibold",
       currentPrice: components.price.list,
-      discountPrice: "text-2xl font-bold text-success",
-      savingsText: "text-xs font-semibold text-green-600",
+      discountPrice: "text-2xl font-bold text-green-600",
+      savingsLabel: "text-xs font-semibold text-orange-500",
+      savingsAmount: "text-xs font-semibold text-green-600",
     },
     detail: {
       container: "",
-      oldPrice: "text-lg text-muted-foreground line-through",
+      oldPrice: "text-xl text-gray-600 line-through font-semibold",
       currentPrice: components.price.detail,
-      discountPrice: "text-3xl font-bold text-success",
-      savingsText: "text-sm font-semibold text-green-600",
+      discountPrice: "text-3xl font-bold text-green-600",
+      savingsLabel: "text-sm font-semibold text-orange-500",
+      savingsAmount: "text-sm font-semibold text-green-600",
     },
   };
 
@@ -71,8 +74,11 @@ export default function PriceDisplay({
         <span className={styles.oldPrice}>{formatCijena(oldPrice)}</span>
         <span className={styles.discountPrice}>{formatCijena(price)}</span>
         {showSavings && savings > 0 && (
-          <span className={styles.savingsText}>
-            Ušteda: {formatSavings(savings)} €
+          <span>
+            <span className={styles.savingsLabel}>Ušteda: </span>
+            <span className={styles.savingsAmount}>
+              {formatSavings(savings)} €
+            </span>
           </span>
         )}
       </div>

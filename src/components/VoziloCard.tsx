@@ -234,14 +234,14 @@ export default function VoziloCard({
             </div>
 
             {/* Badges - Fixed positioning to prevent overlap on small screens */}
-            <div className="absolute top-3 left-3 flex flex-col gap-2 max-w-[calc(100%-120px)]">
+            <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-20">
               {vozilo.ekskluzivno && (
-                <Badge className="bg-premium text-premium-foreground font-semibold shadow-lg">
+                <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold shadow-lg px-3 py-1 text-xs">
                   Ekskluzivno
                 </Badge>
               )}
               {vozilo.istaknuto && !vozilo.ekskluzivno && (
-                <Badge className="bg-accent text-accent-foreground font-semibold">
+                <Badge className="bg-accent text-accent-foreground font-semibold shadow-md">
                   Istaknuto
                 </Badge>
               )}

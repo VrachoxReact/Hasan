@@ -30,10 +30,11 @@ export default function PriceDropBadge({
       initial={{ scale: 0, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
-      className={`absolute top-3 right-16 z-10 flex items-center gap-1.5 bg-green-600 text-white px-3 py-1.5 rounded-full text-sm font-bold shadow-lg ${className}`}
+      className={`absolute bottom-16 right-3 z-10 flex items-center gap-1 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm px-2.5 py-1 rounded-full text-xs font-bold shadow-lg border border-border/50 ${className}`}
     >
-      <TrendingDown className="w-4 h-4" />
-      Ušteda {formattedSavings} €
+      <TrendingDown className="w-3.5 h-3.5 text-green-600" />
+      <span className="text-orange-500">Ušteda</span>
+      <span className="text-green-600">{formattedSavings} €</span>
     </motion.div>
   );
 }
