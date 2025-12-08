@@ -38,7 +38,7 @@ import { cn } from "@/lib/utils";
 import TrustBadges from "@/components/TrustBadges";
 import PriceDisplay from "@/components/PriceDisplay";
 import PriceDropBadge from "@/components/PriceDropBadge";
-import { typography, spacing, components } from "@/lib/designTokens";
+import { typography, spacing, components, badges } from "@/lib/designTokens";
 
 interface VoziloCardProps {
   vozilo: Vozilo;
@@ -236,14 +236,10 @@ export default function VoziloCard({
             {/* Badges - Fixed positioning to prevent overlap on small screens */}
             <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-20">
               {vozilo.ekskluzivno && (
-                <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold shadow-lg px-3 py-1 text-xs">
-                  Ekskluzivno
-                </Badge>
+                <Badge className={badges.ekskluzivno}>Ekskluzivno</Badge>
               )}
               {vozilo.istaknuto && !vozilo.ekskluzivno && (
-                <Badge className="bg-accent text-accent-foreground font-semibold shadow-md">
-                  Istaknuto
-                </Badge>
+                <Badge className={badges.istaknuto}>Istaknuto</Badge>
               )}
             </div>
 

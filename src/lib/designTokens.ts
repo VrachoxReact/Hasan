@@ -121,6 +121,64 @@ export const components = {
   },
 } as const;
 
+/**
+ * Savings Color System
+ * Premium, sophisticated colors for discounts and cost reduction
+ * Uses teal-green (trustworthy, smart) and bronze (warm, premium)
+ */
+export const savings = {
+  // Price display - the discounted/new price
+  price: {
+    card: "text-savings font-bold drop-shadow-lg", // On dark overlays
+    list: "text-savings font-bold", // On light backgrounds
+    detail: "text-savings font-bold", // On detail pages
+  },
+
+  // Old/original price (strikethrough)
+  oldPrice: {
+    card: "text-white/70 line-through drop-shadow-lg",
+    list: "text-muted-foreground line-through",
+    detail: "text-muted-foreground line-through",
+  },
+
+  // "Ušteda" label text
+  label: "text-savings-label font-semibold",
+
+  // Savings amount text (e.g., "1.500 €")
+  amount: "text-savings font-semibold",
+
+  // Badge styling for savings pills
+  badge: {
+    container:
+      "bg-savings-muted border border-savings/20 text-savings font-semibold shadow-sm",
+    icon: "text-savings",
+  },
+
+  // Icon styling
+  icon: {
+    default: "text-savings",
+    muted: "text-savings/70",
+    background: "bg-savings/10 dark:bg-savings/20",
+  },
+} as const;
+
+/**
+ * Badge Variants
+ * Unified badge styling across the app
+ */
+export const badges = {
+  // Exclusive/premium vehicles - uses gold/premium color
+  ekskluzivno:
+    "bg-gradient-to-r from-premium to-premium/80 text-premium-foreground font-bold shadow-lg",
+
+  // Featured vehicles - uses accent blue
+  istaknuto: "bg-accent text-accent-foreground font-semibold shadow-md",
+
+  // Savings badge (e.g., "Ušteda 1.500 €")
+  savings:
+    "bg-savings-muted border border-savings/20 text-savings font-semibold",
+} as const;
+
 export const animation = {
   // Framer Motion presets
   fadeIn: {

@@ -32,7 +32,7 @@ import { useFavoritiStore } from "@/stores/favoritiStore";
 import { toast } from "sonner";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-import { typography, spacing, components } from "@/lib/designTokens";
+import { typography, spacing, components, badges } from "@/lib/designTokens";
 
 interface VoziloListItemProps {
   vozilo: Vozilo;
@@ -139,14 +139,10 @@ export default function VoziloListItem({
               {/* Badges */}
               <div className="absolute top-3 left-3 flex flex-col gap-2">
                 {vozilo.ekskluzivno && (
-                  <Badge className="bg-premium text-premium-foreground font-semibold shadow-lg">
-                    Ekskluzivno
-                  </Badge>
+                  <Badge className={badges.ekskluzivno}>Ekskluzivno</Badge>
                 )}
                 {vozilo.istaknuto && !vozilo.ekskluzivno && (
-                  <Badge className="bg-accent text-white font-semibold">
-                    Istaknuto
-                  </Badge>
+                  <Badge className={badges.istaknuto}>Istaknuto</Badge>
                 )}
               </div>
             </div>

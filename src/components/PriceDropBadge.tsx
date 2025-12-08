@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { TrendingDown } from "lucide-react";
+import { savings } from "@/lib/designTokens";
 
 interface PriceDropBadgeProps {
   originalPrice: number;
@@ -14,8 +15,8 @@ export default function PriceDropBadge({
   currentPrice,
   className = "",
 }: PriceDropBadgeProps) {
-  const savings = originalPrice - currentPrice;
-  const discountPercent = Math.round((savings / originalPrice) * 100);
+  const savingsAmount = originalPrice - currentPrice;
+  const discountPercent = Math.round((savingsAmount / originalPrice) * 100);
 
   // Only show badge if discount is 5% or more
   if (discountPercent < 5) {
@@ -23,18 +24,18 @@ export default function PriceDropBadge({
   }
 
   // Format savings with thousands separator
-  const formattedSavings = new Intl.NumberFormat("hr-HR").format(savings);
+  const formattedSavings = new Intl.NumberFormat("hr-HR").format(savingsAmount);
 
   return (
     <motion.div
       initial={{ scale: 0, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
-      className={`absolute bottom-16 right-3 z-10 flex items-center gap-1 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm px-2.5 py-1 rounded-full text-xs font-bold shadow-lg border border-border/50 ${className}`}
+      className={`absolute bottom-16 right-3 z-10 flex items-center gap-1.5 bg-savings-muted/95 dark:bg-savings-muted/95 backdrop-blur-sm px-3 py-1.5 rounded-full text-xs font-bold shadow-lg shadow-savings/10 border border-savings/20 ${className}`}
     >
-      <TrendingDown className="w-3.5 h-3.5 text-green-600" />
-      <span className="text-orange-500">Ušteda</span>
-      <span className="text-green-600">{formattedSavings} €</span>
+      <TrendingDown className={`w-3.5 h-3.5 ${savings.icon.default}`} />
+      <span className={savings.label}>Ušteda</span>
+      <span className={savings.amount}>{formattedSavings} €</span>
     </motion.div>
   );
 }

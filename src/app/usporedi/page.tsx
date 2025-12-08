@@ -419,7 +419,7 @@ export default function UsporediPage() {
                       {vozila.map((vozilo) => (
                         <div key={vozilo.id} className="text-center">
                           {vozilo.karakteristike.includes(feature) ? (
-                            <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 text-green-600">
+                            <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-success/10 text-success">
                               ✓
                             </span>
                           ) : (

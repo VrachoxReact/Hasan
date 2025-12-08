@@ -1,7 +1,7 @@
 "use client";
 
 import { formatCijena } from "@/lib/vozila";
-import { components } from "@/lib/designTokens";
+import { savings } from "@/lib/designTokens";
 import { cn } from "@/lib/utils";
 
 export type PriceVariant = "card" | "list" | "detail";
@@ -17,11 +17,12 @@ interface PriceDisplayProps {
 /**
  * PriceDisplay Component
  * Unified price display with consistent styling across the app
+ * Uses premium savings color system (teal-green + bronze)
  *
  * Variants:
  * - card: For vehicle cards with overlay (white text, drop shadow)
- * - list: For list items (accent colored)
- * - detail: For detail pages (larger, accent colored)
+ * - list: For list items (savings colored)
+ * - detail: For detail pages (larger, savings colored)
  */
 export default function PriceDisplay({
   price,
@@ -31,53 +32,48 @@ export default function PriceDisplay({
   showSavings = true,
 }: PriceDisplayProps) {
   const hasDiscount = oldPrice && oldPrice > price;
-  const savings = hasDiscount ? oldPrice - price : 0;
+  const savingsAmount = hasDiscount ? oldPrice - price : 0;
 
   // Format savings with thousands separator
   const formatSavings = (amount: number) => {
     return new Intl.NumberFormat("hr-HR").format(amount);
   };
 
-  // Variant-specific styles
-  const variantStyles = {
+  // Size variants for typography
+  const sizeStyles = {
     card: {
-      container: "",
-      oldPrice: "text-lg text-white/70 line-through drop-shadow-lg font-bold",
-      currentPrice: components.price.card,
-      discountPrice: "text-3xl font-bold text-green-500 drop-shadow-lg",
-      savingsLabel: "text-xs font-semibold text-orange-500 drop-shadow",
-      savingsAmount: "text-xs font-semibold text-green-500 drop-shadow",
+      oldPrice: "text-lg",
+      currentPrice: "text-3xl",
+      savingsText: "text-xs",
     },
     list: {
-      container: "",
-      oldPrice: "text-lg text-gray-600 line-through font-semibold",
-      currentPrice: components.price.list,
-      discountPrice: "text-2xl font-bold text-green-600",
-      savingsLabel: "text-xs font-semibold text-orange-500",
-      savingsAmount: "text-xs font-semibold text-green-600",
+      oldPrice: "text-lg",
+      currentPrice: "text-2xl",
+      savingsText: "text-xs",
     },
     detail: {
-      container: "",
-      oldPrice: "text-xl text-gray-600 line-through font-semibold",
-      currentPrice: components.price.detail,
-      discountPrice: "text-3xl font-bold text-green-600",
-      savingsLabel: "text-sm font-semibold text-orange-500",
-      savingsAmount: "text-sm font-semibold text-green-600",
+      oldPrice: "text-xl",
+      currentPrice: "text-3xl",
+      savingsText: "text-sm",
     },
   };
 
-  const styles = variantStyles[variant];
+  const sizes = sizeStyles[variant];
 
   if (hasDiscount) {
     return (
-      <div className={cn("flex flex-col", styles.container, className)}>
-        <span className={styles.oldPrice}>{formatCijena(oldPrice)}</span>
-        <span className={styles.discountPrice}>{formatCijena(price)}</span>
-        {showSavings && savings > 0 && (
-          <span>
-            <span className={styles.savingsLabel}>Ušteda: </span>
-            <span className={styles.savingsAmount}>
-              {formatSavings(savings)} €
+      <div className={cn("flex flex-col", className)}>
+        <span className={cn(sizes.oldPrice, savings.oldPrice[variant])}>
+          {formatCijena(oldPrice)}
+        </span>
+        <span className={cn(sizes.currentPrice, savings.price[variant])}>
+          {formatCijena(price)}
+        </span>
+        {showSavings && savingsAmount > 0 && (
+          <span className={sizes.savingsText}>
+            <span className={savings.label}>Ušteda: </span>
+            <span className={savings.amount}>
+              {formatSavings(savingsAmount)} €
             </span>
           </span>
         )}
@@ -85,8 +81,15 @@ export default function PriceDisplay({
     );
   }
 
+  // Non-discounted price - use accent color for regular prices
+  const regularPriceStyles = {
+    card: "text-3xl font-bold text-white drop-shadow-lg",
+    list: "text-2xl font-bold text-accent",
+    detail: "text-3xl font-bold text-accent",
+  };
+
   return (
-    <span className={cn(styles.currentPrice, className)}>
+    <span className={cn(regularPriceStyles[variant], className)}>
       {formatCijena(price)}
     </span>
   );

@@ -42,6 +42,11 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
+  /* Savings colors - premium feel for discounts */
+  --color-savings: var(--savings);
+  --color-savings-foreground: var(--savings-foreground);
+  --color-savings-label: var(--savings-label);
+  --color-savings-muted: var(--savings-muted);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -99,6 +104,18 @@
   /* Success: For positive feedback - harmonizes with blue palette */
   --success: oklch(0.55 0.16 150);
   --success-foreground: oklch(0.98 0 0);
+
+  /* 
+   * SAVINGS: Premium color for discounts & cost reduction
+   * Teal-green feels sophisticated, trustworthy, "smart money"
+   * NOT neon green - desaturated for elegance
+   */
+  --savings: oklch(0.52 0.12 168);
+  --savings-foreground: oklch(0.98 0 0);
+  /* Bronze/copper for labels - warm, premium, harmonizes with gold */
+  --savings-label: oklch(0.58 0.11 55);
+  /* Subtle background for savings badges */
+  --savings-muted: oklch(0.95 0.03 168);
 
   /* Borders & Inputs */
   --border: oklch(0.88 0.015 250);
@@ -164,6 +181,12 @@
   /* Success: Brighter in dark mode for visibility */
   --success: oklch(0.65 0.18 150);
   --success-foreground: oklch(0.98 0 0);
+
+  /* Savings: Brighter in dark mode for visibility */
+  --savings: oklch(0.62 0.14 168);
+  --savings-foreground: oklch(0.98 0 0);
+  --savings-label: oklch(0.68 0.12 55);
+  --savings-muted: oklch(0.25 0.04 168);
 
   /* FIXED: Increased border contrast (was 0.32) */
   --border: oklch(0.35 0.03 250);

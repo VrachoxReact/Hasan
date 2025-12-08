@@ -46,7 +46,7 @@ import { CONTACT } from "@/lib/constants";
 import { useUsporediStore } from "@/stores/usporediStore";
 import { useFavoritiStore } from "@/stores/favoritiStore";
 import { toast } from "sonner";
-import { typography, spacing, components } from "@/lib/designTokens";
+import { typography, spacing, components, badges } from "@/lib/designTokens";
 import { use, useEffect } from "react";
 import { vehicleInquirySchema } from "@/lib/schemas";
 
@@ -371,7 +371,7 @@ export default function VoziloPage({ params }: VoziloPageProps) {
                         key={feature}
                         className={`flex items-center gap-2 ${typography.small}`}
                       >
-                        <Check className="w-4 h-4 text-green-600 dark:text-green-400" />
+                        <Check className="w-4 h-4 text-success" />
                         <span className="text-foreground">{feature}</span>
                       </div>
                     ))}

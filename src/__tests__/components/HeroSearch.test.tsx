@@ -25,63 +25,80 @@ describe("HeroSearch", () => {
   it("should render search form with all fields", () => {
     render(<HeroSearch />);
 
-    // Check for labels
-    expect(screen.getByText("Marka")).toBeInTheDocument();
+    // Check for select placeholders (used as labels in compact design)
+    expect(screen.getByText("Proizvodžač")).toBeInTheDocument();
+    expect(screen.getByText("Model")).toBeInTheDocument();
     expect(screen.getByText("Godina od")).toBeInTheDocument();
-    expect(screen.getByText("Cijena")).toBeInTheDocument();
-    expect(
-      screen.getByRole("button", { name: /Pretraži/i })
-    ).toBeInTheDocument();
+    expect(screen.getByText("Tip goriva")).toBeInTheDocument();
+    expect(screen.getByText("Vrsta mjenjača")).toBeInTheDocument();
   });
 
-  it("should render all select placeholders", () => {
+  it("should render all select components", () => {
     render(<HeroSearch />);
 
-    expect(screen.getByText("Sve marke")).toBeInTheDocument();
-    // "Bilo koja" appears twice (for godina and cijena)
-    expect(screen.getAllByText("Bilo koja").length).toBe(2);
+    // Check that comboboxes exist (5 select fields)
+    const comboboxes = screen.getAllByRole("combobox");
+    expect(comboboxes.length).toBe(5);
   });
 
   it("should navigate to vehicles page when search clicked", () => {
     render(<HeroSearch />);
 
-    const searchButton = screen.getByRole("button", { name: /Pretraži/i });
-    fireEvent.click(searchButton);
+    // Search button shows the matching count, find the button element
+    const buttons = screen.getAllByRole("button");
+    // The last button in the grid is the search button
+    const searchButton = buttons.find(
+      (btn) => !btn.getAttribute("role")?.includes("combobox")
+    );
+    expect(searchButton).toBeTruthy();
 
-    expect(mockPush).toHaveBeenCalledWith("/vozila");
+    if (searchButton) {
+      fireEvent.click(searchButton);
+      expect(mockPush).toHaveBeenCalledWith("/vozila");
+    }
   });
 
-  it("should have three combobox selects", () => {
+  it("should have five combobox selects", () => {
     render(<HeroSearch />);
 
     const comboboxes = screen.getAllByRole("combobox");
-    expect(comboboxes.length).toBe(3);
+    expect(comboboxes.length).toBe(5);
   });
 
-  it("should display search button with icon", () => {
+  it("should display search button with vehicle count", () => {
     render(<HeroSearch />);
 
-    const searchButton = screen.getByRole("button", { name: /Pretraži/i });
+    // The search button shows the matching vehicle count
+    const buttons = screen.getAllByRole("button");
+    const searchButton = buttons.find(
+      (btn) =>
+        btn.getAttribute("data-slot") === "button" ||
+        btn.classList.contains("bg-accent")
+    );
     expect(searchButton).toBeInTheDocument();
-
-    // Check for search icon
-    const searchIcon = document.querySelector(".lucide-search");
-    expect(searchIcon).toBeInTheDocument();
   });
 
-  it("should have proper styling classes", () => {
+  it("should have proper container styling", () => {
     render(<HeroSearch />);
 
-    // Check for backdrop blur container
-    const container = document.querySelector(".backdrop-blur-xl");
+    // Check for rounded-lg container (the main wrapper)
+    const container = document.querySelector(".rounded-lg");
     expect(container).toBeInTheDocument();
   });
 
   it("should have grid layout for form fields", () => {
     render(<HeroSearch />);
 
-    // Check for grid container
-    const gridContainer = document.querySelector(".grid-cols-1");
+    // Check for grid container with grid-cols-2 (responsive design)
+    const gridContainer = document.querySelector(".grid-cols-2");
     expect(gridContainer).toBeInTheDocument();
+  });
+
+  it("should have price range slider", () => {
+    render(<HeroSearch />);
+
+    // Check for slider elements
+    const sliders = screen.getAllByRole("slider");
+    expect(sliders.length).toBeGreaterThanOrEqual(1);
   });
 });

@@ -72,8 +72,9 @@ describe("KalkulatorFinanciranja", () => {
   it("should display default interest rate", () => {
     render(<KalkulatorFinanciranja cijenaVozila={defaultPrice} />);
 
-    // Default interest rate is 6.9% - could be displayed as 6.9 or 6,9
-    expect(screen.getByText(/6[.,]9/)).toBeInTheDocument();
+    // Default interest rate is 6.9% - displayed in input field
+    const interestInput = screen.getByDisplayValue("6.9");
+    expect(interestInput).toBeInTheDocument();
   });
 
   it("should display sliders for all parameters", () => {
