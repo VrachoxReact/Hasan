@@ -82,15 +82,15 @@ export default function HeroSearch() {
       initial={{ opacity: 0, y: 30, scale: 0.98 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ duration: 0.6, delay: 0.4 }}
-      className="rounded-xl bg-white dark:bg-card shadow-2xl border border-border/50"
+      className="rounded-lg bg-white dark:bg-card shadow-xl border border-border/50"
     >
-      <div className="p-2.5">
+      <div className="p-2.5 md:p-3">
         {/* All fields in one row on larger screens */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-2 mb-2">
-          {/* Proizvođač */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 lg:gap-2.5">
+          {/* Proizvodžač */}
           <Select value={marka} onValueChange={handleMarkaChange}>
             <SelectTrigger className="h-9 bg-background border-border text-xs">
-              <SelectValue placeholder="Proizvođač" />
+              <SelectValue placeholder="Proizvodžač" />
             </SelectTrigger>
             <SelectContent>
               {MARKE.map((m) => (
@@ -163,14 +163,14 @@ export default function HeroSearch() {
             size="sm"
             className="h-9 px-3 text-xs font-semibold bg-accent hover:bg-accent/90 text-white"
           >
-            <Search className="w-4 h-4 mr-1.5" />
+            <Search className="w-4 h-4 mr-1" />
             {matchingCount}
           </Button>
         </div>
 
         {/* Price Slider Row - Compact */}
-        <div className="flex items-center gap-3">
-          <span className="text-[11px] font-medium text-foreground whitespace-nowrap">
+        <div className="flex items-center gap-2.5 mt-2">
+          <span className="text-[11px] font-medium text-muted-foreground whitespace-nowrap">
             {formatPrice(priceRange[0])}€ - {formatPrice(priceRange[1])}€
           </span>
           <Slider

@@ -17,7 +17,7 @@ export default function EkskluzivnaPonuda() {
 
   return (
     <section
-      className={`${spacing.section} bg-gradient-to-b from-accent/5 to-background pt-16 mt-8`}
+      className={`${spacing.section} bg-gradient-to-b from-accent/5 to-background pt-8 md:pt-10 -mt-4`}
     >
       <div className="container mx-auto px-4">
         {/* Section Header */}

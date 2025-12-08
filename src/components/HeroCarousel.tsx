@@ -178,9 +178,9 @@ export default function HeroCarousel({ children }: HeroCarouselProps) {
         </div>
       </div>
 
-      {/* Search Form Overlay - positioned to overlap bottom of carousel */}
+      {/* Search Form Overlay - positioned to overlap bottom of carousel and top of next section */}
       {children && (
-        <div className="relative z-30 -mt-40 md:-mt-36 px-4">
+        <div className="relative z-30 -mt-16 md:-mt-12 px-4">
           <div className="container mx-auto max-w-7xl">{children}</div>
         </div>
       )}

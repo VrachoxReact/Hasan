@@ -11,6 +11,7 @@ interface PriceDisplayProps {
   oldPrice?: number;
   variant?: PriceVariant;
   className?: string;
+  showSavings?: boolean;
 }
 
 /**
@@ -27,8 +28,15 @@ export default function PriceDisplay({
   oldPrice,
   variant = "card",
   className,
+  showSavings = true,
 }: PriceDisplayProps) {
   const hasDiscount = oldPrice && oldPrice > price;
+  const savings = hasDiscount ? oldPrice - price : 0;
+
+  // Format savings with thousands separator
+  const formatSavings = (amount: number) => {
+    return new Intl.NumberFormat("hr-HR").format(amount);
+  };
 
   // Variant-specific styles
   const variantStyles = {
@@ -37,18 +45,21 @@ export default function PriceDisplay({
       oldPrice: components.price.oldPrice,
       currentPrice: components.price.card,
       discountPrice: "text-3xl font-bold text-success drop-shadow-lg",
+      savingsText: "text-xs font-semibold text-green-400 drop-shadow",
     },
     list: {
       container: "",
       oldPrice: "text-base text-muted-foreground line-through",
       currentPrice: components.price.list,
       discountPrice: "text-2xl font-bold text-success",
+      savingsText: "text-xs font-semibold text-green-600",
     },
     detail: {
       container: "",
       oldPrice: "text-lg text-muted-foreground line-through",
       currentPrice: components.price.detail,
       discountPrice: "text-3xl font-bold text-success",
+      savingsText: "text-sm font-semibold text-green-600",
     },
   };
 
@@ -59,6 +70,11 @@ export default function PriceDisplay({
       <div className={cn("flex flex-col", styles.container, className)}>
         <span className={styles.oldPrice}>{formatCijena(oldPrice)}</span>
         <span className={styles.discountPrice}>{formatCijena(price)}</span>
+        {showSavings && savings > 0 && (
+          <span className={styles.savingsText}>
+            Ušteda: {formatSavings(savings)} €
+          </span>
+        )}
       </div>
     );
   }
