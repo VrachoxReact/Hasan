@@ -115,25 +115,64 @@ export default function HeroCarousel({ children }: HeroCarouselProps) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="flex flex-col sm:flex-row gap-8 sm:gap-16"
+            className="flex flex-col sm:flex-row gap-8 sm:gap-16 px-4"
           >
-            <Link href="/vozila">
-              <Button
-                size="lg"
-                className="min-w-[220px] h-16 text-lg font-semibold bg-white text-primary hover:bg-white/90 shadow-xl transition-all hover:scale-105"
+            <Link href="/vozila" className="group">
+              <motion.div
+                animate={{
+                  scale: [1, 1.05, 1],
+                  boxShadow: [
+                    "0 20px 60px rgba(255, 255, 255, 0.3)",
+                    "0 25px 80px rgba(255, 255, 255, 0.5)",
+                    "0 20px 60px rgba(255, 255, 255, 0.3)",
+                  ],
+                }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
               >
-                <Car className="w-5 h-5 mr-2" />
-                DOSTUPNA VOZILA
-              </Button>
+                <Button
+                  size="lg"
+                  className="relative min-w-[240px] sm:min-w-[280px] h-[70px] text-xl font-extrabold bg-white text-primary hover:bg-white/95 shadow-[0_0_40px_rgba(255,255,255,0.8)] transition-all duration-300 border-[6px] border-white/90 group-hover:border-white overflow-hidden"
+                >
+                  <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -skew-x-12 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
+                  <Car className="w-7 h-7 mr-3 relative z-10 group-hover:rotate-12 transition-transform" />
+                  <span className="relative z-10 tracking-widest drop-shadow-lg">
+                    DOSTUPNA VOZILA
+                  </span>
+                </Button>
+              </motion.div>
             </Link>
-            <Link href="/kontakt">
-              <Button
-                size="lg"
-                className="min-w-[220px] h-16 text-lg font-semibold border-2 border-white bg-white/10 backdrop-blur-sm text-white hover:bg-white hover:text-primary shadow-xl transition-all hover:scale-105"
+            <Link href="/kontakt" className="group">
+              <motion.div
+                animate={{
+                  scale: [1, 1.05, 1],
+                  boxShadow: [
+                    "0 20px 60px rgba(255, 255, 255, 0.3)",
+                    "0 25px 80px rgba(255, 255, 255, 0.5)",
+                    "0 20px 60px rgba(255, 255, 255, 0.3)",
+                  ],
+                }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  delay: 1,
+                }}
               >
-                <Building2 className="w-5 h-5 mr-2" />
-                VELEPRODAJA VOZILA
-              </Button>
+                <Button
+                  size="lg"
+                  className="relative min-w-[240px] sm:min-w-[280px] h-[70px] text-xl font-extrabold bg-white/10 backdrop-blur-md text-white hover:bg-white hover:text-primary shadow-[0_0_40px_rgba(255,255,255,0.8)] transition-all duration-300 border-[6px] border-white group-hover:border-white/90 overflow-hidden"
+                >
+                  <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -skew-x-12 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
+                  <Building2 className="w-7 h-7 mr-3 relative z-10 group-hover:rotate-12 transition-transform" />
+                  <span className="relative z-10 tracking-widest drop-shadow-lg">
+                    VELEPRODAJA VOZILA
+                  </span>
+                </Button>
+              </motion.div>
             </Link>
           </motion.div>
         </div>

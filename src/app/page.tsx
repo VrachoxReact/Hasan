@@ -12,19 +12,15 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import VoziloCard from "@/components/VoziloCard";
 import HeroCarousel from "@/components/HeroCarousel";
 import HeroSearch from "@/components/HeroSearch";
 import EkskluzivnaPonuda from "@/components/EkskluzivnaPonuda";
-import RecentlyViewed from "@/components/RecentlyViewed";
 import {
   FadeIn,
   StaggerContainer,
   StaggerItem,
 } from "@/components/PageTransition";
-import { getIstaknutaVozila } from "@/lib/vozila";
 import { typography, spacing, components } from "@/lib/designTokens";
-import AnimatedCounter from "@/components/AnimatedCounter";
 
 const features = [
   {
@@ -47,16 +43,7 @@ const features = [
   },
 ];
 
-const stats = [
-  { value: "500+", numericValue: 500, suffix: "+", label: "Prodanih vozila" },
-  { value: "10+", numericValue: 10, suffix: "+", label: "Godina iskustva" },
-  { value: "98%", numericValue: 98, suffix: "%", label: "Zadovoljnih kupaca" },
-  { value: "30", numericValue: 30, suffix: "", label: "Dana jamstva" },
-];
-
 export default function HomePage() {
-  const istaknutaVozila = getIstaknutaVozila().slice(0, 6);
-
   return (
     <>
       {/* Hero Carousel with Search Overlay */}
@@ -64,80 +51,8 @@ export default function HomePage() {
         <HeroSearch />
       </HeroCarousel>
 
-      {/* Stats Section */}
-      <section
-        className={`${spacing.section.small} bg-gradient-to-r from-primary via-primary/95 to-primary/90`}
-      >
-        <div className="container mx-auto px-4">
-          <div
-            className={`grid grid-cols-2 md:grid-cols-4 ${spacing.gap.default}`}
-          >
-            {stats.map((stat, index) => (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                className="text-center"
-              >
-                <AnimatedCounter
-                  value={stat.numericValue}
-                  suffix={stat.suffix}
-                  className={`${typography.stat} text-accent mb-1`}
-                />
-                <div className={`${typography.statLabel} text-white/90`}>
-                  {stat.label}
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Ekskluzivna Ponuda Section */}
       <EkskluzivnaPonuda />
-
-      {/* Featured Vehicles */}
-      <section className={spacing.section.medium}>
-        <div className="container mx-auto px-4">
-          <FadeIn>
-            <div className="text-center mb-12">
-              <h2 className={`${typography.h2} text-foreground mb-4`}>
-                Istaknuta vozila
-              </h2>
-              <p
-                className={`${typography.body} text-muted-foreground max-w-2xl mx-auto`}
-              >
-                Pogledajte našu selekciju najkvalitetnijih vozila koje trenutno
-                nudimo. Svako vozilo je pažljivo odabrano i provjereno.
-              </p>
-            </div>
-          </FadeIn>
-
-          <div
-            className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 ${spacing.gap.default}`}
-          >
-            {istaknutaVozila.map((vozilo, index) => (
-              <VoziloCard
-                key={vozilo.id}
-                vozilo={vozilo}
-                index={index}
-                priority={index < 3}
-              />
-            ))}
-          </div>
-
-          <FadeIn className="text-center mt-12">
-            <Link href="/vozila">
-              <Button size="lg" variant="outline" className="group">
-                Pogledaj sva vozila
-                <ChevronRight className="w-5 h-5 ml-1 group-hover:translate-x-1 transition-transform" />
-              </Button>
-            </Link>
-          </FadeIn>
-        </div>
-      </section>
 
       {/* Why Us Section */}
       <section className={`${spacing.section.medium} bg-muted/50`}>
@@ -224,9 +139,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Recently Viewed Section */}
-      <RecentlyViewed />
-
       {/* Map Section */}
       <section className={spacing.section.medium}>
         <div className="container mx-auto px-4">
@@ -244,20 +156,68 @@ export default function HomePage() {
             </div>
           </FadeIn>
 
-          <FadeIn>
-            <div className="rounded-2xl overflow-hidden shadow-lg border border-border">
-              <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2781.5024881073784!2d15.9819711!3d45.8014399!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4765d6f5f5555555%3A0x5555555555555555!2sUlica%20grada%20Vukovara%20271%2C%2010000%2C%20Zagreb!5e0!3m2!1shr!2shr!4v1701874800000!5m2!1shr!2shr"
-                width="100%"
-                height="450"
-                style={{ border: 0 }}
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                title="Lokacija Produkt Auto"
-              />
-            </div>
-          </FadeIn>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+            <FadeIn>
+              <div className="rounded-2xl overflow-hidden shadow-lg border border-border h-full">
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2781.5024881073784!2d15.9819711!3d45.8014399!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4765d6f5f5555555%3A0x5555555555555555!2sUlica%20grada%20Vukovara%20271%2C%2010000%2C%20Zagreb!5e0!3m2!1shr!2shr!4v1701874800000!5m2!1shr!2shr"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0, minHeight: "450px" }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="Lokacija Produkt Auto"
+                />
+              </div>
+            </FadeIn>
+
+            <FadeIn>
+              <Card className="h-full">
+                <CardContent className="p-8">
+                  <h3 className={`${typography.h3} text-foreground mb-4`}>
+                    Vaš pouzdani partner za kvalitetna vozila
+                  </h3>
+                  <div className="space-y-4 text-muted-foreground">
+                    <p className={typography.body}>
+                      <strong className="text-foreground">Produkt Auto</strong>{" "}
+                      je renomirana tvrtka specijalizirana za prodaju
+                      kvalitetnih rabljenih vozila. Sa sjedištem u Zagrebu,
+                      poslujemo na tržištu već više od 10 godina.
+                    </p>
+                    <p className={typography.body}>
+                      Naša ponuda uključuje širok izbor pažljivo odabranih
+                      vozila različitih marki i modela. Svako vozilo prolazi
+                      temeljitu provjeru i pripremu prije nego dođe u našu
+                      ponudu.
+                    </p>
+                    <p className={typography.body}>
+                      Nudimo potpunu transparentnost - sva vozila dolaze s
+                      provjerenom dokumentacijom i poviješću servisa. Naš
+                      stručni tim je tu da vam pomogne u odabiru idealnog vozila
+                      prema vašim potrebama i budžetu.
+                    </p>
+                    <div className="flex flex-col sm:flex-row gap-4 pt-4 border-t border-border">
+                      <div className="flex-1">
+                        <p className="text-sm font-semibold text-foreground mb-1">
+                          Radno vrijeme
+                        </p>
+                        <p className="text-sm">Pon - Pet: 08:00 - 18:00</p>
+                        <p className="text-sm">Subota: 09:00 - 14:00</p>
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-sm font-semibold text-foreground mb-1">
+                          Kontakt
+                        </p>
+                        <p className="text-sm">Tel: +385 91 123 4567</p>
+                        <p className="text-sm">Email: info@produktauto.hr</p>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </FadeIn>
+          </div>
         </div>
       </section>
     </>

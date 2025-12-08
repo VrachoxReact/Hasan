@@ -41,7 +41,7 @@ import {
   formatCijena,
   formatKilometraza,
 } from "@/lib/vozila";
-import { MARKE, GORIVA } from "@/types/vozilo";
+import { MARKE, GORIVA, MJENJACI } from "@/types/vozilo";
 import type { FilterOptions, Vozilo } from "@/types/vozilo";
 
 type RangeTuple = [number, number];
@@ -51,6 +51,7 @@ interface FilterContentProps {
   activeFiltersCount: number;
   onMarkaChange: (value: string) => void;
   onGorivoChange: (gorivo: string, checked: boolean) => void;
+  onMjenjacChange: (value: string) => void;
   onPriceCommit: (values: number[]) => void;
   onKmCommit: (value: number) => void;
   onYearCommit: (values: number[]) => void;
@@ -62,6 +63,7 @@ function FilterContent({
   activeFiltersCount,
   onMarkaChange,
   onGorivoChange,
+  onMjenjacChange,
   onPriceCommit,
   onKmCommit,
   onYearCommit,
@@ -199,6 +201,31 @@ function FilterContent({
         </div>
       </div>
 
+      {/* Mjenjač */}
+      <div>
+        <label
+          className={`${typography.small} font-medium text-foreground mb-2 block`}
+        >
+          Vrsta mjenjača
+        </label>
+        <Select
+          value={filters.mjenjac || "all"}
+          onValueChange={onMjenjacChange}
+        >
+          <SelectTrigger>
+            <SelectValue placeholder="Svi mjenjači" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">Svi mjenjači</SelectItem>
+            {MJENJACI.map((m) => (
+              <SelectItem key={m.value} value={m.value}>
+                {m.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
       {/* Cijena */}
       <div>
         <label
@@ -319,6 +346,7 @@ export default function VozilaPage() {
   const [filters, setFilters] = useState<FilterOptions>({
     marka: searchParams.get("marka") || undefined,
     gorivo: searchParams.get("gorivo")?.split(",") || [],
+    mjenjac: searchParams.get("mjenjac") || undefined,
     godinaOd: searchParams.get("godinaOd")
       ? parseInt(searchParams.get("godinaOd")!)
       : undefined,
@@ -344,6 +372,7 @@ export default function VozilaPage() {
     if (newFilters.marka) params.set("marka", newFilters.marka);
     if (newFilters.gorivo && newFilters.gorivo.length > 0)
       params.set("gorivo", newFilters.gorivo.join(","));
+    if (newFilters.mjenjac) params.set("mjenjac", newFilters.mjenjac);
     if (newFilters.godinaOd)
       params.set("godinaOd", newFilters.godinaOd.toString());
     if (newFilters.godinaDo)
@@ -394,6 +423,13 @@ export default function VozilaPage() {
     updateURL(newFilters, sortBy);
   };
 
+  const handleMjenjacChange = (value: string) => {
+    const newMjenjac = value === "all" ? undefined : value;
+    const newFilters = { ...filters, mjenjac: newMjenjac };
+    setFilters(newFilters);
+    updateURL(newFilters, sortBy);
+  };
+
   const handlePriceCommit = (values: number[]) => {
     const newFilters = {
       ...filters,
@@ -437,6 +473,7 @@ export default function VozilaPage() {
   const activeFiltersCount = [
     filters.marka,
     filters.gorivo?.length,
+    filters.mjenjac,
     filters.cijenaOd || filters.cijenaDo,
     filters.kilometrazaDo,
     filters.godinaOd || filters.godinaDo,
@@ -477,6 +514,7 @@ export default function VozilaPage() {
                 activeFiltersCount={activeFiltersCount}
                 onMarkaChange={handleMarkaChange}
                 onGorivoChange={handleGorivoChange}
+                onMjenjacChange={handleMjenjacChange}
                 onPriceCommit={handlePriceCommit}
                 onKmCommit={handleKmCommit}
                 onYearCommit={handleYearCommit}
@@ -512,6 +550,7 @@ export default function VozilaPage() {
                       activeFiltersCount={activeFiltersCount}
                       onMarkaChange={handleMarkaChange}
                       onGorivoChange={handleGorivoChange}
+                      onMjenjacChange={handleMjenjacChange}
                       onPriceCommit={handlePriceCommit}
                       onKmCommit={handleKmCommit}
                       onYearCommit={handleYearCommit}
