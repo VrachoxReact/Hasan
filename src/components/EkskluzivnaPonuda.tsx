@@ -34,8 +34,9 @@ export default function EkskluzivnaPonuda() {
           <p
             className={`${typography.body} text-muted-foreground max-w-2xl mx-auto`}
           >
-            Posebno odabrana vozila po sniženim cijenama. Iskoristite priliku i
-            uštedite na premium rabljenim vozilima.
+            Odabrana vozila koja ispunjavaju visoke standarde kvalitete i
+            pouzdanosti – sada dostupna uz pažljivo formirane cijene koje
+            omogućuju stvarnu uštedu.
           </p>
         </motion.div>
 

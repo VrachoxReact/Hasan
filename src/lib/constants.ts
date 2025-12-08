@@ -4,21 +4,21 @@
  */
 
 export const CONTACT = {
-  phone: "+385 91 234 5678",
-  phoneRaw: "+385912345678",
-  email: "info@produktauto.hr",
+  phone: "+385 99 166 3776",
+  phoneRaw: "+385991663776",
+  email: "produktauto@gmail.com",
   address: {
-    street: "Ulica grada Vukovara 271",
-    city: "Zagreb",
-    postalCode: "10000",
+    street: "Ulica Milana Prpića 120",
+    city: "Oroslavje",
+    postalCode: "49243",
     country: "Hrvatska",
-    full: "Ulica grada Vukovara 271, 10000 Zagreb, Hrvatska",
+    full: "Ulica Milana Prpića 120, 49243 Oroslavje, Hrvatska",
   },
   whatsapp: {
-    number: "385912345678",
-    url: "https://wa.me/385912345678",
+    number: "385991663776",
+    url: "https://wa.me/385991663776",
     messageUrl: (message: string) =>
-      `https://wa.me/385912345678?text=${encodeURIComponent(message)}`,
+      `https://wa.me/385991663776?text=${encodeURIComponent(message)}`,
   },
   social: {
     facebook: "https://facebook.com/produktauto",
@@ -27,25 +27,27 @@ export const CONTACT = {
   },
   maps: {
     embedUrl:
-      "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2781.5024881073784!2d15.9819711!3d45.8014399!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4765d6f5f5555555%3A0x5555555555555555!2sUlica%20grada%20Vukovara%20271%2C%2010000%2C%20Zagreb!5e0!3m2!1shr!2shr!4v1701874800000!5m2!1shr!2shr",
-    directionsUrl: "https://maps.google.com/?q=Ulica+grada+Vukovara+271+Zagreb",
+      "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2775.5!2d15.9408!3d45.9167!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4765cf00000000%3A0x0!2sUlica%20Milana%20Prpi%C4%87a%20120%2C%2049243%20Oroslavje!5e0!3m2!1shr!2shr!4v1701874800000!5m2!1shr!2shr",
+    directionsUrl:
+      "https://maps.google.com/?q=Ulica+Milana+Prpica+120+Oroslavje",
   },
   geo: {
-    latitude: 45.8014399,
-    longitude: 15.9819711,
+    latitude: 45.9167,
+    longitude: 15.9408,
   },
 } as const;
 
 export const WORKING_HOURS = {
-  weekdays: { open: "08:00", close: "18:00", label: "Ponedjeljak - Petak" },
-  saturday: { open: "09:00", close: "14:00", label: "Subota" },
+  weekdays: { open: "09:00", close: "17:00", label: "Ponedjeljak - Petak" },
+  saturday: { open: "09:00", close: "17:00", label: "Subota" },
   sunday: { closed: true, label: "Nedjelja" },
 } as const;
 
 export const COMPANY = {
   name: "Produkt Auto",
+  legalName: "Produkt Auto j.d.o.o.",
   tagline: "Vaš pouzdani partner za kvalitetna vozila",
   description:
-    "Vaš pouzdani partner za kupnju kvalitetnih rabljenih vozila. Više od 10 godina iskustva u prodaji automobila s jamstvom kvalitete.",
+    "Ako vam je dosta neizvjesnosti i sumnji kod kupnje rabljenog vozila – dobrodošli ste kod nas. Nudimo samo provjerena, temeljito pregledana vozila s transparentnom dokumentacijom i realnim cijenama.",
   founded: 2014,
 } as const;

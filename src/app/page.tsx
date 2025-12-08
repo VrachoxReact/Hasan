@@ -125,12 +125,12 @@ export default function HomePage() {
                     <ArrowRight className="w-5 h-5 ml-2" />
                   </Button>
                 </Link>
-                <a href="tel:+385911234567">
+                <a href="tel:+385991663776">
                   <Button
                     size="lg"
                     className="bg-white text-primary hover:bg-white/90 font-semibold min-w-[200px]"
                   >
-                    +385 91 123 4567
+                    +385 99 166 3776
                   </Button>
                 </a>
               </div>
@@ -151,7 +151,7 @@ export default function HomePage() {
                 className={`flex items-center justify-center gap-2 ${typography.body} text-muted-foreground`}
               >
                 <MapPin className={`w-5 h-5 ${components.icon.accent}`} />
-                <span>Ulica grada Vukovara 271, 10000 Zagreb</span>
+                <span>Ulica Milana Prpića 120, 49243 Oroslavje</span>
               </div>
             </div>
           </FadeIn>
@@ -160,7 +160,7 @@ export default function HomePage() {
             <FadeIn>
               <div className="rounded-2xl overflow-hidden shadow-lg border border-border h-full">
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2781.5024881073784!2d15.9819711!3d45.8014399!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4765d6f5f5555555%3A0x5555555555555555!2sUlica%20grada%20Vukovara%20271%2C%2010000%2C%20Zagreb!5e0!3m2!1shr!2shr!4v1701874800000!5m2!1shr!2shr"
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2775.5!2d15.9408!3d45.9167!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4765cf00000000%3A0x0!2sUlica%20Milana%20Prpi%C4%87a%20120%2C%2049243%20Oroslavje!5e0!3m2!1shr!2shr!4v1701874800000!5m2!1shr!2shr"
                   width="100%"
                   height="100%"
                   style={{ border: 0, minHeight: "450px" }}
@@ -176,41 +176,38 @@ export default function HomePage() {
               <Card className="h-full">
                 <CardContent className="p-8">
                   <h3 className={`${typography.h3} text-foreground mb-4`}>
-                    Vaš pouzdani partner za kvalitetna vozila
+                    Produkt Auto j.d.o.o.
                   </h3>
                   <div className="space-y-4 text-muted-foreground">
                     <p className={typography.body}>
-                      <strong className="text-foreground">Produkt Auto</strong>{" "}
-                      je renomirana tvrtka specijalizirana za prodaju
-                      kvalitetnih rabljenih vozila. Sa sjedištem u Zagrebu,
-                      poslujemo na tržištu već više od 10 godina.
+                      Ako vam je dosta neizvjesnosti i sumnji kod kupnje
+                      rabljenog vozila – dobrodošli ste kod nas. Nudimo samo
+                      provjerena, temeljito pregledana vozila s transparentnom
+                      dokumentacijom i realnim cijenama.
                     </p>
                     <p className={typography.body}>
-                      Naša ponuda uključuje širok izbor pažljivo odabranih
-                      vozila različitih marki i modela. Svako vozilo prolazi
-                      temeljitu provjeru i pripremu prije nego dođe u našu
-                      ponudu.
+                      Bez skrivenih mana, bez neugodnih iznenađenja. Svako
+                      vozilo u našoj ponudi prošlo je detaljnu provjeru i dolazi
+                      s kompletnom servisnom poviješću.
                     </p>
                     <p className={typography.body}>
-                      Nudimo potpunu transparentnost - sva vozila dolaze s
-                      provjerenom dokumentacijom i poviješću servisa. Naš
-                      stručni tim je tu da vam pomogne u odabiru idealnog vozila
-                      prema vašim potrebama i budžetu.
+                      Cijenimo vaše vrijeme – brza i jednostavna kupnja bez
+                      nepotrebnih komplikacija. Javite nam se s povjerenjem.
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4 pt-4 border-t border-border">
                       <div className="flex-1">
                         <p className="text-sm font-semibold text-foreground mb-1">
                           Radno vrijeme
                         </p>
-                        <p className="text-sm">Pon - Pet: 08:00 - 18:00</p>
-                        <p className="text-sm">Subota: 09:00 - 14:00</p>
+                        <p className="text-sm">Pon - Sub: 09:00 - 17:00</p>
+                        <p className="text-sm">Nedjelja: Zatvoreno</p>
                       </div>
                       <div className="flex-1">
                         <p className="text-sm font-semibold text-foreground mb-1">
                           Kontakt
                         </p>
-                        <p className="text-sm">Tel: +385 91 123 4567</p>
-                        <p className="text-sm">Email: info@produktauto.hr</p>
+                        <p className="text-sm">Tel: +385 99 166 3776</p>
+                        <p className="text-sm">Email: produktauto@gmail.com</p>
                       </div>
                     </div>
                   </div>
