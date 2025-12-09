@@ -199,13 +199,17 @@ export default function UsporediPage() {
       {/* Comparison Table */}
       <section className="py-8 md:py-12">
         <div className="container mx-auto px-4">
-          <div className="overflow-x-auto">
-            <div className="min-w-[600px]">
+          {/* Mobile scroll hint */}
+          <div className="md:hidden flex items-center justify-center gap-2 text-muted-foreground text-sm mb-4">
+            <span>← Povucite za usporedbu →</span>
+          </div>
+          <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-accent/20 scrollbar-track-transparent pb-4">
+            <div className="min-w-[500px] md:min-w-[600px]">
               {/* Vehicle Cards Header */}
               <div
-                className="grid gap-4"
+                className="grid gap-3 md:gap-4"
                 style={{
-                  gridTemplateColumns: `200px repeat(${vozila.length}, 1fr)`,
+                  gridTemplateColumns: `minmax(100px, 150px) repeat(${vozila.length}, minmax(140px, 1fr))`,
                 }}
               >
                 {/* Empty corner cell */}
@@ -290,7 +294,7 @@ export default function UsporediPage() {
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: specIndex * 0.05 }}
-                    className={`grid gap-4 items-center py-4 px-4 rounded-lg ${
+                    className={`grid gap-3 md:gap-4 items-center py-3 md:py-4 px-3 md:px-4 rounded-lg ${
                       spec.highlight
                         ? "bg-accent/10"
                         : specIndex % 2 === 0
@@ -298,7 +302,7 @@ export default function UsporediPage() {
                         : ""
                     }`}
                     style={{
-                      gridTemplateColumns: `200px repeat(${vozila.length}, 1fr)`,
+                      gridTemplateColumns: `minmax(100px, 150px) repeat(${vozila.length}, minmax(140px, 1fr))`,
                     }}
                   >
                     {/* Label */}
@@ -406,11 +410,11 @@ export default function UsporediPage() {
                   return Array.from(allFeatures).map((feature, index) => (
                     <div
                       key={feature}
-                      className={`grid gap-4 items-center py-3 px-4 rounded-lg ${
+                      className={`grid gap-3 md:gap-4 items-center py-2 md:py-3 px-3 md:px-4 rounded-lg ${
                         index % 2 === 0 ? "bg-muted/30" : ""
                       }`}
                       style={{
-                        gridTemplateColumns: `200px repeat(${vozila.length}, 1fr)`,
+                        gridTemplateColumns: `minmax(100px, 150px) repeat(${vozila.length}, minmax(140px, 1fr))`,
                       }}
                     >
                       <span className="text-sm text-muted-foreground">

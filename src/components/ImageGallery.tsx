@@ -336,10 +336,10 @@ export default function ImageGallery({ images, alt }: ImageGalleryProps) {
               {currentIndex + 1} / {images.length}
             </div>
 
-            {/* Thumbnail strip - Keyboard navigable */}
+            {/* Thumbnail strip - Hidden on mobile, keyboard navigable on desktop */}
             {images.length > 1 && (
               <div
-                className="absolute bottom-16 left-1/2 -translate-x-1/2 flex gap-2 p-2 bg-black/50 rounded-lg backdrop-blur-sm"
+                className="absolute bottom-16 left-1/2 -translate-x-1/2 hidden sm:flex gap-2 p-2 bg-black/50 rounded-lg backdrop-blur-sm max-w-[90vw] overflow-x-auto"
                 role="tablist"
                 aria-label="Navigacija galerije"
               >

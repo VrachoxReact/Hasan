@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import {
   Phone,
   Mail,
@@ -89,6 +89,7 @@ export default function KontaktPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const lastSubmitTime = useRef(0);
+  const shouldReduceMotion = useReducedMotion();
 
   const validateForm = (): boolean => {
     const result = contactFormSchema.safeParse(formData);
@@ -286,16 +287,24 @@ export default function KontaktPage() {
             {/* Contact Form */}
             <SlideIn direction="left">
               <motion.div
-                whileHover={{ scale: 1.02 }}
+                whileHover={shouldReduceMotion ? {} : { scale: 1.02 }}
                 transition={{ duration: 0.3 }}
                 className="relative"
               >
-                {/* Animated gradient border */}
+                {/* Animated gradient border - reduced on mobile/reduced motion */}
                 <motion.div
-                  className="absolute inset-0 rounded-2xl bg-gradient-to-r from-accent via-primary to-accent opacity-75 blur-xl"
-                  animate={{
-                    opacity: [0.5, 0.75, 0.5],
-                  }}
+                  className={`absolute inset-0 rounded-2xl bg-gradient-to-r from-accent via-primary to-accent ${
+                    shouldReduceMotion
+                      ? "opacity-50 blur-lg"
+                      : "opacity-75 blur-xl"
+                  }`}
+                  animate={
+                    shouldReduceMotion
+                      ? {}
+                      : {
+                          opacity: [0.5, 0.75, 0.5],
+                        }
+                  }
                   transition={{
                     repeat: Infinity,
                     duration: 3,
@@ -306,9 +315,17 @@ export default function KontaktPage() {
                   {/* Animated gradient top border */}
                   <motion.div
                     className="h-2 bg-gradient-to-r from-accent/50 via-accent to-accent/50"
-                    animate={{
-                      backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
-                    }}
+                    animate={
+                      shouldReduceMotion
+                        ? {}
+                        : {
+                            backgroundPosition: [
+                              "0% 50%",
+                              "100% 50%",
+                              "0% 50%",
+                            ],
+                          }
+                    }
                     transition={{
                       repeat: Infinity,
                       duration: 3,

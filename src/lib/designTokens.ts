@@ -1,27 +1,36 @@
 /**
  * Produkt Auto Design System
- * Centralized design tokens for consistent UI/UX
+ * Budget-Friendly & Transparent Business Feel
+ *
+ * Psychology:
+ * - Medium weights = approachable, not aggressive
+ * - Generous line-height = easy reading, no pressure
+ * - Slightly looser tracking = friendly, open feel
  */
 
 export const typography = {
-  // Display & Headings
-  h1: "text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight leading-tight",
-  h2: "text-3xl md:text-4xl font-semibold tracking-tight leading-tight",
-  h3: "text-xl md:text-2xl font-semibold leading-snug tracking-tight",
-  h4: "text-lg font-semibold leading-snug tracking-tight",
+  // Display & Headings - Friendly but confident
+  h1: "text-4xl md:text-5xl lg:text-6xl font-semibold tracking-normal leading-snug",
+  h2: "text-3xl md:text-4xl font-semibold tracking-normal leading-snug",
+  h3: "text-xl md:text-2xl font-medium leading-relaxed",
+  h4: "text-lg font-medium leading-relaxed",
 
-  // Body Text
-  bodyLarge: "text-lg leading-relaxed",
+  // Body Text - Easy to read, no pressure
+  bodyLarge: "text-lg leading-loose",
   body: "text-base leading-relaxed",
   bodySmall: "text-sm leading-relaxed",
 
   // Utility
   small: "text-sm tracking-normal",
-  tiny: "text-xs",
+  tiny: "text-xs tracking-wide",
 
-  // Special
+  // Special - Prices prominent but not aggressive
   stat: "text-3xl md:text-4xl font-bold",
-  statLabel: "text-sm",
+  statLabel: "text-sm font-medium",
+
+  // Trust signals
+  trustHeading: "text-lg font-medium text-foreground/90",
+  transparent: "text-sm text-muted-foreground leading-relaxed",
 } as const;
 
 export const spacing = {
@@ -48,23 +57,25 @@ export const spacing = {
 } as const;
 
 export const components = {
-  // Price Display
+  // Price Display - Clear, honest, prominent
   price: {
     card: "text-3xl font-bold text-white drop-shadow-lg",
     list: "text-2xl font-bold text-accent",
     detail: "text-3xl font-bold text-accent",
-    oldPrice: "text-base text-white/70 line-through drop-shadow-lg",
+    oldPrice: "text-base text-white/60 line-through drop-shadow-lg",
   },
 
-  // Buttons
+  // Buttons - Friendly, action-oriented
   button: {
-    primary: "bg-accent text-white hover:bg-accent/90 font-semibold",
+    primary: "bg-accent text-white hover:bg-accent/90 font-medium shadow-sm",
     secondary:
-      "border-2 border-white bg-white/10 text-white hover:bg-white hover:text-primary font-semibold",
-    premium:
-      "bg-premium text-premium-foreground hover:bg-premium/90 font-semibold shadow-lg",
+      "border-2 border-white bg-white/10 text-white hover:bg-white hover:text-primary font-medium",
+    deal: "bg-premium text-white hover:bg-premium/90 font-semibold shadow-md",
     lightOutline:
-      "border-2 border-white bg-white/10 text-white hover:bg-white hover:text-primary backdrop-blur-sm font-semibold",
+      "border-2 border-white bg-white/10 text-white hover:bg-white hover:text-primary backdrop-blur-sm font-medium",
+    // NEW: Trust-building CTA
+    trust:
+      "bg-accent/10 text-accent border border-accent/30 hover:bg-accent hover:text-white font-medium",
   },
 
   // Cards
@@ -123,34 +134,34 @@ export const components = {
 
 /**
  * Savings Color System
- * Premium, sophisticated colors for discounts and cost reduction
- * Uses teal-green (trustworthy, smart) and bronze (warm, premium)
+ * Psychology: Green = money saved, smart choice, value
+ * Orange labels = attention, urgency, "don't miss this deal"
  */
 export const savings = {
-  // Price display - the discounted/new price
+  // Price display - prominent, clear savings
   price: {
-    card: "text-savings font-bold drop-shadow-lg", // On dark overlays
-    list: "text-savings font-bold", // On light backgrounds
-    detail: "text-savings font-bold", // On detail pages
+    card: "text-savings font-bold drop-shadow-lg",
+    list: "text-savings font-bold",
+    detail: "text-savings font-bold text-3xl",
   },
 
-  // Old/original price (strikethrough)
+  // Old/original price - visible but secondary
   oldPrice: {
-    card: "text-white/70 line-through drop-shadow-lg",
-    list: "text-muted-foreground line-through",
-    detail: "text-muted-foreground line-through",
+    card: "text-white/60 line-through drop-shadow-lg",
+    list: "text-muted-foreground/80 line-through",
+    detail: "text-muted-foreground/80 line-through text-xl",
   },
 
-  // "Ušteda" label text
-  label: "text-savings-label font-semibold",
+  // "Ušteda" label - attention-grabbing orange
+  label: "text-savings-label font-bold uppercase tracking-wide text-sm",
 
-  // Savings amount text (e.g., "1.500 €")
-  amount: "text-savings font-semibold",
+  // Savings amount - prominent green
+  amount: "text-savings font-bold",
 
-  // Badge styling for savings pills
+  // Badge styling - eye-catching but trustworthy
   badge: {
     container:
-      "bg-savings-muted border border-savings/20 text-savings font-semibold shadow-sm",
+      "bg-savings-muted border border-savings/30 text-savings font-bold shadow-sm",
     icon: "text-savings",
   },
 
@@ -158,25 +169,30 @@ export const savings = {
   icon: {
     default: "text-savings",
     muted: "text-savings/70",
-    background: "bg-savings/10 dark:bg-savings/20",
+    background: "bg-savings/15 dark:bg-savings/25",
   },
 } as const;
 
 /**
  * Badge Variants
- * Unified badge styling across the app
+ * Psychology: Deal-focused, value-oriented messaging
  */
 export const badges = {
-  // Exclusive/premium vehicles - uses gold/premium color
+  // Special offer badge - warm orange for "great deal" feeling
   ekskluzivno:
-    "bg-gradient-to-r from-premium to-premium/80 text-premium-foreground font-bold shadow-lg",
+    "bg-gradient-to-r from-premium to-premium/90 text-white font-bold shadow-md",
 
-  // Featured vehicles - uses accent blue
-  istaknuto: "bg-accent text-accent-foreground font-semibold shadow-md",
+  // Featured/recommended - trustworthy blue
+  istaknuto: "bg-accent text-white font-medium shadow-sm",
 
-  // Savings badge (e.g., "Ušteda 1.500 €")
-  savings:
-    "bg-savings-muted border border-savings/20 text-savings font-semibold",
+  // Savings badge - prominent green for money saved
+  savings: "bg-savings text-white font-bold shadow-sm",
+
+  // NEW: Value badge for budget-conscious messaging
+  value: "bg-savings-muted border-2 border-savings/40 text-savings font-bold",
+
+  // NEW: Trust badge
+  trust: "bg-accent/10 border border-accent/30 text-accent font-medium",
 } as const;
 
 export const animation = {

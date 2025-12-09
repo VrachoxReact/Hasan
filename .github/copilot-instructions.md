@@ -74,16 +74,30 @@ components.icon.accent, components.icon.background;
 - `--primary`: Deep navy blue (text, headers)
 - `--accent`: Bright sapphire blue (CTAs, interactive elements)
 - `--premium`: Gold/orange (exclusive offers badge)
-- `--success`: Green (savings, positive feedback)
+- `--success`: Green (general positive feedback)
+- `--savings`: Teal-green OKLCH (price savings - sophisticated, trustworthy)
+- `--savings-label`: Bronze/copper OKLCH ("Ušteda" labels)
 - `--muted`: Light blue-gray backgrounds
 - `--destructive`: Red (errors, important alerts)
 
-### Price Display Colors
+### Savings Color System
 
-- Old price: `text-white/70` on cards, `text-gray-600` on lists
-- New price: `text-green-500/600`
-- "Ušteda" label: `text-orange-500`
-- Savings amount: `text-green-500/600`
+Use semantic tokens from `designTokens.savings` for all price-related displays:
+
+```typescript
+import { savings, badges } from "@/lib/designTokens";
+
+// Savings display
+savings.price; // New/discounted price (teal-green)
+savings.label; // "Ušteda" text (bronze/copper)
+savings.amount; // Savings amount (teal-green)
+savings.oldPrice; // Strikethrough original price
+savings.background; // Subtle savings badge background
+
+// Badges
+badges.ekskluzivno; // Gold gradient for exclusive offers
+badges.istaknuto; // Accent blue for featured
+```
 
 ## Key Components
 
@@ -239,9 +253,21 @@ Use constants from `@/lib/constants`:
 ```typescript
 import { CONTACT, COMPANY, WORKING_HOURS } from "@/lib/constants";
 
-CONTACT.phone, CONTACT.email, CONTACT.address.full;
-CONTACT.whatsapp.url, CONTACT.social.facebook;
-COMPANY.name, COMPANY.tagline;
+// Contact
+CONTACT.phone; // "+385 99 166 3776"
+CONTACT.email; // "produktauto@gmail.com"
+CONTACT.address.full; // "Ulica Milana Prpića 120, 49243 Oroslavje, Hrvatska"
+CONTACT.whatsapp.url;
+CONTACT.social.facebook;
+
+// Company
+COMPANY.name; // "Produkt Auto"
+COMPANY.legalName; // "Produkt Auto j.d.o.o."
+COMPANY.tagline;
+
+// Working Hours: Mon-Sat 09:00-17:00
+WORKING_HOURS.weekdays; // { open: "09:00", close: "17:00" }
+WORKING_HOURS.saturday; // { open: "09:00", close: "17:00" }
 ```
 
 ## Git Workflow

@@ -41,7 +41,7 @@ export default function EkskluzivnaPonuda() {
         </motion.div>
 
         {/* Vehicles Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10 scale-[1.15] origin-center">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10 md:scale-[1.15] md:origin-center">
           {ekskluzivnaVozila.map((vozilo, index) => (
             <motion.div
               key={vozilo.id}

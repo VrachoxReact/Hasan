@@ -11,7 +11,7 @@ export default function FloatingWhatsApp() {
       href={`https://wa.me/${WHATSAPP_NUMBER}?text=Pozdrav! Zanima me ponuda vozila.`}
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-6 right-6 z-40 sm:hidden"
+      className="fixed bottom-24 right-6 z-40 sm:hidden"
       initial={{ scale: 0 }}
       animate={{ scale: 1 }}
       transition={{ delay: 1, type: "spring", stiffness: 200 }}

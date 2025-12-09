@@ -21,12 +21,20 @@ import {
   GitCompare,
   Share2,
   Heart,
+  MessageSquare,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import VoziloCard from "@/components/VoziloCard";
 import KalkulatorFinanciranja from "@/components/KalkulatorFinanciranja";
 import ImageGallery from "@/components/ImageGallery";
@@ -586,22 +594,157 @@ export default function VoziloPage({ params }: VoziloPageProps) {
       </div>
 
       {/* Mobile Sticky CTA */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-background border-t border-border p-4 z-40">
-        <div className="flex items-center justify-between gap-4">
-          <div>
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-background border-t border-border p-4 z-50 pb-[calc(1rem+env(safe-area-inset-bottom))]">
+        <div className="flex items-center justify-between gap-3">
+          <div className="min-w-0">
             <p className={`${typography.small} text-muted-foreground`}>
               Cijena
             </p>
-            <p className={`${typography.h4} ${components.icon.accent}`}>
+            <p
+              className={`${typography.h4} ${components.icon.accent} truncate`}
+            >
               {formatCijena(vozilo.cijena)}
             </p>
           </div>
-          <a href="tel:+385911234567">
-            <Button className="bg-primary">
-              <Phone className="w-4 h-4 mr-2" />
-              Nazovi
-            </Button>
-          </a>
+          <div className="flex items-center gap-2 shrink-0">
+            <a href={`tel:${CONTACT.phoneRaw}`}>
+              <Button size="sm" className="bg-primary h-10">
+                <Phone className="w-4 h-4 mr-1.5" />
+                Nazovi
+              </Button>
+            </a>
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button size="sm" variant="outline" className="h-10">
+                  <MessageSquare className="w-4 h-4 mr-1.5" />
+                  Upit
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="bottom" className="h-[85vh] rounded-t-2xl">
+                <SheetHeader className="text-left pb-4">
+                  <SheetTitle>Pošaljite upit</SheetTitle>
+                </SheetHeader>
+                <div className="overflow-y-auto h-[calc(100%-4rem)] pb-8">
+                  {/* Quick Contact */}
+                  <div className="space-y-3 mb-6">
+                    <a
+                      href={`tel:${CONTACT.phoneRaw}`}
+                      className="flex items-center gap-3 p-3 rounded-lg border border-border hover:bg-muted transition-colors"
+                    >
+                      <Phone className="w-5 h-5 text-accent" />
+                      <div>
+                        <p className="text-sm opacity-80">Nazovite odmah</p>
+                        <p className="font-semibold">{CONTACT.phone}</p>
+                      </div>
+                    </a>
+                    <a
+                      href={`mailto:${CONTACT.email}`}
+                      className="flex items-center gap-3 p-3 rounded-lg border border-border hover:bg-muted transition-colors"
+                    >
+                      <Mail className="w-5 h-5 text-accent" />
+                      <div>
+                        <p className="text-sm text-muted-foreground">Email</p>
+                        <p className="font-medium text-foreground">
+                          {CONTACT.email}
+                        </p>
+                      </div>
+                    </a>
+                  </div>
+
+                  <Separator className="my-4" />
+
+                  {/* Contact Form */}
+                  <form onSubmit={handleSubmit} className="space-y-4">
+                    <h3 className={`${typography.h4} text-foreground`}>
+                      Ili nam pišite
+                    </h3>
+                    <div>
+                      <Input
+                        placeholder="Vaše ime"
+                        value={formData.ime}
+                        onChange={(e) => {
+                          setFormData({ ...formData, ime: e.target.value });
+                          if (errors.ime) setErrors({ ...errors, ime: "" });
+                        }}
+                        className={errors.ime ? "border-red-500" : ""}
+                      />
+                      {errors.ime && (
+                        <p className="text-red-500 text-sm mt-1">
+                          {errors.ime}
+                        </p>
+                      )}
+                    </div>
+                    <div>
+                      <Input
+                        placeholder="Telefon"
+                        type="tel"
+                        value={formData.telefon}
+                        onChange={(e) => {
+                          setFormData({
+                            ...formData,
+                            telefon: e.target.value,
+                          });
+                          if (errors.telefon)
+                            setErrors({ ...errors, telefon: "" });
+                        }}
+                        className={errors.telefon ? "border-red-500" : ""}
+                      />
+                      {errors.telefon && (
+                        <p className="text-red-500 text-sm mt-1">
+                          {errors.telefon}
+                        </p>
+                      )}
+                    </div>
+                    <div>
+                      <Input
+                        placeholder="Email"
+                        type="email"
+                        value={formData.email}
+                        onChange={(e) => {
+                          setFormData({ ...formData, email: e.target.value });
+                          if (errors.email) setErrors({ ...errors, email: "" });
+                        }}
+                        className={errors.email ? "border-red-500" : ""}
+                      />
+                      {errors.email && (
+                        <p className="text-red-500 text-sm mt-1">
+                          {errors.email}
+                        </p>
+                      )}
+                    </div>
+                    <div>
+                      <textarea
+                        placeholder="Poruka"
+                        className={`w-full min-h-[100px] px-3 py-2 rounded-md border bg-background text-sm resize-none focus:outline-none focus:ring-2 focus:ring-ring ${
+                          errors.poruka ? "border-red-500" : "border-input"
+                        }`}
+                        value={formData.poruka}
+                        onChange={(e) => {
+                          setFormData({
+                            ...formData,
+                            poruka: e.target.value,
+                          });
+                          if (errors.poruka)
+                            setErrors({ ...errors, poruka: "" });
+                        }}
+                      />
+                      {errors.poruka && (
+                        <p className="text-red-500 text-sm mt-1">
+                          {errors.poruka}
+                        </p>
+                      )}
+                    </div>
+                    <Button
+                      type="submit"
+                      className={`w-full ${components.button.primary}`}
+                    >
+                      Pošalji upit
+                    </Button>
+                  </form>
+                </div>
+              </SheetContent>
+            </Sheet>
+          </div>
         </div>
       </div>
     </div>

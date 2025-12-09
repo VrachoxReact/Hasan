@@ -29,7 +29,7 @@ export default function FloatingCompareBar() {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 100, opacity: 0 }}
           transition={{ type: "spring", stiffness: 300, damping: 30 }}
-          className="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 w-[calc(100%-2rem)] max-w-2xl"
+          className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-2rem)] max-w-2xl"
         >
           <div className="bg-card border border-border shadow-2xl rounded-2xl p-4 backdrop-blur-sm">
             <div className="flex items-center gap-4">
@@ -63,10 +63,10 @@ export default function FloatingCompareBar() {
                     </div>
                     <button
                       onClick={() => removeVozilo(vozilo.id)}
-                      className="absolute -top-1 -right-1 w-4 h-4 bg-destructive text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                      className="absolute -top-2 -right-2 w-7 h-7 bg-destructive text-white rounded-full flex items-center justify-center opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity shadow-md"
                       aria-label={`Ukloni ${vozilo.marka} ${vozilo.model}`}
                     >
-                      <X className="w-3 h-3" />
+                      <X className="w-4 h-4" />
                     </button>
                   </div>
                 ))}

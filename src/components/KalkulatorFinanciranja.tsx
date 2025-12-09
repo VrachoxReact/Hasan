@@ -236,7 +236,7 @@ export default function KalkulatorFinanciranja({
           <h4 className="text-sm font-semibold text-foreground mb-3">
             Usporedba opcija financiranja
           </h4>
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 min-[400px]:grid-cols-3 gap-3">
             {comparisonCalculations.map(({ term, mjesecnaRata: rata }) => (
               <div
                 key={term}

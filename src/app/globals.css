@@ -57,65 +57,63 @@
   --radius: 0.625rem;
 
   /* 
-   * TRUST-INSPIRING APPROACHABLE PALETTE
-   * Research: BMW, Mercedes-Benz, Porsche, CarMax
-   * Psychology: Light backgrounds = approachable, blue accents = trust
+   * BUDGET-FRIENDLY TRANSPARENT BUSINESS PALETTE
+   * Psychology: Warm blues = trust, Green = savings/value, Orange = action/deals
+   * Research: CarMax, AutoTrader, Carvana - approachable, honest feel
    */
 
-  /* Backgrounds - Clean, spacious feel with subtle blue tint */
-  --background: oklch(0.985 0.004 250);
-  --foreground: oklch(0.2 0.04 250);
+  /* Backgrounds - Warm white, inviting, not sterile */
+  --background: oklch(0.988 0.003 80);
+  --foreground: oklch(0.22 0.03 250);
 
-  /* Cards & Surfaces - Pure white for vehicle focus */
+  /* Cards & Surfaces - Slightly warm white for friendliness */
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.2 0.04 250);
+  --card-foreground: oklch(0.22 0.03 250);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.2 0.04 250);
+  --popover-foreground: oklch(0.22 0.03 250);
 
-  /* Primary: Deep Navy Blue - Use sparingly for text/accents */
-  --primary: oklch(0.25 0.07 250);
+  /* Primary: Warm Navy - Trustworthy but approachable */
+  --primary: oklch(0.28 0.06 245);
   --primary-foreground: oklch(0.98 0 0);
 
-  /* NEW: Light Primary - For approachable backgrounds */
-  --primary-light: oklch(0.97 0.01 250);
+  /* Light Primary - Soft, welcoming backgrounds */
+  --primary-light: oklch(0.97 0.008 245);
 
-  /* Secondary: Medium Blue - Sophistication */
-  --secondary: oklch(0.45 0.08 250);
+  /* Secondary: Slate blue - Professional, honest */
+  --secondary: oklch(0.48 0.06 245);
   --secondary-foreground: oklch(0.98 0 0);
 
-  /* NEW: Premium Gold - Warm accent for exclusive vehicles */
-  --premium: oklch(0.65 0.15 60);
+  /* Deal/Offer Orange - Urgency, action, "great deal" psychology */
+  --premium: oklch(0.68 0.18 45);
   --premium-foreground: oklch(0.98 0 0);
 
-  /* Muted: Light blue-grays for subtle backgrounds */
-  --muted: oklch(0.96 0.006 250);
-  --muted-foreground: oklch(
-    0.46 0.03 250
-  ); /* Darkened from 0.5 for better contrast - now 5.5:1 */
+  /* Muted: Warm grays - friendly, not cold corporate */
+  --muted: oklch(0.965 0.005 80);
+  --muted-foreground: oklch(0.44 0.02 250);
 
-  /* Accent: Bright Sapphire Blue - CTAs, interactive elements */
-  /* WCAG AA compliant: 4.5:1+ contrast ratio with white text */
-  --accent: oklch(0.45 0.19 250);
+  /* Accent: Trustworthy Blue - Reliable, honest, calm */
+  /* Slightly warmer than corporate blue for approachability */
+  --accent: oklch(0.52 0.17 245);
   --accent-foreground: oklch(0.98 0 0);
 
-  /* Destructive: For errors and urgent actions */
-  --destructive: oklch(0.55 0.22 25);
+  /* Destructive: Clear warning without aggression */
+  --destructive: oklch(0.58 0.2 25);
 
-  /* Success: For positive feedback - harmonizes with blue palette */
-  --success: oklch(0.55 0.16 150);
+  /* Success: Fresh green - positive, growth, good choice */
+  --success: oklch(0.58 0.15 145);
   --success-foreground: oklch(0.98 0 0);
 
   /* 
-   * SAVINGS: Premium color for discounts & cost reduction
-   * Teal-green feels sophisticated, trustworthy, "smart money"
-   * NOT neon green - desaturated for elegance
+   * SAVINGS: Vibrant green = money saved, smart choice
+   * Psychology: Green = savings, value, smart financial decision
+   * More saturated than luxury sites - feels like real savings
    */
-  --savings: oklch(0.52 0.12 168);
+  --savings: oklch(0.55 0.16 155);
   --savings-foreground: oklch(0.98 0 0);
-  /* Bronze/copper for labels - warm, premium, harmonizes with gold */
-  --savings-label: oklch(0.58 0.11 55);
-  /* Subtle background for savings badges */
-  --savings-muted: oklch(0.95 0.03 168);
+  /* Warm orange for "Ušteda" labels - grabs attention, signals deal */
+  --savings-label: oklch(0.62 0.16 50);
+  /* Light green background - reinforces savings message */
+  --savings-muted: oklch(0.96 0.04 155);
 
   /* Borders & Inputs */
   --border: oklch(0.88 0.015 250);
