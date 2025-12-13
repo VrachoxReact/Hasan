@@ -201,97 +201,60 @@ export default function KontaktPage() {
       />
 
       {/* Hero Section */}
-      <section className="relative py-24 md:py-32 lg:py-40 overflow-hidden">
+      <section className="relative py-20 md:py-28 overflow-hidden">
         {/* Background Image */}
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-105"
           style={{
             backgroundImage:
-              "url('https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=2000&q=80')",
+              "url('https://images.unsplash.com/photo-1560958089-b8a1929cea89?auto=format&fit=crop&w=2000&q=80')",
           }}
         />
-        {/* Lighter Overlay for better image visibility */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/40 to-black/60" />
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/90 via-primary/80 to-primary/70" />
 
         <div className="container mx-auto px-4 relative z-10">
           <FadeIn>
             <div className="text-center max-w-3xl mx-auto">
+              <motion.span
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                className="inline-block px-4 py-1.5 bg-accent/20 backdrop-blur-sm text-white rounded-full text-sm font-medium mb-6"
+              >
+                Veleprodaja vozila
+              </motion.span>
               <h1 className={`${typography.h1} text-white mb-6 drop-shadow-lg`}>
-                Kontaktirajte nas
+                Postanite naš partner
               </h1>
               <p
-                className={`${typography.bodyLarge} text-white/95 drop-shadow-md`}
+                className={`${typography.bodyLarge} text-white/95 drop-shadow-md max-w-2xl mx-auto`}
               >
-                Imate pitanja ili želite zakazati pregled vozila? Javite nam se
-                - tu smo za vas!
+                Bilo da ste već aktivan trgovac ili tek ulazite u
+                autoindustriju, Produkt Auto nudi pouzdano partnerstvo,
+                konkurentne veleprodajne cijene i podršku usmjerenu na
+                zajednički uspjeh.
               </p>
             </div>
           </FadeIn>
         </div>
+
+        {/* Decorative gradient */}
+        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background to-transparent" />
       </section>
 
-      {/* Contact Cards */}
-      <section className="py-12 bg-background border-b border-border">
-        <div className="container mx-auto px-4">
-          <StaggerContainer
-            className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 ${spacing.gap.default}`}
-          >
-            {contactInfo.map((item) => (
-              <StaggerItem key={item.title}>
-                <Card className={`${components.card.elevated} h-full`}>
-                  <CardContent className={`${spacing.card.medium} text-center`}>
-                    <motion.div
-                      whileHover={{ scale: 1.1 }}
-                      className={`w-14 h-14 rounded-2xl ${components.icon.background} flex items-center justify-center mx-auto mb-4`}
-                    >
-                      <item.icon
-                        className={`w-7 h-7 ${components.icon.accent}`}
-                      />
-                    </motion.div>
-                    <h3 className="font-semibold text-foreground mb-1">
-                      {item.title}
-                    </h3>
-                    {item.href ? (
-                      <a
-                        href={item.href}
-                        className="text-accent font-medium hover:text-accent/80 transition-colors block"
-                        target={
-                          item.href.startsWith("http") ? "_blank" : undefined
-                        }
-                        rel={
-                          item.href.startsWith("http")
-                            ? "noopener noreferrer"
-                            : undefined
-                        }
-                      >
-                        {item.content}
-                      </a>
-                    ) : (
-                      <p className="text-accent font-medium">{item.content}</p>
-                    )}
-                    <p className="text-sm text-muted-foreground mt-1">
-                      {item.description}
-                    </p>
-                  </CardContent>
-                </Card>
-              </StaggerItem>
-            ))}
-          </StaggerContainer>
-        </div>
-      </section>
-
-      {/* Form & Map Section */}
+      {/* Main Content: Form First */}
       <section className="py-16 md:py-24">
         <div className="container mx-auto px-4 max-w-[1400px]">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-            {/* Contact Form */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
+            {/* Contact Form - LEFT SIDE, FIRST */}
             <SlideIn direction="left">
               <motion.div
-                whileHover={shouldReduceMotion ? {} : { scale: 1.02 }}
+                whileHover={shouldReduceMotion ? {} : { scale: 1.01 }}
                 transition={{ duration: 0.3 }}
                 className="relative"
               >
-                {/* Animated gradient border - reduced on mobile/reduced motion */}
+                {/* Animated gradient border */}
                 <motion.div
                   className={`absolute inset-0 rounded-2xl bg-gradient-to-r from-accent via-primary to-accent ${
                     shouldReduceMotion
@@ -334,19 +297,19 @@ export default function KontaktPage() {
                     style={{ backgroundSize: "200% 200%" }}
                   />
 
-                  <CardContent className="p-10 md:p-16">
+                  <CardContent className="p-8 md:p-12">
                     <motion.div
                       initial={{ opacity: 0, y: -20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.5 }}
-                      className="flex items-center gap-4 mb-8 relative"
+                      className="flex items-center gap-4 mb-8"
                     >
                       <motion.div
                         whileHover={{ rotate: 360, scale: 1.1 }}
                         transition={{ duration: 0.6 }}
-                        className="relative w-16 h-16 rounded-xl bg-gradient-to-br from-accent to-accent/70 flex items-center justify-center shadow-lg shadow-accent/50"
+                        className="relative w-14 h-14 rounded-xl bg-gradient-to-br from-accent to-accent/70 flex items-center justify-center shadow-lg shadow-accent/50"
                       >
-                        <MessageSquare className="w-9 h-9 text-white" />
+                        <MessageSquare className="w-7 h-7 text-white" />
                         <motion.div
                           className="absolute -top-1 -right-1"
                           animate={{
@@ -362,10 +325,8 @@ export default function KontaktPage() {
                         </motion.div>
                       </motion.div>
                       <div>
-                        <h2
-                          className={`${typography.h3} text-foreground mb-1 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text`}
-                        >
-                          Pošaljite upit
+                        <h2 className={`${typography.h3} text-foreground mb-1`}>
+                          Zatražite ponudu
                         </h2>
                         <p
                           className={`${typography.small} text-muted-foreground`}
@@ -419,8 +380,8 @@ export default function KontaktPage() {
                             transition={{ duration: 0.7, times: [0, 0.6, 1] }}
                             className="relative inline-block"
                           >
-                            <div className="w-24 h-24 rounded-full bg-success/20 flex items-center justify-center mb-6 mx-auto relative">
-                              <CheckCircle className="w-16 h-16 text-success" />
+                            <div className="w-20 h-20 rounded-full bg-success/20 flex items-center justify-center mb-6 mx-auto relative">
+                              <CheckCircle className="w-12 h-12 text-success" />
                               <motion.div
                                 className="absolute inset-0 rounded-full border-4 border-success"
                                 initial={{ scale: 1, opacity: 1 }}
@@ -436,15 +397,15 @@ export default function KontaktPage() {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.3 }}
-                            className="text-2xl font-bold text-success mb-3"
+                            className="text-xl font-bold text-success mb-3"
                           >
-                            Hvala na poruci!
+                            Hvala na upitu!
                           </motion.h3>
                           <motion.p
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.4 }}
-                            className="text-success/80 text-base"
+                            className="text-success/80"
                           >
                             Vaš upit je uspješno zaprimljen. Javit ćemo vam se u
                             najkraćem mogućem roku.
@@ -459,7 +420,6 @@ export default function KontaktPage() {
                           onSubmit={handleSubmit}
                           className={components.form.group}
                         >
-                          {/* Screen reader error announcement */}
                           {Object.keys(errors).length > 0 && (
                             <div
                               role="alert"
@@ -470,7 +430,7 @@ export default function KontaktPage() {
                               {Object.keys(errors).length === 1
                                 ? "grešku"
                                 : "greške"}
-                              . Molimo ispravite označena polja.
+                              .
                             </div>
                           )}
 
@@ -479,7 +439,7 @@ export default function KontaktPage() {
                               label="Ime i prezime *"
                               icon={User}
                               value={formData.ime}
-                              className="h-20 text-lg"
+                              className="h-14 text-base"
                               onChange={(e) => {
                                 setFormData({
                                   ...formData,
@@ -495,7 +455,7 @@ export default function KontaktPage() {
                               type="email"
                               icon={Mail}
                               value={formData.email}
-                              className="h-20 text-lg"
+                              className="h-14 text-base"
                               onChange={(e) => {
                                 setFormData({
                                   ...formData,
@@ -514,7 +474,7 @@ export default function KontaktPage() {
                               type="tel"
                               icon={Phone}
                               value={formData.telefon}
-                              className="h-20 text-lg"
+                              className="h-14 text-base"
                               onChange={(e) => {
                                 setFormData({
                                   ...formData,
@@ -531,7 +491,7 @@ export default function KontaktPage() {
                                 setFormData({ ...formData, budzet: value })
                               }
                             >
-                              <SelectTrigger className="w-full h-20 px-5 text-lg rounded-xl border border-input bg-background transition-all duration-200 focus:border-accent focus:ring-2 focus:ring-accent/20 outline-none">
+                              <SelectTrigger className="w-full h-14 px-4 text-base rounded-xl border border-input bg-background transition-all duration-200 focus:border-accent focus:ring-2 focus:ring-accent/20 outline-none">
                                 <div className="flex items-center gap-3">
                                   <Euro className="w-5 h-5 text-muted-foreground shrink-0" />
                                   <SelectValue placeholder="Odaberite budžet" />
@@ -554,7 +514,7 @@ export default function KontaktPage() {
                             label="Vaša poruka *"
                             icon={MessageSquare}
                             value={formData.poruka}
-                            className="min-h-[280px] text-lg leading-relaxed"
+                            className="min-h-[180px] text-base leading-relaxed"
                             onChange={(e) => {
                               setFormData({
                                 ...formData,
@@ -575,15 +535,12 @@ export default function KontaktPage() {
                             <Button
                               type="submit"
                               size="lg"
-                              className="w-full h-20 text-xl bg-gradient-to-r from-accent via-accent/90 to-accent hover:from-accent/90 hover:via-accent hover:to-accent/90 text-white font-semibold rounded-xl transition-all duration-300 shadow-lg shadow-accent/30 hover:shadow-xl hover:shadow-accent/40 group relative overflow-hidden"
+                              className="w-full h-14 text-lg bg-gradient-to-r from-accent via-accent/90 to-accent hover:from-accent/90 hover:via-accent hover:to-accent/90 text-white font-semibold rounded-xl transition-all duration-300 shadow-lg shadow-accent/30 hover:shadow-xl hover:shadow-accent/40 group relative overflow-hidden"
                               disabled={isSubmitting}
                             >
-                              {/* Animated shine effect */}
                               <motion.div
                                 className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
-                                animate={{
-                                  x: ["-100%", "200%"],
-                                }}
+                                animate={{ x: ["-100%", "200%"] }}
                                 transition={{
                                   repeat: Infinity,
                                   duration: 3,
@@ -630,10 +587,81 @@ export default function KontaktPage() {
               </motion.div>
             </SlideIn>
 
-            {/* Map & Info */}
+            {/* Right Side: Info Cards */}
             <SlideIn direction="right">
               <div className="space-y-6">
-                <div className="rounded-2xl overflow-hidden border border-border shadow-sm h-[300px] lg:h-[400px]">
+                {/* Partner Benefits */}
+                <Card className="bg-gradient-to-br from-primary to-primary/90 text-white border-0 overflow-hidden">
+                  <CardContent className="p-8">
+                    <h3 className="text-xl font-bold mb-6">
+                      Zašto surađivati s nama?
+                    </h3>
+                    <div className="space-y-4">
+                      {[
+                        "Konkurentne veleprodajne cijene",
+                        "Fleksibilni uvjeti suradnje",
+                        "Širok izbor provjerenih vozila",
+                        "Brza i pouzdana isporuka",
+                        "Podrška usmjerena na vaš uspjeh",
+                      ].map((item, index) => (
+                        <motion.div
+                          key={index}
+                          initial={{ opacity: 0, x: 20 }}
+                          whileInView={{ opacity: 1, x: 0 }}
+                          viewport={{ once: true }}
+                          transition={{ delay: index * 0.1 }}
+                          className="flex items-center gap-3"
+                        >
+                          <CheckCircle className="w-5 h-5 text-accent shrink-0" />
+                          <span className="text-white/90">{item}</span>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Contact Info Grid */}
+                <div className="grid grid-cols-2 gap-4">
+                  {contactInfo.map((item) => (
+                    <Card key={item.title} className="bg-card border-border/50">
+                      <CardContent className="p-4 text-center">
+                        <div
+                          className={`w-10 h-10 rounded-xl ${components.icon.background} flex items-center justify-center mx-auto mb-2`}
+                        >
+                          <item.icon
+                            className={`w-5 h-5 ${components.icon.accent}`}
+                          />
+                        </div>
+                        <h4 className="font-medium text-foreground text-sm mb-1">
+                          {item.title}
+                        </h4>
+                        {item.href ? (
+                          <a
+                            href={item.href}
+                            className="text-accent text-sm hover:text-accent/80 transition-colors block"
+                            target={
+                              item.href.startsWith("http")
+                                ? "_blank"
+                                : undefined
+                            }
+                            rel={
+                              item.href.startsWith("http")
+                                ? "noopener noreferrer"
+                                : undefined
+                            }
+                          >
+                            {item.content}
+                          </a>
+                        ) : (
+                          <p className="text-accent text-sm">{item.content}</p>
+                        )}
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+
+                {/* Map */}
+                <div className="rounded-2xl overflow-hidden border border-border shadow-sm h-[250px]">
                   <iframe
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2781.5024881073784!2d15.9819711!3d45.8014399!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4765d6f5f5555555%3A0x5555555555555555!2sUlica%20grada%20Vukovara%20271%2C%2010000%2C%20Zagreb!5e0!3m2!1shr!2shr!4v1701874800000!5m2!1shr!2shr"
                     width="100%"
@@ -645,59 +673,23 @@ export default function KontaktPage() {
                     title="Lokacija Produkt Auto"
                   />
                 </div>
-
-                <Card className="bg-primary text-white border-0">
-                  <CardContent className="p-6">
-                    <h3 className="font-semibold text-lg mb-4">
-                      Radno vrijeme salona
-                    </h3>
-                    <div className="space-y-2 text-white/80">
-                      <div className="flex justify-between">
-                        <span>{WORKING_HOURS.weekdays.label}</span>
-                        <span className="text-white font-medium">
-                          {WORKING_HOURS.weekdays.open} -{" "}
-                          {WORKING_HOURS.weekdays.close}
-                        </span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span>{WORKING_HOURS.saturday.label}</span>
-                        <span className="text-white font-medium">
-                          {WORKING_HOURS.saturday.open} -{" "}
-                          {WORKING_HOURS.saturday.close}
-                        </span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span>{WORKING_HOURS.sunday.label}</span>
-                        <span className="text-accent font-medium">
-                          Zatvoreno
-                        </span>
-                      </div>
-                    </div>
-                    <div className="mt-6 pt-4 border-t border-white/20">
-                      <p className="text-sm text-white/70">
-                        Pregled vozila izvan radnog vremena moguć je uz
-                        prethodni dogovor. Nazovite nas za više informacija.
-                      </p>
-                    </div>
-                  </CardContent>
-                </Card>
               </div>
             </SlideIn>
           </div>
         </div>
       </section>
 
-      {/* FAQ CTA */}
+      {/* CTA Section */}
       <section className="py-16 bg-muted/50 border-t border-border">
         <div className="container mx-auto px-4">
           <FadeIn>
             <div className="text-center max-w-2xl mx-auto">
               <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-4">
-                Često postavljana pitanja
+                Imate pitanja?
               </h2>
               <p className="text-muted-foreground mb-6">
-                Niste pronašli odgovor? Slobodno nas kontaktirajte putem
-                telefona ili emaila - rado ćemo odgovoriti na sva vaša pitanja.
+                Slobodno nas kontaktirajte putem telefona ili emaila - rado ćemo
+                odgovoriti na sva vaša pitanja o veleprodaji.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <a href={`tel:${CONTACT.phoneRaw}`}>
