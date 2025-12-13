@@ -6,14 +6,17 @@ import { motion } from "framer-motion";
 import {
   Shield,
   Award,
-  Users,
-  Target,
   Heart,
   CheckCircle,
   ArrowRight,
   Car,
   Clock,
   ThumbsUp,
+  Handshake,
+  TrendingUp,
+  FileCheck,
+  Store,
+  Truck,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -27,248 +30,369 @@ import { typography, spacing, components } from "@/lib/designTokens";
 
 const values = [
   {
-    icon: Shield,
-    title: "Pouzdanost",
+    icon: FileCheck,
+    title: "Provjerena vozila",
     description:
-      "Svako vozilo prolazi rigoroznu kontrolu kvalitete. Jamčimo za svaki automobil koji prodajemo.",
+      "Sva vozila dolaze s provjerenom poviješću i urednom servisnom dokumentacijom.",
+  },
+  {
+    icon: Shield,
+    title: "Garancija porijekla i G1 zaštita",
+    description:
+      "Na svako vozilo nudimo garanciju porijekla, a uz to možete aktivirati i G1 produženo jamstvo motora i mjenjača do 12 mjeseci, što vam daje dodatnu sigurnost i bezbrižnost nakon kupnje.",
+  },
+  {
+    icon: TrendingUp,
+    title: "Mogućnost financiranja",
+    description: "Fleksibilne opcije financiranja putem vodećih banaka.",
   },
   {
     icon: Heart,
-    title: "Iskrenost",
+    title: "Podrška nakon kupnje",
     description:
-      "Transparentno komuniciramo sve informacije o vozilima - bez skrivenih mana ili iznenađenja.",
-  },
-  {
-    icon: Users,
-    title: "Profesionalnost",
-    description:
-      "Naš tim čine iskusni stručnjaci s dugogodišnjim iskustvom u automobilskoj industriji.",
-  },
-  {
-    icon: Target,
-    title: "Fokus na kupca",
-    description:
-      "Slušamo vaše potrebe i pomažemo pronaći vozilo koje savršeno odgovara vašem životnom stilu.",
+      "Stojimo vam na raspolaganju za sva pitanja i savjete čak i nakon što preuzmete vozilo.",
   },
 ];
 
-const timeline = [
+const maloprodajaFeatures = [
   {
-    year: "2014",
-    title: "Početak priče",
-    description:
-      "Osnovali smo Produkt Auto s vizijom pružanja premium iskustva kupnje rabljenih vozila.",
+    icon: FileCheck,
+    title: "Provjerena povijest",
+    description: "Uredna dokumentacija i transparentna servisna povijest",
   },
   {
-    year: "2017",
-    title: "Širenje ponude",
-    description:
-      "Proširili smo ponudu na premium marke i uveli program certificiranih vozila.",
+    icon: Shield,
+    title: "Bez iznenađenja",
+    description: "Temeljit pregled svakog vozila prije prodaje",
   },
   {
-    year: "2020",
-    title: "Digitalna transformacija",
-    description:
-      "Pokrenuli smo online platformu za lakše pretraživanje i kupnju vozila.",
+    icon: CheckCircle,
+    title: "Sigurna kupnja",
+    description: "Realna tržišna cijena bez skrivenih nedostataka",
+  },
+];
+
+const veleprodajaFeatures = [
+  {
+    icon: TrendingUp,
+    title: "Konkurentne cijene",
+    description: "Veleprodajne cijene prilagođene trgovcima",
   },
   {
-    year: "2024",
-    title: "Lider na tržištu",
-    description:
-      "Postali smo jedan od vodećih prodavača premium rabljenih vozila u regiji.",
+    icon: Handshake,
+    title: "Fleksibilna suradnja",
+    description: "Partnerstvo usmjereno na zajednički rast",
+  },
+  {
+    icon: Truck,
+    title: "Podrška",
+    description: "Kontinuirana podrška za bolje rezultate",
   },
 ];
 
 const stats = [
-  { icon: Car, value: "500+", label: "Prodanih vozila" },
-  { icon: Clock, value: "10+", label: "Godina iskustva" },
-  { icon: ThumbsUp, value: "98%", label: "Zadovoljnih kupaca" },
-  { icon: Award, value: "30", label: "Dana jamstva" },
+  {
+    icon: FileCheck,
+    value: "100%",
+    label: "Provjerena vozila",
+    sublabel: "s dokumentacijom",
+  },
+  {
+    icon: Shield,
+    value: "12 mj.",
+    label: "G1 Zaštita",
+    sublabel: "jamstvo motora",
+  },
+  {
+    icon: TrendingUp,
+    value: "Kredit",
+    label: "Financiranje",
+    sublabel: "vodeće banke",
+  },
+  {
+    icon: Heart,
+    value: "Non-stop",
+    label: "Podrška",
+    sublabel: "i nakon kupnje",
+  },
 ];
 
 export default function ONamaPage() {
   return (
     <div className="min-h-screen">
-      {/* Hero Section */}
-      <section className="relative py-20 md:py-32 overflow-hidden">
+      {/* Hero Section - Redesigned with diagonal split */}
+      <section className="relative py-20 md:py-28 overflow-hidden">
         <div className="absolute inset-0 z-0">
           <Image
-            src="https://images.unsplash.com/photo-1568844293986-8c68a25a9b5a?w=1920"
-            alt="Produkt Auto tim"
+            src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=1920"
+            alt="Produkt Auto - O nama"
             fill
-            className="object-cover"
+            className="object-cover object-center"
+            priority
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-primary/95 to-primary/80 dark:from-gray-900/95 dark:to-gray-900/85" />
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/90 via-primary/70 to-transparent dark:from-gray-900/95 dark:via-gray-900/80 dark:to-gray-900/60" />
         </div>
 
         <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-2xl">
+          <div className="max-w-3xl">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <h1 className={`${typography.h1} text-white mb-6`}>O nama</h1>
-              <p className={`${typography.bodyLarge} text-white/90`}>
-                Više od desetljeća posvećeni smo pružanju izvanrednog iskustva
-                kupnje automobila. Naša strast prema automobilima i predanost
-                korisnicima čine nas pouzdanim partnerom za pronalazak vašeg
-                savršenog vozila.
+              <motion.span
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.2 }}
+                className="inline-block px-4 py-1.5 bg-accent/20 backdrop-blur-sm text-white rounded-full text-sm font-medium mb-6"
+              >
+                Vaš pouzdani partner
+              </motion.span>
+              <h1 className={`${typography.h1} text-white mb-6`}>
+                Produkt Auto
+              </h1>
+              <p
+                className={`${typography.bodyLarge} text-white/90 leading-relaxed`}
+              >
+                Specijalizirani smo za uvoz, prodaju i veleprodaju provjerenih
+                rabljenih vozila. Naš fokus je isključivo na pouzdanim vozilima
+                s urednom dokumentacijom, provjerenom poviješću i realnom
+                tržišnom cijenom.
               </p>
             </motion.div>
           </div>
         </div>
+
+        {/* Decorative elements */}
+        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background to-transparent" />
       </section>
 
-      {/* Stats Section */}
-      <section className="py-12 bg-background border-b border-border">
+      {/* Stats Section - Floating cards effect */}
+      <section className="py-8 bg-background relative -mt-12 z-20">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {stats.map((stat, index) => (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                className="text-center"
-              >
-                <div
-                  className={`w-14 h-14 rounded-2xl ${components.icon.background} flex items-center justify-center mx-auto mb-3`}
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="bg-card rounded-2xl shadow-xl border border-border/50 p-6 md:p-8"
+          >
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+              {stats.map((stat, index) => (
+                <motion.div
+                  key={stat.label}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                  className="text-center group"
                 >
-                  <stat.icon className={`w-7 h-7 ${components.icon.accent}`} />
-                </div>
-                <div
-                  className={`${typography.stat} ${components.icon.accent} mb-1`}
-                >
-                  {stat.value}
-                </div>
-                <div className="text-muted-foreground text-sm">
-                  {stat.label}
-                </div>
-              </motion.div>
-            ))}
-          </div>
+                  <motion.div
+                    whileHover={{ scale: 1.1, rotate: 5 }}
+                    className={`w-14 h-14 rounded-2xl ${components.icon.background} flex items-center justify-center mx-auto mb-3 group-hover:shadow-lg transition-shadow`}
+                  >
+                    <stat.icon
+                      className={`w-7 h-7 ${components.icon.accent}`}
+                    />
+                  </motion.div>
+                  <div
+                    className={`text-xl md:text-2xl font-bold ${components.icon.accent} mb-1`}
+                  >
+                    {stat.value}
+                  </div>
+                  <div className="text-foreground font-medium text-sm">
+                    {stat.label}
+                  </div>
+                  <div className="text-muted-foreground text-xs mt-0.5">
+                    {stat.sublabel}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
         </div>
       </section>
 
-      {/* Story Section */}
+      {/* Two Columns: Maloprodaja & Veleprodaja */}
       <section className="py-16 md:py-24">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+            {/* Maloprodaja Card */}
             <SlideIn direction="left">
-              <div className="relative">
-                <div className="aspect-[4/3] rounded-2xl overflow-hidden">
-                  <Image
-                    src="https://images.unsplash.com/photo-1560958089-b8a1929cea89?w=800"
-                    alt="Naš salon"
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-              </div>
-            </SlideIn>
+              <motion.div whileHover={{ y: -5 }} className="h-full">
+                <Card className="h-full bg-gradient-to-br from-accent/5 via-background to-background border-accent/20 hover:border-accent/40 transition-all duration-300 overflow-hidden">
+                  <CardContent className="p-8">
+                    <div className="flex items-center gap-4 mb-6">
+                      <div className="w-14 h-14 rounded-2xl bg-accent/10 flex items-center justify-center">
+                        <Store className="w-7 h-7 text-accent" />
+                      </div>
+                      <div>
+                        <h2 className="text-2xl font-bold text-foreground">
+                          Maloprodaja
+                        </h2>
+                        <p className="text-muted-foreground text-sm">
+                          Za privatne kupce
+                        </p>
+                      </div>
+                    </div>
 
-            <SlideIn direction="right">
-              <div>
-                <h2 className={`${typography.h2} text-foreground mb-6`}>
-                  Naša priča
-                </h2>
-                <div
-                  className={`space-y-4 ${typography.body} text-muted-foreground`}
-                >
-                  <p>
-                    Produkt Auto je osnovan 2014. godine s jednostavnom misijom:
-                    učiniti kupnju rabljenog automobila ugodnim i sigurnim
-                    iskustvom. Vjerujemo da svatko zaslužuje voziti kvalitetan
-                    automobil uz potpunu transparentnost i podršku.
-                  </p>
-                  <p>
-                    Tijekom godina izgradili smo reputaciju pouzdanog partnera
-                    koji stavlja kupce na prvo mjesto. Svako vozilo u našoj
-                    ponudi prolazi detaljnu inspekciju i pripremu prije prodaje.
-                  </p>
-                  <p>
-                    Danas smo ponosni na preko 500 uspješnih prodaja i tisuće
-                    zadovoljnih kupaca koji nam vjeruju. Naš tim čine
-                    entuzijasti koji dijele strast prema automobilima i
-                    predanost izvrsnosti.
-                  </p>
-                </div>
-              </div>
-            </SlideIn>
-          </div>
-        </div>
-      </section>
-
-      {/* Timeline Section */}
-      <section className="py-16 md:py-24 bg-muted/50">
-        <div className="container mx-auto px-4">
-          <FadeIn>
-            <div className="text-center mb-12">
-              <h2 className={`${typography.h2} text-foreground mb-4`}>
-                Naš put
-              </h2>
-              <p
-                className={`${typography.body} text-muted-foreground max-w-2xl mx-auto`}
-              >
-                Pogledajte ključne trenutke koji su oblikovali Produkt Auto u
-                tvrtku kakva je danas.
-              </p>
-            </div>
-          </FadeIn>
-
-          <div className="max-w-3xl mx-auto">
-            {timeline.map((item, index) => (
-              <motion.div
-                key={item.year}
-                initial={{ opacity: 0, x: index % 2 === 0 ? -30 : 30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.15 }}
-                className="relative flex items-start gap-6 pb-12 last:pb-0"
-              >
-                {/* Line */}
-                {index !== timeline.length - 1 && (
-                  <div className="absolute left-[23px] top-12 w-0.5 h-full bg-border" />
-                )}
-
-                {/* Year Badge */}
-                <div className="shrink-0 w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center font-bold text-sm z-10">
-                  {item.year.slice(2)}
-                </div>
-
-                {/* Content */}
-                <Card className="flex-1 bg-card border-border/50">
-                  <CardContent className="p-5">
-                    <span className="text-sm text-accent font-medium">
-                      {item.year}
-                    </span>
-                    <h3 className="text-lg font-semibold text-foreground mt-1 mb-2">
-                      {item.title}
-                    </h3>
-                    <p className="text-muted-foreground text-sm">
-                      {item.description}
+                    <p className="text-muted-foreground mb-6 leading-relaxed">
+                      Kupcima nudimo sigurnu i transparentnu kupnju — svako
+                      vozilo prolazi temeljit pregled, bez skrivenih nedostataka
+                      i bez neugodnih iznenađenja.
+                      <span className="text-foreground font-medium">
+                        {" "}
+                        Ako vam je dosta neizvjesnosti pri kupnji rabljenog
+                        automobila, kod nas ste na pravom mjestu.
+                      </span>
                     </p>
+
+                    <div className="space-y-4 mb-6">
+                      {maloprodajaFeatures.map((feature, index) => (
+                        <motion.div
+                          key={feature.title}
+                          initial={{ opacity: 0, x: -20 }}
+                          whileInView={{ opacity: 1, x: 0 }}
+                          viewport={{ once: true }}
+                          transition={{ delay: index * 0.1 }}
+                          className="flex items-start gap-3"
+                        >
+                          <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center shrink-0">
+                            <feature.icon className="w-5 h-5 text-accent" />
+                          </div>
+                          <div>
+                            <h4 className="font-semibold text-foreground">
+                              {feature.title}
+                            </h4>
+                            <p className="text-sm text-muted-foreground">
+                              {feature.description}
+                            </p>
+                          </div>
+                        </motion.div>
+                      ))}
+                    </div>
+
+                    <Link href="/vozila">
+                      <Button className="w-full bg-accent hover:bg-accent/90 text-white">
+                        Pregledaj vozila
+                        <ArrowRight className="w-4 h-4 ml-2" />
+                      </Button>
+                    </Link>
                   </CardContent>
                 </Card>
               </motion.div>
-            ))}
+            </SlideIn>
+
+            {/* Veleprodaja Card */}
+            <SlideIn direction="right">
+              <motion.div whileHover={{ y: -5 }} className="h-full">
+                <Card className="h-full bg-gradient-to-br from-primary/5 via-background to-background border-primary/20 hover:border-primary/40 transition-all duration-300 overflow-hidden dark:from-primary/10">
+                  <CardContent className="p-8">
+                    <div className="flex items-center gap-4 mb-6">
+                      <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center">
+                        <Handshake className="w-7 h-7 text-primary dark:text-white" />
+                      </div>
+                      <div>
+                        <h2 className="text-2xl font-bold text-foreground">
+                          Veleprodaja
+                        </h2>
+                        <p className="text-muted-foreground text-sm">
+                          Za trgovce vozilima
+                        </p>
+                      </div>
+                    </div>
+
+                    <p className="text-muted-foreground mb-6 leading-relaxed">
+                      Produkt Auto je pouzdan partner postojećim i budućim
+                      trgovcima vozilima na području Hrvatske. Nudimo
+                      konkurentne veleprodajne cijene, fleksibilnu suradnju i
+                      podršku s ciljem{" "}
+                      <span className="text-foreground font-medium">
+                        zajedničkog rasta i postizanja boljih rezultata u
+                        autoindustriji.
+                      </span>
+                    </p>
+
+                    <div className="space-y-4 mb-6">
+                      {veleprodajaFeatures.map((feature, index) => (
+                        <motion.div
+                          key={feature.title}
+                          initial={{ opacity: 0, x: 20 }}
+                          whileInView={{ opacity: 1, x: 0 }}
+                          viewport={{ once: true }}
+                          transition={{ delay: index * 0.1 }}
+                          className="flex items-start gap-3"
+                        >
+                          <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+                            <feature.icon className="w-5 h-5 text-primary dark:text-white" />
+                          </div>
+                          <div>
+                            <h4 className="font-semibold text-foreground">
+                              {feature.title}
+                            </h4>
+                            <p className="text-sm text-muted-foreground">
+                              {feature.description}
+                            </p>
+                          </div>
+                        </motion.div>
+                      ))}
+                    </div>
+
+                    <Link href="/kontakt">
+                      <Button
+                        variant="outline"
+                        className="w-full border-primary/50 text-primary hover:bg-primary hover:text-white dark:border-white/50 dark:text-white dark:hover:bg-white dark:hover:text-primary"
+                      >
+                        Kontaktiraj nas
+                        <ArrowRight className="w-4 h-4 ml-2" />
+                      </Button>
+                    </Link>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            </SlideIn>
           </div>
         </div>
       </section>
 
-      {/* Values Section */}
-      <section className="py-16 md:py-24">
+      {/* Philosophy Banner */}
+      <section className="py-16 bg-gradient-to-r from-primary via-primary/95 to-accent/80">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="text-center max-w-3xl mx-auto"
+          >
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full mb-6"
+            >
+              <Heart className="w-5 h-5 text-white" />
+              <span className="text-white/90 font-medium">Naša filozofija</span>
+            </motion.div>
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+              Pošten pristup, transparentnost i dugoročna suradnja.
+            </h2>
+            <p className="text-white/80 text-lg">
+              To su temelji na kojima gradimo povjerenje s našim kupcima i
+              partnerima.
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Why Choose Us Section */}
+      <section className="py-16 md:py-24 bg-muted/30">
         <div className="container mx-auto px-4">
           <FadeIn>
             <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-                Naše vrijednosti
+                Zašto odabrati Produkt Auto?
               </h2>
               <p className="text-muted-foreground max-w-2xl mx-auto">
-                Ove temeljne vrijednosti vode sve što radimo i definiraju naš
-                pristup poslu.
+                Vaša sigurnost i zadovoljstvo su nam na prvom mjestu.
               </p>
             </div>
           </FadeIn>
@@ -276,11 +400,11 @@ export default function ONamaPage() {
           <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {values.map((value) => (
               <StaggerItem key={value.title}>
-                <Card className="h-full bg-card border-border/50 hover:shadow-lg transition-shadow duration-300">
+                <Card className="h-full bg-card border-border/50 hover:shadow-lg hover:border-accent/30 transition-all duration-300 group">
                   <CardContent className="p-6">
                     <motion.div
                       whileHover={{ scale: 1.1, rotate: 5 }}
-                      className="w-14 h-14 rounded-2xl bg-accent/10 dark:bg-accent/20 flex items-center justify-center mb-4"
+                      className="w-14 h-14 rounded-2xl bg-accent/10 dark:bg-accent/20 flex items-center justify-center mb-4 group-hover:bg-accent/20 transition-colors"
                     >
                       <value.icon className="w-7 h-7 text-accent" />
                     </motion.div>
@@ -298,75 +422,41 @@ export default function ONamaPage() {
         </div>
       </section>
 
-      {/* Why Choose Us */}
-      <section className="py-16 md:py-24 bg-primary">
+      {/* CTA Section */}
+      <section className="py-16 md:py-24 bg-background">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <FadeIn>
-              <div>
-                <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-                  Zašto odabrati Produkt Auto?
-                </h2>
-                <div className="space-y-4">
-                  {[
-                    "Sva vozila s provjerenom poviješću i servisnom dokumentacijom",
-                    "30 dana jamstva na svako kupljeno vozilo",
-                    "Mogućnost financiranja putem vodećih banaka",
-                    "Profesionalna procjena vašeg starog vozila",
-                    "Besplatna dostava vozila na području Hrvatske",
-                    "Podrška nakon kupnje za sve vaše upite",
-                  ].map((item, index) => (
-                    <motion.div
-                      key={index}
-                      initial={{ opacity: 0, x: -20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: index * 0.1 }}
-                      className="flex items-center gap-3"
-                    >
-                      <CheckCircle className="w-5 h-5 text-accent shrink-0" />
-                      <span className="text-white/90">{item}</span>
-                    </motion.div>
-                  ))}
-                </div>
-
-                <div className="mt-8 flex flex-col sm:flex-row gap-4">
-                  <Link href="/vozila">
-                    <Button
-                      size="lg"
-                      className="bg-accent text-white hover:bg-accent/90"
-                    >
-                      Pregledaj vozila
-                      <ArrowRight className="w-5 h-5 ml-2" />
-                    </Button>
-                  </Link>
-                  <Link href="/kontakt">
-                    <Button
-                      size="lg"
-                      variant="outline"
-                      className="border-2 border-white text-white bg-white/10 hover:bg-white hover:text-primary"
-                    >
-                      Kontaktirajte nas
-                    </Button>
-                  </Link>
-                </div>
+          <FadeIn>
+            <div className="text-center max-w-2xl mx-auto">
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+                Spremni za suradnju?
+              </h2>
+              <p className="text-muted-foreground mb-8">
+                Bilo da tražite pouzdano vozilo ili ste trgovac koji traži
+                pouzdanog partnera, tu smo za vas.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Link href="/vozila">
+                  <Button
+                    size="lg"
+                    className="bg-accent hover:bg-accent/90 text-white min-w-[200px]"
+                  >
+                    <Car className="w-5 h-5 mr-2" />
+                    Pogledaj vozila
+                  </Button>
+                </Link>
+                <Link href="/kontakt">
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="border-primary/50 text-primary hover:bg-primary hover:text-white dark:border-white/50 dark:text-white dark:hover:bg-white dark:hover:text-primary min-w-[200px]"
+                  >
+                    <Handshake className="w-5 h-5 mr-2" />
+                    Postani partner
+                  </Button>
+                </Link>
               </div>
-            </FadeIn>
-
-            <FadeIn>
-              <div className="relative">
-                <div className="aspect-[4/3] rounded-2xl overflow-hidden">
-                  <Image
-                    src="https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=800"
-                    alt="Premium vozilo"
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-                <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-accent/30 rounded-2xl -z-10" />
-              </div>
-            </FadeIn>
-          </div>
+            </div>
+          </FadeIn>
         </div>
       </section>
     </div>

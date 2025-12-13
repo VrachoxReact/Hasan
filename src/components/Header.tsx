@@ -18,8 +18,8 @@ import { CONTACT } from "@/lib/constants";
 const navLinks = [
   { href: "/", label: "Početna" },
   { href: "/vozila", label: "Vozila" },
+  { href: "/kontakt", label: "Veleprodaja" },
   { href: "/o-nama", label: "O Nama" },
-  { href: "/kontakt", label: "Kontakt" },
 ];
 
 export default function Header() {
