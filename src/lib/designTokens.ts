@@ -10,15 +10,15 @@
 
 export const typography = {
   // Display & Headings - Friendly but confident
-  h1: "text-4xl md:text-5xl lg:text-6xl font-semibold tracking-normal leading-snug",
-  h2: "text-3xl md:text-4xl font-semibold tracking-normal leading-snug",
-  h3: "text-xl md:text-2xl font-medium leading-relaxed",
-  h4: "text-lg font-medium leading-relaxed",
+  h1: "text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold tracking-normal leading-snug",
+  h2: "text-2xl sm:text-3xl md:text-4xl font-semibold tracking-normal leading-snug",
+  h3: "text-lg sm:text-xl md:text-2xl font-medium leading-relaxed",
+  h4: "text-base sm:text-lg font-medium leading-relaxed",
 
-  // Body Text - Easy to read, no pressure
-  bodyLarge: "text-lg leading-loose",
-  body: "text-base leading-relaxed",
-  bodySmall: "text-sm leading-relaxed",
+  // Body Text - Responsive for readability
+  bodyLarge: "text-base md:text-lg leading-loose",
+  body: "text-sm sm:text-base leading-relaxed",
+  bodySmall: "text-xs sm:text-sm leading-relaxed",
 
   // Utility
   small: "text-sm tracking-normal",
@@ -36,23 +36,43 @@ export const typography = {
 export const spacing = {
   // Section Padding (Vertical)
   section: {
-    small: "py-12 md:py-16",
-    medium: "py-16 md:py-24",
-    large: "py-20 md:py-32",
+    small: "py-10 md:py-16",
+    medium: "py-14 md:py-24",
+    large: "py-16 md:py-32",
   },
 
   // Card Padding
   card: {
-    small: "p-4",
-    medium: "p-6",
-    large: "p-8",
+    small: "p-3 sm:p-4",
+    medium: "p-4 sm:p-6",
+    large: "p-6 sm:p-8",
   },
 
   // Grid Gaps
   gap: {
-    tight: "gap-4 md:gap-6",
-    default: "gap-6 lg:gap-8",
-    loose: "gap-8 lg:gap-12",
+    tight: "gap-3 sm:gap-4 md:gap-6",
+    default: "gap-4 sm:gap-6 lg:gap-8",
+    loose: "gap-6 sm:gap-8 lg:gap-12",
+  },
+
+  // Touch targets (44px minimum)
+  touch: {
+    button: "min-h-[44px] min-w-[44px]",
+    input: "min-h-[44px]",
+    link: "min-h-[44px] py-2",
+  },
+} as const;
+
+// Layout container utilities
+export const layout = {
+  container: {
+    default: "container mx-auto px-4 sm:px-6 lg:px-8",
+    narrow: "container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl",
+    wide: "container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl",
+    full: "w-full px-4 sm:px-6 lg:px-8",
+  },
+  section: {
+    default: "scroll-mt-header",
   },
 } as const;
 
@@ -62,7 +82,7 @@ export const components = {
     card: "text-3xl font-bold text-white drop-shadow-lg",
     list: "text-2xl font-bold text-accent",
     detail: "text-3xl font-bold text-accent",
-    oldPrice: "text-base text-white/60 line-through drop-shadow-lg",
+    oldPrice: "text-base text-white/65 line-through drop-shadow-lg",
   },
 
   // Buttons - Friendly, action-oriented
@@ -134,29 +154,28 @@ export const components = {
 
 /**
  * Savings Color System
- * Psychology: Green = money saved, smart choice, value
- * Orange labels = attention, urgency, "don't miss this deal"
+ * Clean, professional design - white prices with soft accents
  */
 export const savings = {
-  // Price display - prominent, clear savings
+  // Price display - clean white on cards, accent elsewhere
   price: {
-    card: "text-savings font-bold drop-shadow-lg",
-    list: "text-savings font-bold",
-    detail: "text-savings font-bold text-3xl",
+    card: "text-white font-bold drop-shadow-lg",
+    list: "text-accent font-bold",
+    detail: "text-accent font-bold text-3xl",
   },
 
-  // Old/original price - visible but secondary
+  // Old/original price - visible strikethrough
   oldPrice: {
-    card: "text-white/60 line-through drop-shadow-lg",
-    list: "text-muted-foreground/80 line-through",
-    detail: "text-muted-foreground/80 line-through text-xl",
+    card: "text-white/65 line-through drop-shadow-lg",
+    list: "text-muted-foreground/75 line-through",
+    detail: "text-muted-foreground/75 line-through text-xl",
   },
 
-  // "Ušteda" label - attention-grabbing orange
-  label: "text-savings-label font-bold uppercase tracking-wide text-sm",
+  // "Ušteda" label - soft warm tone
+  label: "text-savings-label font-semibold uppercase tracking-wide text-xs",
 
-  // Savings amount - prominent green
-  amount: "text-savings font-bold",
+  // Savings amount - soft green
+  amount: "text-savings font-semibold",
 
   // Badge styling - eye-catching but trustworthy
   badge: {

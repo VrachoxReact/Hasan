@@ -1,8 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { Link, usePathname } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 import { useState, useEffect, useRef, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, GitCompare, Phone, MessageCircle, Heart } from "lucide-react";
@@ -12,18 +12,20 @@ import { Badge } from "@/components/ui/badge";
 import { useUsporediStore } from "@/stores/usporediStore";
 import { useFavoritiStore } from "@/stores/favoritiStore";
 import ThemeToggle from "@/components/ThemeToggle";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { typography } from "@/lib/designTokens";
 import { CONTACT } from "@/lib/constants";
 
-const navLinks = [
-  { href: "/", label: "Početna" },
-  { href: "/vozila", label: "Vozila" },
-  { href: "/kontakt", label: "Veleprodaja" },
-  { href: "/o-nama", label: "O Nama" },
-];
-
 export default function Header() {
+  const t = useTranslations("common");
   const pathname = usePathname();
+
+  const navLinks = [
+    { href: "/" as const, label: t("nav.home") },
+    { href: "/vozila" as const, label: t("nav.vehicles") },
+    { href: "/kontakt" as const, label: t("nav.wholesale") },
+    { href: "/o-nama" as const, label: t("nav.about") },
+  ];
   const [isScrolled, setIsScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -111,14 +113,18 @@ export default function Header() {
       </Link>
 
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 will-change-transform ${
           isScrolled
             ? "bg-white/95 dark:bg-primary/95 backdrop-blur-xl shadow-lg border-b border-border/30"
             : "bg-white/90 dark:bg-primary/90 backdrop-blur-xl border-b border-border/20"
         }`}
       >
         <div className="container mx-auto px-4">
-          <nav className="flex items-center justify-between h-16 md:h-20">
+          <nav
+            className="flex items-center justify-between h-16 md:h-20"
+            role="navigation"
+            aria-label={t("header.mainNavigation")}
+          >
             {/* Spacer for logo area */}
             <div className="w-28 md:w-32" />
 
@@ -143,17 +149,15 @@ export default function Header() {
             <div className="flex items-center gap-2 md:gap-3">
               {/* WhatsApp Button - Large desktop only */}
               <a
-                href={CONTACT.whatsapp.messageUrl(
-                  "Pozdrav! Zanima me ponuda vozila."
-                )}
+                href={CONTACT.whatsapp.messageUrl(t("whatsapp.defaultMessage"))}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hidden lg:flex"
-                aria-label="Kontaktirajte nas putem WhatsApp"
+                aria-label={t("header.contactViaWhatsApp")}
               >
                 <Button
                   size="sm"
-                  className="bg-[#25D366] hover:bg-[#22c55e] text-white gap-1.5"
+                  className="bg-whatsapp hover:bg-whatsapp/90 text-whatsapp-foreground gap-1.5"
                 >
                   <MessageCircle className="w-4 h-4" />
                   <span>WhatsApp</span>
@@ -163,7 +167,7 @@ export default function Header() {
               {/* Compare Button */}
               <Link
                 href="/usporedi"
-                aria-label={`Usporedi vozila${
+                aria-label={`${t("nav.compare")}${
                   compareCount > 0 ? ` (${compareCount})` : ""
                 }`}
               >
@@ -173,7 +177,7 @@ export default function Header() {
                   className="relative border-accent/50 text-accent hover:bg-accent hover:text-white bg-background/50 dark:bg-transparent min-h-[40px] rounded-xl focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                 >
                   <GitCompare className="w-4 h-4 mr-1.5" />
-                  <span className="hidden sm:inline">Usporedi</span>
+                  <span className="hidden sm:inline">{t("nav.compare")}</span>
                   <AnimatePresence>
                     {compareCount > 0 && (
                       <motion.div
@@ -200,18 +204,18 @@ export default function Header() {
               <Link
                 href="/favoriti"
                 className="hidden sm:block"
-                aria-label={`Favoriti${
+                aria-label={`${t("nav.favorites")}${
                   favoritiCount > 0 ? ` (${favoritiCount})` : ""
                 }`}
               >
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="relative text-foreground/60 hover:text-red-400 hover:bg-accent/10 dark:text-white/80 dark:hover:text-red-400 dark:hover:bg-white/10 min-w-[40px] min-h-[40px] rounded-xl focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                  className="relative text-foreground/60 hover:text-favorite hover:bg-accent/10 dark:text-white/80 dark:hover:text-favorite dark:hover:bg-white/10 min-w-[40px] min-h-[40px] rounded-xl focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                 >
                   <Heart
                     className={`w-5 h-5 ${
-                      favoritiCount > 0 ? "fill-red-400 text-red-400" : ""
+                      favoritiCount > 0 ? "fill-favorite text-favorite" : ""
                     }`}
                     aria-hidden="true"
                   />
@@ -226,7 +230,7 @@ export default function Header() {
                       >
                         <Badge
                           variant="default"
-                          className="h-5 w-5 p-0 flex items-center justify-center bg-red-500 text-white text-xs font-bold"
+                          className="h-5 w-5 p-0 flex items-center justify-center bg-favorite text-favorite-foreground text-xs font-bold"
                           aria-hidden="true"
                         >
                           {favoritiCount}
@@ -236,6 +240,9 @@ export default function Header() {
                   </AnimatePresence>
                 </Button>
               </Link>
+
+              {/* Language Switcher */}
+              <LanguageSwitcher />
 
               {/* Theme Toggle */}
               <ThemeToggle />
@@ -287,7 +294,7 @@ export default function Header() {
                               Produkt <span className="text-accent">Auto</span>
                             </span>
                             <span className="text-xs text-white/50">
-                              Premium vozila
+                              {t("header.premiumVehicles")}
                             </span>
                           </div>
                         </Link>
@@ -295,8 +302,8 @@ export default function Header() {
                           variant="ghost"
                           size="icon"
                           onClick={() => setIsOpen(false)}
-                          className="text-white/70 hover:text-white hover:bg-white/10 rounded-xl w-10 h-10"
-                          aria-label="Zatvori izbornik"
+                          className="text-white/70 hover:text-white hover:bg-white/10 rounded-xl w-11 h-11 min-w-[44px] min-h-[44px]"
+                          aria-label={t("header.closeMenu")}
                         >
                           <X className="w-5 h-5" />
                         </Button>
@@ -342,7 +349,7 @@ export default function Header() {
                       {/* Quick Actions Section */}
                       <div className="mt-6">
                         <p className="px-4 mb-3 text-xs font-semibold text-white/40 uppercase tracking-wider">
-                          Brzi pristup
+                          {t("header.quickAccess")}
                         </p>
                         <div className="space-y-1">
                           <motion.div
@@ -360,11 +367,12 @@ export default function Header() {
                               </div>
                               <div className="flex-1">
                                 <span className="text-[15px] font-medium">
-                                  Usporedi vozila
+                                  {t("nav.compareVehicles")}
                                 </span>
                                 {compareCount > 0 && (
                                   <p className="text-xs text-white/50">
-                                    {compareCount} vozila odabrano
+                                    {compareCount}{" "}
+                                    {t("header.vehiclesSelected")}
                                   </p>
                                 )}
                               </div>
@@ -386,25 +394,25 @@ export default function Header() {
                               onClick={() => setIsOpen(false)}
                               className="group flex items-center gap-4 px-4 py-3.5 rounded-xl text-white/80 hover:bg-white/10 hover:text-white transition-all duration-200 active:bg-white/15"
                             >
-                              <div className="w-10 h-10 rounded-xl bg-red-500/20 flex items-center justify-center group-hover:bg-red-500/30 transition-colors">
+                              <div className="w-10 h-10 rounded-xl bg-favorite/20 flex items-center justify-center group-hover:bg-favorite/30 transition-colors">
                                 <Heart
-                                  className={`w-5 h-5 text-red-400 ${
+                                  className={`w-5 h-5 text-favorite ${
                                     favoritiCount > 0 ? "fill-current" : ""
                                   }`}
                                 />
                               </div>
                               <div className="flex-1">
                                 <span className="text-[15px] font-medium">
-                                  Favoriti
+                                  {t("nav.favorites")}
                                 </span>
                                 {favoritiCount > 0 && (
                                   <p className="text-xs text-white/50">
-                                    {favoritiCount} spremljeno
+                                    {favoritiCount} {t("header.saved")}
                                   </p>
                                 )}
                               </div>
                               {favoritiCount > 0 && (
-                                <Badge className="bg-red-500 text-white h-7 min-w-[28px] px-2.5 text-sm font-bold">
+                                <Badge className="bg-favorite text-favorite-foreground h-7 min-w-[28px] px-2.5 text-sm font-bold">
                                   {favoritiCount}
                                 </Badge>
                               )}
@@ -417,7 +425,7 @@ export default function Header() {
                     {/* Contact Actions - Footer */}
                     <div className="px-4 pb-6 pt-4 border-t border-white/10 bg-black/20">
                       <p className="px-4 mb-3 text-xs font-semibold text-white/40 uppercase tracking-wider">
-                        Kontakt
+                        {t("footer.contact")}
                       </p>
                       <div className="grid grid-cols-2 gap-2">
                         <motion.a
@@ -425,31 +433,31 @@ export default function Header() {
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: 0.35 }}
-                          className="flex flex-col items-center gap-2 px-4 py-4 rounded-xl bg-white/5 hover:bg-white/10 transition-all duration-200 active:bg-white/15"
+                          className="flex flex-col items-center gap-2 px-4 py-4 rounded-xl bg-white/5 hover:bg-white/10 transition-all duration-200 active:bg-white/15 min-h-[72px]"
                         >
-                          <div className="w-11 h-11 rounded-full bg-accent/20 flex items-center justify-center">
+                          <div className="w-12 h-12 rounded-full bg-accent/20 flex items-center justify-center">
                             <Phone className="w-5 h-5 text-accent" />
                           </div>
                           <span className="text-xs font-medium text-white/70">
-                            Nazovi
+                            {t("header.call")}
                           </span>
                         </motion.a>
 
                         <motion.a
                           href={CONTACT.whatsapp.messageUrl(
-                            "Pozdrav! Zanima me ponuda vozila."
+                            t("whatsapp.defaultMessage")
                           )}
                           target="_blank"
                           rel="noopener noreferrer"
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: 0.4 }}
-                          className="flex flex-col items-center gap-2 px-4 py-4 rounded-xl bg-[#25D366]/10 hover:bg-[#25D366]/20 transition-all duration-200 active:bg-[#25D366]/30"
+                          className="flex flex-col items-center gap-2 px-4 py-4 rounded-xl bg-whatsapp/10 hover:bg-whatsapp/20 transition-all duration-200 active:bg-whatsapp/30 min-h-[72px]"
                         >
-                          <div className="w-11 h-11 rounded-full bg-[#25D366]/20 flex items-center justify-center">
-                            <MessageCircle className="w-5 h-5 text-[#25D366]" />
+                          <div className="w-12 h-12 rounded-full bg-whatsapp/20 flex items-center justify-center">
+                            <MessageCircle className="w-5 h-5 text-whatsapp" />
                           </div>
-                          <span className="text-xs font-medium text-[#25D366]">
+                          <span className="text-xs font-medium text-whatsapp">
                             WhatsApp
                           </span>
                         </motion.a>

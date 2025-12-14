@@ -1,6 +1,8 @@
 "use client";
 
+import { useMemo } from "react";
 import { Shield, FileCheck, Wrench, Clock, Award } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { Badge } from "@/components/ui/badge";
 
 interface TrustBadge {
@@ -9,16 +11,21 @@ interface TrustBadge {
   variant?: "default" | "secondary" | "outline";
 }
 
-const badges: TrustBadge[] = [
-  { icon: Shield, label: "Jamstvo 12 mj.", variant: "default" },
-  { icon: FileCheck, label: "Provjereno", variant: "secondary" },
-];
-
 interface TrustBadgesProps {
   size?: "sm" | "md";
 }
 
 export default function TrustBadges({ size = "sm" }: TrustBadgesProps) {
+  const t = useTranslations("trust");
+
+  const badges: TrustBadge[] = useMemo(
+    () => [
+      { icon: Shield, label: t("warranty"), variant: "default" as const },
+      { icon: FileCheck, label: t("verified"), variant: "secondary" as const },
+    ],
+    [t]
+  );
+
   return (
     <div className="flex flex-wrap gap-1.5">
       {badges.map((badge) => {
@@ -42,35 +49,38 @@ export default function TrustBadges({ size = "sm" }: TrustBadgesProps) {
 
 // Detailed trust section for homepage or about page
 export function TrustSection() {
-  const trustPoints = [
-    {
-      icon: Shield,
-      title: "Jamstvo kvalitete",
-      description:
-        "Svako vozilo prolazi detaljnu inspekciju od 150+ točaka provjere.",
-    },
-    {
-      icon: FileCheck,
-      title: "Transparentna povijest",
-      description: "Potpuna dokumentacija i servisna knjižica dostupni odmah.",
-    },
-    {
-      icon: Wrench,
-      title: "Servisirana vozila",
-      description:
-        "Sva vozila su servisirana i pripremljena za sigurnu vožnju.",
-    },
-    {
-      icon: Clock,
-      title: "30 dana zamjene",
-      description: "Niste zadovoljni? Zamijenite vozilo unutar 30 dana.",
-    },
-    {
-      icon: Award,
-      title: "10+ godina iskustva",
-      description: "Više od 500 zadovoljnih kupaca i rastući broj preporuka.",
-    },
-  ];
+  const t = useTranslations("trust");
+
+  const trustPoints = useMemo(
+    () => [
+      {
+        icon: Shield,
+        title: t("quality.title"),
+        description: t("quality.description"),
+      },
+      {
+        icon: FileCheck,
+        title: t("history.title"),
+        description: t("history.description"),
+      },
+      {
+        icon: Wrench,
+        title: t("serviced.title"),
+        description: t("serviced.description"),
+      },
+      {
+        icon: Clock,
+        title: t("exchange.title"),
+        description: t("exchange.description"),
+      },
+      {
+        icon: Award,
+        title: t("experience.title"),
+        description: t("experience.description"),
+      },
+    ],
+    [t]
+  );
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

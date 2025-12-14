@@ -1,7 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
 import {
   Fuel,
@@ -43,6 +44,7 @@ export default function VoziloListItem({
   vozilo,
   index = 0,
 }: VoziloListItemProps) {
+  const t = useTranslations("vehicles");
   const { addVozilo, removeVozilo, isInList } = useUsporediStore();
   const { toggleFavorit, isFavorit } = useFavoritiStore();
   const isComparing = isInList(vozilo.id);
@@ -56,13 +58,17 @@ export default function VoziloListItem({
 
     if (isComparing) {
       removeVozilo(vozilo.id);
-      toast.info(`${vozilo.marka} ${vozilo.model} uklonjen iz usporedbe`);
+      toast.info(
+        t("removedFromCompare", { brand: vozilo.marka, model: vozilo.model })
+      );
     } else {
       const success = addVozilo(vozilo);
       if (success) {
-        toast.success(`${vozilo.marka} ${vozilo.model} dodan u usporedbu`);
+        toast.success(
+          t("card.addedToCompare", { brand: vozilo.marka, model: vozilo.model })
+        );
       } else {
-        toast.error("Možete usporediti maksimalno 3 vozila");
+        toast.error(t("card.maxCompareReached"));
       }
     }
   };
@@ -73,9 +79,13 @@ export default function VoziloListItem({
 
     const added = toggleFavorit(vozilo);
     if (added) {
-      toast.success(`${vozilo.marka} ${vozilo.model} dodan u favorite`);
+      toast.success(
+        t("addedToFavorites", { brand: vozilo.marka, model: vozilo.model })
+      );
     } else {
-      toast.info(`${vozilo.marka} ${vozilo.model} uklonjen iz favorita`);
+      toast.info(
+        t("removedFromFavorites", { brand: vozilo.marka, model: vozilo.model })
+      );
     }
   };
 
@@ -114,7 +124,7 @@ export default function VoziloListItem({
                     />
                   </div>
                   <p className={`${typography.tiny} text-muted-foreground`}>
-                    Slika nije dostupna
+                    {t("imageNotAvailable")}
                   </p>
                 </div>
               )}
@@ -139,10 +149,14 @@ export default function VoziloListItem({
               {/* Badges */}
               <div className="absolute top-3 left-3 flex flex-col gap-2">
                 {vozilo.ekskluzivno && (
-                  <Badge className={badges.ekskluzivno}>Ekskluzivno</Badge>
+                  <Badge className={badges.ekskluzivno}>
+                    {t("card.exclusive")}
+                  </Badge>
                 )}
                 {vozilo.istaknuto && !vozilo.ekskluzivno && (
-                  <Badge className={badges.istaknuto}>Istaknuto</Badge>
+                  <Badge className={badges.istaknuto}>
+                    {t("card.featured")}
+                  </Badge>
                 )}
               </div>
             </div>
@@ -174,8 +188,8 @@ export default function VoziloListItem({
                     variant="outline"
                     className={`transition-all min-w-[44px] min-h-[44px] ${
                       isFav
-                        ? "bg-red-500 text-white border-red-500 hover:bg-red-600"
-                        : "hover:border-red-300 dark:hover:border-red-700"
+                        ? "bg-favorite text-favorite-foreground border-favorite hover:bg-favorite/90"
+                        : "hover:border-favorite/50 dark:hover:border-favorite/40"
                     }`}
                     onClick={handleFavoritToggle}
                   >
@@ -241,7 +255,7 @@ export default function VoziloListItem({
                   variant="ghost"
                   className="text-accent hover:text-accent/80 shrink-0"
                 >
-                  Detalji
+                  {t("listView.details")}
                   <ChevronRight className="w-4 h-4 ml-1" />
                 </Button>
               </div>

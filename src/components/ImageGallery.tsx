@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ChevronLeft, ChevronRight, ZoomIn, Hand } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 
 interface ImageGalleryProps {
@@ -12,6 +13,7 @@ interface ImageGalleryProps {
 }
 
 export default function ImageGallery({ images, alt }: ImageGalleryProps) {
+  const t = useTranslations("gallery");
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [showZoomHint, setShowZoomHint] = useState(false);
@@ -106,7 +108,7 @@ export default function ImageGallery({ images, alt }: ImageGalleryProps) {
         >
           <Image
             src={images[currentIndex]}
-            alt={`${alt} - Slika ${currentIndex + 1}`}
+            alt={`${alt} - ${t("image")} ${currentIndex + 1}`}
             fill
             className="object-cover transition-transform duration-300 group-hover:scale-105"
             priority
@@ -114,7 +116,7 @@ export default function ImageGallery({ images, alt }: ImageGalleryProps) {
 
           {/* Zoom indicator */}
           <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/20">
-            <div className="bg-white/90 dark:bg-gray-800/90 rounded-full p-3">
+            <div className="bg-white/90 dark:bg-card/90 rounded-full p-3">
               <ZoomIn className="w-6 h-6 text-accent" />
             </div>
           </div>
@@ -127,8 +129,8 @@ export default function ImageGallery({ images, alt }: ImageGalleryProps) {
                   e.stopPropagation();
                   prevImage();
                 }}
-                className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 hover:bg-white dark:bg-gray-800/90 dark:hover:bg-gray-800 flex items-center justify-center shadow-lg transition-all"
-                aria-label="Prethodna slika"
+                className="absolute left-3 top-1/2 -translate-y-1/2 w-11 h-11 min-w-[44px] min-h-[44px] rounded-full bg-white/90 hover:bg-white dark:bg-card/90 dark:hover:bg-card flex items-center justify-center shadow-lg transition-all"
+                aria-label={t("previousImage")}
               >
                 <ChevronLeft className="w-6 h-6" />
               </button>
@@ -137,8 +139,8 @@ export default function ImageGallery({ images, alt }: ImageGalleryProps) {
                   e.stopPropagation();
                   nextImage();
                 }}
-                className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 hover:bg-white dark:bg-gray-800/90 dark:hover:bg-gray-800 flex items-center justify-center shadow-lg transition-all"
-                aria-label="Sljedeća slika"
+                className="absolute right-3 top-1/2 -translate-y-1/2 w-11 h-11 min-w-[44px] min-h-[44px] rounded-full bg-white/90 hover:bg-white dark:bg-card/90 dark:hover:bg-card flex items-center justify-center shadow-lg transition-all"
+                aria-label={t("nextImage")}
               >
                 <ChevronRight className="w-6 h-6" />
               </button>
@@ -164,7 +166,7 @@ export default function ImageGallery({ images, alt }: ImageGalleryProps) {
                       behavior: "smooth",
                     })
                   }
-                  className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-white/90 hover:bg-white dark:bg-gray-800/90 dark:hover:bg-gray-800 flex items-center justify-center shadow-lg transition-all"
+                  className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-white/90 hover:bg-white dark:bg-card/90 dark:hover:bg-card flex items-center justify-center shadow-lg transition-all"
                   aria-label="Scroll left"
                 >
                   <ChevronLeft className="w-5 h-5" />
@@ -176,7 +178,7 @@ export default function ImageGallery({ images, alt }: ImageGalleryProps) {
                       behavior: "smooth",
                     })
                   }
-                  className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-white/90 hover:bg-white dark:bg-gray-800/90 dark:hover:bg-gray-800 flex items-center justify-center shadow-lg transition-all"
+                  className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-white/90 hover:bg-white dark:bg-card/90 dark:hover:bg-card flex items-center justify-center shadow-lg transition-all"
                   aria-label="Scroll right"
                 >
                   <ChevronRight className="w-5 h-5" />
@@ -185,9 +187,9 @@ export default function ImageGallery({ images, alt }: ImageGalleryProps) {
             )}
             <div
               ref={thumbnailsRef}
-              className="flex gap-2 p-3 bg-card overflow-x-auto scroll-smooth"
+              className="flex gap-2 p-3 bg-card overflow-x-auto scroll-smooth snap-x snap-mandatory"
               role="tablist"
-              aria-label="Galerija slika"
+              aria-label={t("imageGallery")}
               style={{ scrollbarWidth: "thin" }}
             >
               {images.map((slika, index) => (
@@ -202,9 +204,12 @@ export default function ImageGallery({ images, alt }: ImageGalleryProps) {
                   }}
                   role="tab"
                   aria-selected={index === currentIndex}
-                  aria-label={`Slika ${index + 1} od ${images.length}`}
+                  aria-label={t("imageOf", {
+                    current: index + 1,
+                    total: images.length,
+                  })}
                   tabIndex={index === currentIndex ? 0 : -1}
-                  className={`relative w-20 h-14 rounded-lg overflow-hidden shrink-0 transition-all ${
+                  className={`relative w-20 h-14 min-w-[80px] rounded-lg overflow-hidden shrink-0 transition-all snap-start ${
                     index === currentIndex
                       ? "ring-2 ring-accent"
                       : "opacity-60 hover:opacity-100"
@@ -236,7 +241,7 @@ export default function ImageGallery({ images, alt }: ImageGalleryProps) {
             onKeyDown={handleKeyDown}
             role="dialog"
             aria-modal="true"
-            aria-label="Galerija slika"
+            aria-label={t("imageGallery")}
             aria-describedby="lightbox-description"
           >
             {/* ARIA live region for screen readers */}
@@ -246,7 +251,10 @@ export default function ImageGallery({ images, alt }: ImageGalleryProps) {
               aria-live="polite"
               aria-atomic="true"
             >
-              Slika {currentIndex + 1} od {images.length}
+              {t("imageOf", {
+                current: currentIndex + 1,
+                total: images.length,
+              })}
             </div>
 
             {/* Zoom Hint - Mobile only */}
@@ -277,7 +285,7 @@ export default function ImageGallery({ images, alt }: ImageGalleryProps) {
               size="icon"
               className="absolute top-4 right-4 text-white hover:bg-white/10 z-10"
               onClick={() => setIsLightboxOpen(false)}
-              aria-label="Zatvori galeriju (Escape)"
+              aria-label={t("closeGallery")}
             >
               <X className="w-6 h-6" />
             </Button>
@@ -293,7 +301,7 @@ export default function ImageGallery({ images, alt }: ImageGalleryProps) {
                     e.stopPropagation();
                     prevImage();
                   }}
-                  aria-label="Prethodna slika"
+                  aria-label={t("previousImage")}
                 >
                   <ChevronLeft className="w-8 h-8" />
                 </Button>
@@ -305,7 +313,7 @@ export default function ImageGallery({ images, alt }: ImageGalleryProps) {
                     e.stopPropagation();
                     nextImage();
                   }}
-                  aria-label="Sljedeća slika"
+                  aria-label={t("nextImage")}
                 >
                   <ChevronRight className="w-8 h-8" />
                 </Button>
@@ -324,7 +332,7 @@ export default function ImageGallery({ images, alt }: ImageGalleryProps) {
             >
               <Image
                 src={images[currentIndex]}
-                alt={`${alt} - Slika ${currentIndex + 1}`}
+                alt={`${alt} - ${t("image")} ${currentIndex + 1}`}
                 fill
                 className="object-contain"
                 sizes="100vw"
@@ -341,7 +349,7 @@ export default function ImageGallery({ images, alt }: ImageGalleryProps) {
               <div
                 className="absolute bottom-16 left-1/2 -translate-x-1/2 hidden sm:flex gap-2 p-2 bg-black/50 rounded-lg backdrop-blur-sm max-w-[90vw] overflow-x-auto"
                 role="tablist"
-                aria-label="Navigacija galerije"
+                aria-label={t("galleryNavigation")}
               >
                 {images.map((slika, index) => (
                   <button
@@ -359,7 +367,7 @@ export default function ImageGallery({ images, alt }: ImageGalleryProps) {
                     }}
                     role="tab"
                     aria-selected={index === currentIndex}
-                    aria-label={`Prikaži sliku ${index + 1}`}
+                    aria-label={t("showImage", { number: index + 1 })}
                     tabIndex={0}
                     className={`relative w-16 h-10 rounded overflow-hidden transition-all ${
                       index === currentIndex
@@ -369,7 +377,7 @@ export default function ImageGallery({ images, alt }: ImageGalleryProps) {
                   >
                     <Image
                       src={slika}
-                      alt={`${alt} - Slika ${index + 1}`}
+                      alt={`${alt} - ${t("image")} ${index + 1}`}
                       fill
                       className="object-cover"
                     />

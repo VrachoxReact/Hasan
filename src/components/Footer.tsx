@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 import {
   Car,
   Phone,
@@ -18,6 +19,7 @@ import { Button } from "@/components/ui/button";
 import { CONTACT, WORKING_HOURS, COMPANY } from "@/lib/constants";
 
 export default function Footer() {
+  const t = useTranslations("common");
   const [showBackToTop, setShowBackToTop] = useState(false);
 
   useEffect(() => {
@@ -33,7 +35,7 @@ export default function Footer() {
   };
 
   return (
-    <footer className="bg-gradient-to-b from-primary via-primary to-primary/95 text-white relative">
+    <footer className="bg-gradient-to-b from-primary via-primary to-primary/95 text-white relative pb-[env(safe-area-inset-bottom)]">
       {/* Gradient top border */}
       <div className="h-px bg-gradient-to-r from-transparent via-accent/40 to-transparent" />
 
@@ -83,14 +85,14 @@ export default function Footer() {
 
           {/* Navigation */}
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold">Navigacija</h3>
+            <h3 className="text-lg font-semibold">{t("footer.navigation")}</h3>
             <nav className="flex flex-col gap-2">
               {[
-                { href: "/", label: "Početna" },
-                { href: "/vozila", label: "Sva vozila" },
-                { href: "/o-nama", label: "O nama" },
-                { href: "/kontakt", label: "Kontakt" },
-                { href: "/usporedi", label: "Usporedi vozila" },
+                { href: "/" as const, label: t("nav.home") },
+                { href: "/vozila" as const, label: t("nav.allVehicles") },
+                { href: "/o-nama" as const, label: t("nav.about") },
+                { href: "/kontakt" as const, label: t("nav.contact") },
+                { href: "/usporedi" as const, label: t("nav.compareVehicles") },
               ].map((link) => (
                 <Link
                   key={link.href}
@@ -106,7 +108,7 @@ export default function Footer() {
 
           {/* Contact */}
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold">Kontakt</h3>
+            <h3 className="text-lg font-semibold">{t("footer.contact")}</h3>
             <div className="space-y-3">
               <a
                 href={`tel:${CONTACT.phoneRaw}`}
@@ -150,16 +152,20 @@ export default function Footer() {
 
           {/* Working Hours */}
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold">Radno vrijeme</h3>
+            <h3 className="text-lg font-semibold">
+              {t("footer.workingHours")}
+            </h3>
             <div className="border-l-2 border-accent pl-4 bg-white/5 rounded-r-lg p-4 space-y-3">
               <div className="flex items-center gap-2 mb-3">
                 <Clock className="w-4 h-4 text-accent" />
-                <span className="text-sm text-white/80">Raspored</span>
+                <span className="text-sm text-white/80">
+                  {t("footer.schedule")}
+                </span>
               </div>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between gap-4">
                   <span className="text-white/70">
-                    {WORKING_HOURS.weekdays.label}
+                    {t("workingHours.weekdays")}
                   </span>
                   <span className="text-white font-medium">
                     {WORKING_HOURS.weekdays.open} -{" "}
@@ -168,7 +174,7 @@ export default function Footer() {
                 </div>
                 <div className="flex justify-between gap-4">
                   <span className="text-white/70">
-                    {WORKING_HOURS.saturday.label}
+                    {t("workingHours.saturday")}
                   </span>
                   <span className="text-white font-medium">
                     {WORKING_HOURS.saturday.open} -{" "}
@@ -177,9 +183,11 @@ export default function Footer() {
                 </div>
                 <div className="flex justify-between gap-4">
                   <span className="text-white/70">
-                    {WORKING_HOURS.sunday.label}
+                    {t("workingHours.sunday")}
                   </span>
-                  <span className="text-accent font-medium">Zatvoreno</span>
+                  <span className="text-accent font-medium">
+                    {t("footer.closed")}
+                  </span>
                 </div>
               </div>
             </div>
@@ -191,11 +199,13 @@ export default function Footer() {
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 text-sm text-white/50">
               <p>
-                © {new Date().getFullYear()} Produkt Auto. Sva prava pridržana.
+                © {new Date().getFullYear()} Produkt Auto.{" "}
+                {t("footer.allRightsReserved")}
               </p>
               <span className="hidden sm:inline">•</span>
               <p className="flex items-center gap-1">
-                Izrađeno u Hrvatskoj <span className="text-base">🇭🇷</span>
+                {t("footer.madeInCroatia")}{" "}
+                <span className="text-base">🇭🇷</span>
               </p>
             </div>
             <div className="flex gap-6 text-sm text-white/50">
@@ -203,13 +213,13 @@ export default function Footer() {
                 href="/privatnost"
                 className="hover:text-accent transition-colors"
               >
-                Privatnost
+                {t("footer.privacy")}
               </Link>
               <Link
                 href="/uvjeti"
                 className="hover:text-accent transition-colors"
               >
-                Uvjeti korištenja
+                {t("footer.terms")}
               </Link>
             </div>
           </div>
@@ -222,7 +232,7 @@ export default function Footer() {
           onClick={scrollToTop}
           size="icon"
           className="fixed bottom-6 right-6 z-40 w-12 h-12 rounded-xl bg-accent hover:bg-accent/90 text-white shadow-lg shadow-accent/25 hover:shadow-xl hover:shadow-accent/30 transition-all duration-300 animate-in fade-in slide-in-from-bottom-4"
-          aria-label="Povratak na vrh"
+          aria-label={t("footer.backToTop")}
         >
           <ChevronUp className="w-5 h-5" />
         </Button>

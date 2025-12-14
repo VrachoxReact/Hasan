@@ -1,8 +1,13 @@
-import Link from "next/link";
+"use client";
+
 import { Car, Home, Search } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 
 export default function NotFound() {
+  const t = useTranslations("common.notFound");
+
   return (
     <div className="min-h-[80vh] flex items-center justify-center px-4">
       <div className="text-center max-w-md">
@@ -18,18 +23,15 @@ export default function NotFound() {
         </div>
 
         <h1 className="text-2xl md:text-3xl font-bold text-foreground mb-4">
-          Stranica nije pronađena
+          {t("title")}
         </h1>
-        <p className="text-muted-foreground mb-8">
-          Nažalost, stranica koju tražite ne postoji ili je premještena.
-          Provjerite adresu ili se vratite na početnu stranicu.
-        </p>
+        <p className="text-muted-foreground mb-8">{t("description")}</p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link href="/">
             <Button size="lg" className="gap-2 w-full sm:w-auto">
               <Home className="w-5 h-5" />
-              Početna stranica
+              {t("home")}
             </Button>
           </Link>
           <Link href="/vozila">
@@ -39,7 +41,7 @@ export default function NotFound() {
               className="gap-2 w-full sm:w-auto"
             >
               <Search className="w-5 h-5" />
-              Pretraži vozila
+              {t("searchVehicles")}
             </Button>
           </Link>
         </div>

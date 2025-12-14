@@ -7,7 +7,9 @@ import {
   useTransition,
   startTransition,
 } from "react";
-import { useSearchParams, useRouter, usePathname } from "next/navigation";
+import { useSearchParams } from "next/navigation";
+import { useRouter, usePathname } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
 import { SlidersHorizontal, X, LayoutGrid, List } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -56,6 +58,7 @@ interface FilterContentProps {
   onKmCommit: (value: number) => void;
   onYearCommit: (values: number[]) => void;
   onClearFilters: () => void;
+  t: (key: string) => string;
 }
 
 function FilterContent({
@@ -68,6 +71,7 @@ function FilterContent({
   onKmCommit,
   onYearCommit,
   onClearFilters,
+  t,
 }: FilterContentProps) {
   const [priceRange, setPriceRange] = useState<RangeTuple>([
     filters.cijenaOd ?? 0,
@@ -96,19 +100,19 @@ function FilterContent({
 
   const filterPresets = [
     {
-      label: "Luksuzna",
+      labelKey: "quickFilters.luxury",
       icon: "✨",
       filters: { cijenaOd: 40000, cijenaDo: 100000 },
     },
     {
-      label: "Ekonomična",
+      labelKey: "quickFilters.economy",
       icon: "💰",
       filters: { cijenaOd: 0, cijenaDo: 20000 },
     },
     {
-      label: "Novija",
-      icon: "🆕",
-      filters: { godinaOd: 2022, godinaDo: 2025 },
+      labelKey: "quickFilters.commercial",
+      icon: "🚚",
+      filters: { cijenaOd: 15000, cijenaDo: 35000 },
     },
   ];
 
@@ -132,19 +136,19 @@ function FilterContent({
         <label
           className={`${typography.small} font-medium text-foreground mb-3 block`}
         >
-          Brzi filteri
+          {t("quickFiltersLabel")}
         </label>
         <div className="grid grid-cols-3 gap-2">
           {filterPresets.map((preset) => (
             <Button
-              key={preset.label}
+              key={preset.labelKey}
               variant="outline"
               size="sm"
               onClick={() => applyPreset(preset.filters)}
               className="flex flex-col items-center gap-1 h-auto py-2 px-1 text-xs hover:bg-accent hover:text-accent-foreground"
             >
               <span className="text-lg">{preset.icon}</span>
-              <span className="font-medium">{preset.label}</span>
+              <span className="font-medium">{t(preset.labelKey)}</span>
             </Button>
           ))}
         </div>
@@ -155,14 +159,14 @@ function FilterContent({
         <label
           className={`${typography.small} font-medium text-foreground mb-2 block`}
         >
-          Marka
+          {t("brand")}
         </label>
         <Select value={filters.marka || "all"} onValueChange={onMarkaChange}>
           <SelectTrigger>
-            <SelectValue placeholder="Sve marke" />
+            <SelectValue placeholder={t("allBrands")} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">Sve marke</SelectItem>
+            <SelectItem value="all">{t("allBrands")}</SelectItem>
             {MARKE.map((marka) => (
               <SelectItem key={marka} value={marka}>
                 {marka}
@@ -177,7 +181,7 @@ function FilterContent({
         <label
           className={`${typography.small} font-medium text-foreground mb-3 block`}
         >
-          Vrsta goriva
+          {t("fuelType")}
         </label>
         <div className="space-y-3">
           {GORIVA.map((g) => (
@@ -206,17 +210,17 @@ function FilterContent({
         <label
           className={`${typography.small} font-medium text-foreground mb-2 block`}
         >
-          Vrsta mjenjača
+          {t("transmissionType")}
         </label>
         <Select
           value={filters.mjenjac || "all"}
           onValueChange={onMjenjacChange}
         >
           <SelectTrigger>
-            <SelectValue placeholder="Svi mjenjači" />
+            <SelectValue placeholder={t("allTransmissions")} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">Svi mjenjači</SelectItem>
+            <SelectItem value="all">{t("allTransmissions")}</SelectItem>
             {MJENJACI.map((m) => (
               <SelectItem key={m.value} value={m.value}>
                 {m.label}
@@ -231,7 +235,7 @@ function FilterContent({
         <label
           className={`${typography.small} font-medium text-foreground mb-3 block`}
         >
-          Cijena
+          {t("price")}
         </label>
         <Slider
           value={priceRange}
@@ -259,7 +263,7 @@ function FilterContent({
         <label
           className={`${typography.small} font-medium text-foreground mb-3 block`}
         >
-          Maksimalna kilometraža
+          {t("maxMileage")}
         </label>
         <Slider
           value={[kmValue]}
@@ -287,7 +291,7 @@ function FilterContent({
         <label
           className={`${typography.small} font-medium text-foreground mb-3 block`}
         >
-          Godina proizvodnje
+          {t("yearOfProduction")}
         </label>
         <Slider
           value={yearRange}
@@ -314,7 +318,7 @@ function FilterContent({
       {activeFiltersCount > 0 && (
         <Button variant="outline" className="w-full" onClick={onClearFilters}>
           <X className="w-4 h-4 mr-2" />
-          Obriši filtere ({activeFiltersCount})
+          {t("clearFilters")} ({activeFiltersCount})
         </Button>
       )}
     </div>
@@ -322,18 +326,19 @@ function FilterContent({
 }
 
 const sortOptions = [
-  { value: "datum", label: "Najnovije" },
-  { value: "cijena-asc", label: "Cijena: niža prvo" },
-  { value: "cijena-desc", label: "Cijena: viša prvo" },
-  { value: "godina-desc", label: "Godina: novije prvo" },
-  { value: "godina-asc", label: "Godina: starije prvo" },
-  { value: "kilometraza-asc", label: "Kilometraža: manja prvo" },
+  { value: "datum", labelKey: "sortNewest" },
+  { value: "cijena-asc", labelKey: "sortPriceAsc" },
+  { value: "cijena-desc", labelKey: "sortPriceDesc" },
+  { value: "godina-desc", labelKey: "sortYearDesc" },
+  { value: "godina-asc", labelKey: "sortYearAsc" },
+  { value: "kilometraza-asc", labelKey: "sortMileageAsc" },
 ];
 
 export default function VozilaPage() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const t = useTranslations("vehicles");
 
   const [allVozila] = useState<Vozilo[]>(getVozila());
   const [filteredVozila, setFilteredVozila] = useState<Vozilo[]>(allVozila);
@@ -488,11 +493,10 @@ export default function VozilaPage() {
         <div className="container mx-auto px-4">
           <FadeIn>
             <h1 className={`${typography.h2} text-white mb-2`}>
-              Naša ponuda vozila
+              {t("pageTitle")}
             </h1>
             <p className={`${typography.body} text-white/90`}>
-              Pronađite savršeno vozilo iz naše ponude od {allVozila.length}{" "}
-              kvalitetnih automobila
+              {t("pageSubtitle", { count: allVozila.length })}
             </p>
           </FadeIn>
         </div>
@@ -507,7 +511,7 @@ export default function VozilaPage() {
                 className={`${typography.h4} text-foreground mb-4 flex items-center gap-2`}
               >
                 <SlidersHorizontal className="w-5 h-5" />
-                Filteri
+                {t("filters")}
               </h2>
               <FilterContent
                 filters={filters}
@@ -519,6 +523,7 @@ export default function VozilaPage() {
                 onKmCommit={handleKmCommit}
                 onYearCommit={handleYearCommit}
                 onClearFilters={clearFilters}
+                t={t}
               />
             </div>
           </aside>
@@ -532,7 +537,7 @@ export default function VozilaPage() {
                 <SheetTrigger asChild className="lg:hidden">
                   <Button variant="outline" className="gap-2">
                     <SlidersHorizontal className="w-4 h-4" />
-                    Filteri
+                    {t("filters")}
                     {activeFiltersCount > 0 && (
                       <Badge className="bg-primary text-primary-foreground ml-1">
                         {activeFiltersCount}
@@ -542,7 +547,7 @@ export default function VozilaPage() {
                 </SheetTrigger>
                 <SheetContent side="left" className="w-80">
                   <SheetHeader>
-                    <SheetTitle>Filteri</SheetTitle>
+                    <SheetTitle>{t("filters")}</SheetTitle>
                   </SheetHeader>
                   <div className="mt-6">
                     <FilterContent
@@ -555,14 +560,19 @@ export default function VozilaPage() {
                       onKmCommit={handleKmCommit}
                       onYearCommit={handleYearCommit}
                       onClearFilters={clearFilters}
+                      t={t}
                     />
                   </div>
                 </SheetContent>
               </Sheet>
 
               {/* Results Count */}
-              <p className="text-sm text-muted-foreground hidden sm:block">
-                {filteredVozila.length} vozila
+              <p
+                className="text-sm text-muted-foreground hidden sm:block"
+                aria-live="polite"
+                aria-atomic="true"
+              >
+                {t("vehiclesCount", { count: filteredVozila.length })}
               </p>
 
               {/* View Mode Toggle */}
@@ -593,7 +603,7 @@ export default function VozilaPage() {
                 <SelectContent>
                   {sortOptions.map((option) => (
                     <SelectItem key={option.value} value={option.value}>
-                      {option.label}
+                      {t(option.labelKey)}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -629,9 +639,9 @@ export default function VozilaPage() {
               // Loading skeleton during filter
               viewMode === "grid" ? (
                 <div
-                  className={`grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 ${spacing.gap.default}`}
+                  className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 ${spacing.gap.default}`}
                 >
-                  {Array.from({ length: 6 }).map((_, index) => (
+                  {Array.from({ length: 8 }).map((_, index) => (
                     <VehicleCardSkeleton key={index} />
                   ))}
                 </div>
@@ -645,7 +655,7 @@ export default function VozilaPage() {
             ) : filteredVozila.length > 0 ? (
               viewMode === "grid" ? (
                 <div
-                  className={`grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 ${spacing.gap.default}`}
+                  className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 ${spacing.gap.default}`}
                 >
                   {filteredVozila.map((vozilo, index) => (
                     <VoziloCard key={vozilo.id} vozilo={vozilo} index={index} />
@@ -753,11 +763,10 @@ export default function VozilaPage() {
                     </text>
                   </svg>
                   <h3 className="text-xl font-semibold text-foreground mb-2">
-                    Nema vozila koja odgovaraju filterima
+                    {t("noResults")}
                   </h3>
                   <p className="text-muted-foreground mb-6">
-                    Pokušajte promijeniti ili obrisati neke filtere kako biste
-                    vidjeli više rezultata.
+                    {t("noResultsDescription")}
                   </p>
                   <Button
                     onClick={clearFilters}
@@ -766,7 +775,7 @@ export default function VozilaPage() {
                     className="gap-2"
                   >
                     <X className="w-4 h-4" />
-                    Obriši sve filtere
+                    {t("clearAllFilters")}
                   </Button>
                 </motion.div>
               </div>

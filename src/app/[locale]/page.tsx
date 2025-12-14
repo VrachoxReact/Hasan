@@ -1,13 +1,12 @@
 "use client";
 
-import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
 import {
   ArrowRight,
   Shield,
   Handshake,
   Headphones,
-  ChevronRight,
   MapPin,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -21,29 +20,30 @@ import {
   StaggerItem,
 } from "@/components/PageTransition";
 import { typography, spacing, components } from "@/lib/designTokens";
-
-const features = [
-  {
-    icon: Shield,
-    title: "Jamstvo kvalitete",
-    description:
-      "Svako vozilo prolazi detaljnu inspekciju od 150+ točaka provjere prije ponude.",
-  },
-  {
-    icon: Handshake,
-    title: "Transparentnost",
-    description:
-      "Potpuna povijest vozila, dokumentacija i servisna knjižica dostupni odmah.",
-  },
-  {
-    icon: Headphones,
-    title: "Stručna podrška",
-    description:
-      "Naš tim stručnjaka dostupan je radnim danima za sva vaša pitanja i podršku.",
-  },
-];
+import { Link } from "@/i18n/navigation";
 
 export default function HomePage() {
+  const t = useTranslations("home");
+  const tCommon = useTranslations("common");
+
+  const features = [
+    {
+      icon: Shield,
+      title: t("features.quality.title"),
+      description: t("features.quality.description"),
+    },
+    {
+      icon: Handshake,
+      title: t("features.transparency.title"),
+      description: t("features.transparency.description"),
+    },
+    {
+      icon: Headphones,
+      title: t("features.support.title"),
+      description: t("features.support.description"),
+    },
+  ];
+
   return (
     <>
       {/* Hero Carousel with Search Overlay */}
@@ -60,13 +60,12 @@ export default function HomePage() {
           <FadeIn>
             <div className="text-center mb-12">
               <h2 className={`${typography.h2} text-foreground mb-4`}>
-                Zašto odabrati nas?
+                {t("features.title")}
               </h2>
               <p
                 className={`${typography.body} text-muted-foreground max-w-2xl mx-auto`}
               >
-                Posvećeni smo pružanju najboljeg iskustva kupnje automobila. Evo
-                što nas razlikuje od konkurencije.
+                {t("features.subtitle")}
               </p>
             </div>
           </FadeIn>
@@ -108,12 +107,10 @@ export default function HomePage() {
           <div className="max-w-3xl mx-auto text-center">
             <FadeIn>
               <h2 className={`${typography.h2} text-white mb-4`}>
-                Spremni pronaći svoj sljedeći automobil?
+                {t("cta.title")}
               </h2>
               <p className={`${typography.bodyLarge} text-white/90 mb-8`}>
-                Posjetite nas ili nas kontaktirajte za više informacija. Naš tim
-                stručnjaka pomoći će vam pronaći savršeno vozilo za vaše
-                potrebe.
+                {t("cta.subtitle")}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link href="/kontakt">
@@ -121,7 +118,7 @@ export default function HomePage() {
                     size="lg"
                     className={`${components.button.primary} min-w-[200px]`}
                   >
-                    Kontaktirajte nas
+                    {t("cta.contactUs")}
                     <ArrowRight className="w-5 h-5 ml-2" />
                   </Button>
                 </Link>
@@ -145,7 +142,7 @@ export default function HomePage() {
           <FadeIn>
             <div className="text-center mb-12">
               <h2 className={`${typography.h2} text-foreground mb-4`}>
-                Posjetite nas
+                {t("map.title")}
               </h2>
               <div
                 className={`flex items-center justify-center gap-2 ${typography.body} text-muted-foreground`}
@@ -167,7 +164,7 @@ export default function HomePage() {
                   allowFullScreen
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
-                  title="Lokacija Produkt Auto"
+                  title={t("map.locationTitle")}
                 />
               </div>
             </FadeIn>
@@ -180,31 +177,30 @@ export default function HomePage() {
                   </h3>
                   <div className="space-y-4 text-muted-foreground">
                     <p className={typography.body}>
-                      Ako vam je dosta neizvjesnosti i sumnji kod kupnje
-                      rabljenog vozila – dobrodošli ste kod nas. Nudimo samo
-                      provjerena, temeljito pregledana vozila s transparentnom
-                      dokumentacijom i realnim cijenama.
+                      {t("map.companyDescription1")}
                     </p>
                     <p className={typography.body}>
-                      Bez skrivenih mana, bez neugodnih iznenađenja. Svako
-                      vozilo u našoj ponudi prošlo je detaljnu provjeru i dolazi
-                      s kompletnom servisnom poviješću.
+                      {t("map.companyDescription2")}
                     </p>
                     <p className={typography.body}>
-                      Cijenimo vaše vrijeme – brza i jednostavna kupnja bez
-                      nepotrebnih komplikacija. Javite nam se s povjerenjem.
+                      {t("map.companyDescription3")}
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4 pt-4 border-t border-border">
                       <div className="flex-1">
                         <p className="text-sm font-semibold text-foreground mb-1">
-                          Radno vrijeme
+                          {t("map.workingHoursTitle")}
                         </p>
-                        <p className="text-sm">Pon - Sub: 09:00 - 17:00</p>
-                        <p className="text-sm">Nedjelja: Zatvoreno</p>
+                        <p className="text-sm">
+                          {tCommon("workingHours.weekdays")}: 09:00 - 17:00
+                        </p>
+                        <p className="text-sm">
+                          {tCommon("workingHours.sunday")}:{" "}
+                          {tCommon("footer.closed")}
+                        </p>
                       </div>
                       <div className="flex-1">
                         <p className="text-sm font-semibold text-foreground mb-1">
-                          Kontakt
+                          {tCommon("footer.contact")}
                         </p>
                         <p className="text-sm">Tel: +385 99 166 3776</p>
                         <p className="text-sm">Email: produktauto@gmail.com</p>

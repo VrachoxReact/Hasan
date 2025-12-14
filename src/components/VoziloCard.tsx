@@ -2,7 +2,8 @@
 
 import { useState, useMemo, useCallback, useRef, useEffect } from "react";
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
 import dynamic from "next/dynamic";
 
@@ -51,6 +52,7 @@ export default function VoziloCard({
   index = 0,
   priority = false,
 }: VoziloCardProps) {
+  const t = useTranslations("vehicles");
   const { addVozilo, removeVozilo, isInList } = useUsporediStore();
   const { toggleFavorit, isFavorit } = useFavoritiStore();
   const isComparing = isInList(vozilo.id);
@@ -97,17 +99,21 @@ export default function VoziloCard({
 
       if (isComparing) {
         removeVozilo(vozilo.id);
-        toast.info(`${vozilo.marka} ${vozilo.model} uklonjen iz usporedbe`);
+        toast.info(
+          `${vozilo.marka} ${vozilo.model} ${t("removedFromCompare")}`
+        );
       } else {
         const success = addVozilo(vozilo);
         if (success) {
-          toast.success(`${vozilo.marka} ${vozilo.model} dodan u usporedbu`);
+          toast.success(
+            `${vozilo.marka} ${vozilo.model} ${t("addedToCompare")}`
+          );
         } else {
-          toast.error("Možete usporediti maksimalno 3 vozila");
+          toast.error(t("maxCompare"));
         }
       }
     },
-    [isComparing, removeVozilo, vozilo, addVozilo]
+    [isComparing, removeVozilo, vozilo, addVozilo, t]
   );
 
   const handleFavoritToggle = useCallback(
@@ -117,12 +123,16 @@ export default function VoziloCard({
 
       const added = toggleFavorit(vozilo);
       if (added) {
-        toast.success(`${vozilo.marka} ${vozilo.model} dodan u favorite`);
+        toast.success(
+          `${vozilo.marka} ${vozilo.model} ${t("addedToFavorites")}`
+        );
       } else {
-        toast.info(`${vozilo.marka} ${vozilo.model} uklonjen iz favorita`);
+        toast.info(
+          `${vozilo.marka} ${vozilo.model} ${t("removedFromFavorites")}`
+        );
       }
     },
-    [toggleFavorit, vozilo]
+    [toggleFavorit, vozilo, t]
   );
 
   const handleImageError = useCallback(() => {
@@ -140,9 +150,9 @@ export default function VoziloCard({
     >
       <Link href={`/vozila/${vozilo.id}`}>
         <Card
-          className={`${components.card.default} group overflow-hidden h-full rounded-3xl border border-border/60 bg-card/95 shadow-lg shadow-black/5 will-change-transform hover:ring-2 hover:ring-accent/50 hover:scale-[1.02] transition-all duration-300 ease-out`}
+          className={`${components.card.default} group overflow-hidden h-full rounded-3xl border border-border bg-card shadow-lg shadow-black/10 dark:shadow-black/30 will-change-transform hover:ring-2 hover:ring-accent/50 hover:scale-[1.02] transition-all duration-300 ease-out`}
         >
-          <div className="relative aspect-[4/3] overflow-hidden dark:ring-1 dark:ring-white/10">
+          <div className="relative aspect-[4/3] overflow-hidden">
             {/* Skeleton loader */}
             {!imageLoaded && (
               <div className="absolute inset-0 bg-muted animate-pulse">
@@ -161,7 +171,7 @@ export default function VoziloCard({
                 <p
                   className={`${typography.small} text-muted-foreground text-center px-4`}
                 >
-                  Slika nije dostupna
+                  {t("imageNotAvailable")}
                 </p>
               </div>
             )}
@@ -201,11 +211,16 @@ export default function VoziloCard({
                   variant="secondary"
                   className={`transition-all shadow-md min-w-[44px] min-h-[44px] ${
                     isFav
-                      ? "bg-red-500 text-white hover:bg-red-600"
-                      : "bg-white/90 hover:bg-white text-gray-700 dark:bg-gray-800/90 dark:hover:bg-gray-800 dark:text-white"
+                      ? "bg-favorite text-favorite-foreground hover:bg-favorite/90"
+                      : "bg-white/90 hover:bg-white text-muted-foreground dark:bg-card/90 dark:hover:bg-card dark:text-foreground"
                   }`}
                   onClick={handleFavoritToggle}
-                  aria-label={isFav ? "Ukloni iz favorita" : "Dodaj u favorite"}
+                  aria-label={
+                    isFav
+                      ? t("card.removeFromFavorites")
+                      : t("card.addToFavorites")
+                  }
+                  aria-pressed={isFav}
                 >
                   <Heart className={`w-4 h-4 ${isFav ? "fill-current" : ""}`} />
                 </Button>
@@ -217,13 +232,14 @@ export default function VoziloCard({
                 variant={isComparing ? "default" : "secondary"}
                 className={`transition-all shadow-md min-w-[44px] min-h-[44px] ${
                   isComparing
-                    ? "bg-accent text-white hover:bg-accent/90"
-                    : "bg-white/90 hover:bg-white text-gray-700 dark:bg-gray-800/90 dark:hover:bg-gray-800 dark:text-white"
+                    ? "bg-accent text-accent-foreground hover:bg-accent/90"
+                    : "bg-white/90 hover:bg-white text-muted-foreground dark:bg-card/90 dark:hover:bg-card dark:text-foreground"
                 }`}
                 onClick={handleCompareToggle}
                 aria-label={
-                  isComparing ? "Ukloni iz usporedbe" : "Dodaj u usporedbu"
+                  isComparing ? t("removeFromCompare") : t("addToCompare")
                 }
+                aria-pressed={isComparing}
               >
                 {isComparing ? (
                   <Check className="w-4 h-4" />
@@ -236,10 +252,12 @@ export default function VoziloCard({
             {/* Badges - Fixed positioning to prevent overlap on small screens */}
             <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-20">
               {vozilo.ekskluzivno && (
-                <Badge className={badges.ekskluzivno}>Ekskluzivno</Badge>
+                <Badge className={badges.ekskluzivno}>
+                  {t("card.exclusive")}
+                </Badge>
               )}
               {vozilo.istaknuto && !vozilo.ekskluzivno && (
-                <Badge className={badges.istaknuto}>Istaknuto</Badge>
+                <Badge className={badges.istaknuto}>{t("card.featured")}</Badge>
               )}
             </div>
 
@@ -265,7 +283,7 @@ export default function VoziloCard({
                 className="bg-white text-primary hover:bg-white/90 font-semibold shadow-xl"
               >
                 <Eye className="w-5 h-5 mr-2" />
-                Quick View
+                {t("quickViewButton")}
               </Button>
             </div>
 
@@ -279,9 +297,9 @@ export default function VoziloCard({
             </div>
           </div>
 
-          <CardContent className={spacing.card.small}>
+          <CardContent className={`${spacing.card.small} bg-card`}>
             <h3
-              className={`${typography.h4} text-foreground group-hover:text-primary transition-colors`}
+              className={`${typography.h4} text-foreground group-hover:text-accent transition-colors`}
             >
               {vozilo.marka} {vozilo.model}
             </h3>

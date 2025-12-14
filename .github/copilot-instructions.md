@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-This is a **Next.js 16** car dealership website for "Produkt Auto" - a Croatian used car sales company. The website is fully in **Croatian language** and uses modern React patterns with TypeScript.
+This is a **Next.js 16** car dealership website for "Produkt Auto" - a Croatian used car sales company specializing in **import, retail, and wholesale of verified used vehicles**. The website is fully in **Croatian language** and uses modern React patterns with TypeScript.
 
 ## Tech Stack
 
@@ -25,7 +25,7 @@ src/
 │   ├── vozila/            # Vehicle listings & details
 │   ├── favoriti/          # Favorites page
 │   ├── usporedi/          # Compare vehicles page
-│   ├── kontakt/           # Contact page
+│   ├── kontakt/           # Veleprodaja (wholesale) page
 │   ├── o-nama/            # About us
 │   ├── privatnost/        # Privacy policy
 │   └── uvjeti/            # Terms & conditions
@@ -45,6 +45,14 @@ src/
 └── data/
     └── vozila.json       # Vehicle data
 ```
+
+## Navigation Structure
+
+The main navigation order is:
+1. **Početna** (/) - Home/Landing page
+2. **Vozila** (/vozila) - Vehicle listings
+3. **Veleprodaja** (/kontakt) - Wholesale partner page (formerly "Kontakt")
+4. **O Nama** (/o-nama) - About us
 
 ## Design System
 
@@ -139,7 +147,8 @@ All UI text must be in Croatian:
 - "Vozila" = Vehicles
 - "Favoriti" = Favorites
 - "Usporedi" = Compare
-- "Kontakt" = Contact
+- "Veleprodaja" = Wholesale
+- "O Nama" = About Us
 - "Pretraži" = Search
 - "Cijena" = Price
 - "Ušteda" = Savings
@@ -149,6 +158,8 @@ All UI text must be in Croatian:
 - "Mjenjač" = Transmission
 - "Ekskluzivno" = Exclusive
 - "Istaknuto" = Featured
+- "Gospodarska" = Commercial (vehicles)
+- "Postanite naš partner" = Become our partner
 
 ## Zustand Stores
 
@@ -275,3 +286,23 @@ WORKING_HOURS.saturday; // { open: "09:00", close: "17:00" }
 - Branch: `master`
 - Repository: https://github.com/VrachoxReact/Hasan
 - Commit messages: Descriptive, in English
+
+## Key Pages Content
+
+### O Nama (/o-nama)
+- Hero with company description
+- Stats section with 4 cards (Provjerena vozila, G1 Zaštita, Financiranje, Podrška)
+- Two-column layout: Maloprodaja (retail) & Veleprodaja (wholesale) cards
+- Philosophy banner: "Pošten pristup, transparentnost i dugoročna suradnja"
+- "Zašto odabrati Produkt Auto?" section with 4 values
+
+### Veleprodaja (/kontakt)
+- Hero: "Postanite naš partner" with wholesale description
+- Left side: Contact form ("Zatražite ponudu")
+- Right side: Partner benefits, contact info grid, map
+- Target audience: Existing and new vehicle traders in Croatia
+
+### Quick Filters on /vozila
+- Luksuzna (✨) - 40,000€ - 100,000€
+- Ekonomična (💰) - 0€ - 20,000€
+- Gospodarska (🚚) - 15,000€ - 35,000€

@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
+import { useTranslations } from "next-intl";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
@@ -17,6 +18,7 @@ interface KalkulatorFinanciranjaProps {
 export default function KalkulatorFinanciranja({
   cijenaVozila,
 }: KalkulatorFinanciranjaProps) {
+  const t = useTranslations("calculator");
   const [predujam, setPredujam] = useState(Math.round(cijenaVozila * 0.2));
   const [brojRata, setBrojRata] = useState(60);
   const [kamatnaStopa, setKamatnaStopa] = useState(6.9);
@@ -59,27 +61,28 @@ export default function KalkulatorFinanciranja({
 
   // Copy calculation to clipboard
   const handleCopy = async () => {
-    const summary = `Kalkulator financiranja\n\nCijena vozila: ${formatCijena(
-      cijenaVozila
-    )}\nPredujam: ${formatCijena(predujam)} (${Math.round(
-      (predujam / cijenaVozila) * 100
-    )}%)\nBroj rata: ${brojRata} mjeseci\nKamatna stopa: ${kamatnaStopa.toFixed(
-      2
-    )}%\n\nIznos kredita: ${formatCijena(
-      cijenaVozila - predujam
-    )}\nMjesečna rata: ${formatCijena(
-      Math.round(mjesecnaRata)
-    )}\nUkupna kamata: ${formatCijena(
-      Math.round(ukupnaKamata)
-    )}\nUkupno za platiti: ${formatCijena(Math.round(ukupnoZaPlacanje))}`;
+    const summary = t("clipboardSummary", {
+      title: t("title"),
+      vehiclePrice: formatCijena(cijenaVozila),
+      downPayment: formatCijena(predujam),
+      downPaymentPercent: Math.round((predujam / cijenaVozila) * 100),
+      installments: brojRata,
+      months: t("months"),
+      interestRateLabel: t("interestRate"),
+      interestRateValue: kamatnaStopa.toFixed(2),
+      loanAmount: formatCijena(cijenaVozila - predujam),
+      monthlyPayment: formatCijena(Math.round(mjesecnaRata)),
+      totalInterest: formatCijena(Math.round(ukupnaKamata)),
+      totalToPay: formatCijena(Math.round(ukupnoZaPlacanje)),
+    });
 
     try {
       await navigator.clipboard.writeText(summary);
       setCopySuccess(true);
-      toast.success("Izračun kopiran!");
+      toast.success(t("copied"));
       setTimeout(() => setCopySuccess(false), 2000);
     } catch (err) {
-      toast.error("Greška pri kopiranju");
+      toast.error(t("copyError"));
     }
   };
 
@@ -88,7 +91,7 @@ export default function KalkulatorFinanciranja({
       <CardHeader className="bg-accent/10 dark:bg-accent/20 border-b border-border/50">
         <CardTitle className="flex items-center gap-2 text-accent">
           <Calculator className="w-5 h-5" />
-          Kalkulator financiranja
+          {t("title")}
         </CardTitle>
       </CardHeader>
       <CardContent className="p-6 space-y-6">
@@ -96,7 +99,7 @@ export default function KalkulatorFinanciranja({
         <div>
           <div className="flex justify-between items-center mb-2">
             <label className="text-sm font-medium text-foreground">
-              Predujam (učešće)
+              {t("downPayment")}
             </label>
             <Input
               type="number"
@@ -133,7 +136,7 @@ export default function KalkulatorFinanciranja({
         <div>
           <div className="flex justify-between items-center mb-2">
             <label className="text-sm font-medium text-foreground">
-              Broj rata
+              {t("numberOfInstallments")}
             </label>
             <Input
               type="number"
@@ -157,8 +160,8 @@ export default function KalkulatorFinanciranja({
             className="mb-1"
           />
           <div className="flex justify-between text-xs text-muted-foreground">
-            <span>12 mj.</span>
-            <span>84 mj.</span>
+            <span>{t("monthsShort", { count: 12 })}</span>
+            <span>{t("monthsShort", { count: 84 })}</span>
           </div>
         </div>
 
@@ -166,7 +169,7 @@ export default function KalkulatorFinanciranja({
         <div>
           <div className="flex justify-between items-center mb-2">
             <label className="text-sm font-medium text-foreground">
-              Godišnja kamatna stopa
+              {t("annualInterestRate")}
             </label>
             <Input
               type="number"
@@ -199,19 +202,19 @@ export default function KalkulatorFinanciranja({
         {/* Rezultati */}
         <div className="pt-4 border-t border-border space-y-3">
           <div className="flex justify-between items-center">
-            <span className="text-muted-foreground">Iznos kredita:</span>
+            <span className="text-muted-foreground">{t("loanAmount")}:</span>
             <span className="font-medium">
               {formatCijena(cijenaVozila - predujam)}
             </span>
           </div>
           <div className="flex justify-between items-center">
-            <span className="text-muted-foreground">Ukupna kamata:</span>
+            <span className="text-muted-foreground">{t("totalInterest")}:</span>
             <span className="font-medium text-destructive">
               {formatCijena(Math.round(ukupnaKamata))}
             </span>
           </div>
           <div className="flex justify-between items-center">
-            <span className="text-muted-foreground">Ukupno za platiti:</span>
+            <span className="text-muted-foreground">{t("totalToPay")}:</span>
             <span className="font-medium">
               {formatCijena(Math.round(ukupnoZaPlacanje))}
             </span>
@@ -224,7 +227,9 @@ export default function KalkulatorFinanciranja({
             animate={{ scale: 1 }}
             className="bg-accent/10 rounded-xl p-4 text-center mt-4"
           >
-            <p className="text-sm text-muted-foreground mb-1">Mjesečna rata</p>
+            <p className="text-sm text-muted-foreground mb-1">
+              {t("monthlyPayment")}
+            </p>
             <p className="text-3xl font-bold text-accent">
               {formatCijena(Math.round(mjesecnaRata))}
             </p>
@@ -234,7 +239,7 @@ export default function KalkulatorFinanciranja({
         {/* Comparison Table */}
         <div className="pt-4 border-t border-border">
           <h4 className="text-sm font-semibold text-foreground mb-3">
-            Usporedba opcija financiranja
+            {t("comparisonTitle")}
           </h4>
           <div className="grid grid-cols-1 min-[400px]:grid-cols-3 gap-3">
             {comparisonCalculations.map(({ term, mjesecnaRata: rata }) => (
@@ -247,12 +252,12 @@ export default function KalkulatorFinanciranja({
                 }`}
               >
                 <p className="text-xs text-muted-foreground mb-1">
-                  {term} mjeseci
+                  {t("months", { count: term })}
                 </p>
                 <p className="text-lg font-bold text-accent">
                   {formatCijena(Math.round(rata))}
                 </p>
-                <p className="text-xs text-muted-foreground">mjesečno</p>
+                <p className="text-xs text-muted-foreground">{t("monthly")}</p>
               </div>
             ))}
           </div>
@@ -268,12 +273,12 @@ export default function KalkulatorFinanciranja({
           {copySuccess ? (
             <>
               <Check className="w-4 h-4 mr-2" />
-              Kopirano!
+              {t("copied")}
             </>
           ) : (
             <>
               <Copy className="w-4 h-4 mr-2" />
-              Kopiraj izračun
+              {t("copyCalculation")}
             </>
           )}
         </Button>
@@ -281,11 +286,7 @@ export default function KalkulatorFinanciranja({
         {/* Info */}
         <div className="flex items-start gap-2 text-xs text-muted-foreground bg-muted/50 rounded-lg p-3">
           <Info className="w-4 h-4 shrink-0 mt-0.5" />
-          <p>
-            Ovo je informativni izračun. Stvarni uvjeti financiranja mogu se
-            razlikovati ovisno o banci i vašoj kreditnoj sposobnosti.
-            Kontaktirajte nas za preciznu ponudu.
-          </p>
+          <p>{t("disclaimer")}</p>
         </div>
       </CardContent>
     </Card>

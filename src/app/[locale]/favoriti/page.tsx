@@ -3,7 +3,8 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Heart, Trash2, ArrowLeft } from "lucide-react";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import VoziloCard from "@/components/VoziloCard";
 import {
@@ -17,6 +18,8 @@ import { typography, spacing, components } from "@/lib/designTokens";
 export default function FavoritiPage() {
   const [mounted, setMounted] = useState(false);
   const { favoriti, clearFavoriti } = useFavoritiStore();
+  const t = useTranslations("favorites");
+  const tCommon = useTranslations("common");
 
   useEffect(() => {
     setMounted(true);
@@ -25,7 +28,9 @@ export default function FavoritiPage() {
   if (!mounted) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-pulse text-muted-foreground">Učitavanje...</div>
+        <div className="animate-pulse text-muted-foreground">
+          {t("loading")}
+        </div>
       </div>
     );
   }
@@ -38,18 +43,16 @@ export default function FavoritiPage() {
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
             <div className="flex items-center gap-3">
               <Heart
-                className={`w-8 h-8 text-red-500 fill-red-500 ${components.icon.accent}`}
+                className={`w-8 h-8 text-favorite fill-favorite ${components.icon.accent}`}
               />
               <div>
                 <h1 className={`${typography.h2} text-foreground`}>
-                  Moji favoriti
+                  {t("pageTitle")}
                 </h1>
                 <p className={`${typography.body} text-muted-foreground`}>
                   {favoriti.length === 0
-                    ? "Nemate spremljenih favorita"
-                    : `${favoriti.length} ${
-                        favoriti.length === 1 ? "vozilo" : "vozila"
-                      }`}
+                    ? t("emptyTitle")
+                    : t("vehicleCount", { count: favoriti.length })}
                 </p>
               </div>
             </div>
@@ -57,11 +60,11 @@ export default function FavoritiPage() {
             {favoriti.length > 0 && (
               <Button
                 variant="outline"
-                className="text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950"
+                className="text-favorite hover:text-favorite/90 hover:bg-favorite/10 dark:hover:bg-favorite/20"
                 onClick={clearFavoriti}
               >
                 <Trash2 className="w-4 h-4 mr-2" />
-                Obriši sve
+                {t("clearAll")}
               </Button>
             )}
           </div>
@@ -79,18 +82,17 @@ export default function FavoritiPage() {
                 <Heart className="w-12 h-12 text-muted-foreground" />
               </motion.div>
               <h2 className={`${typography.h3} text-foreground mb-4`}>
-                Nemate spremljenih favorita
+                {t("emptyTitle")}
               </h2>
               <p
                 className={`${typography.body} text-muted-foreground mb-8 max-w-md mx-auto`}
               >
-                Pregledajte našu ponudu i dodajte vozila u favorite klikom na
-                ikonu srca. Vaši omiljeni automobili će biti ovdje sačuvani.
+                {t("emptyDescription")}
               </p>
               <Link href="/vozila">
                 <Button size="lg" className={components.button.primary}>
                   <ArrowLeft className="w-4 h-4 mr-2" />
-                  Pregledaj vozila
+                  {t("browseVehicles")}
                 </Button>
               </Link>
             </div>
@@ -115,7 +117,7 @@ export default function FavoritiPage() {
             <Link href="/vozila">
               <Button variant="outline" size="lg">
                 <ArrowLeft className="w-4 h-4 mr-2" />
-                Natrag na sva vozila
+                {t("backToVehicles")}
               </Button>
             </Link>
           </div>

@@ -1,7 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
 import {
   Shield,
@@ -28,96 +29,95 @@ import {
 } from "@/components/PageTransition";
 import { typography, spacing, components } from "@/lib/designTokens";
 
-const values = [
-  {
-    icon: FileCheck,
-    title: "Provjerena vozila",
-    description:
-      "Sva vozila dolaze s provjerenom poviješću i urednom servisnom dokumentacijom.",
-  },
-  {
-    icon: Shield,
-    title: "Garancija porijekla i G1 zaštita",
-    description:
-      "Na svako vozilo nudimo garanciju porijekla, a uz to možete aktivirati i G1 produženo jamstvo motora i mjenjača do 12 mjeseci, što vam daje dodatnu sigurnost i bezbrižnost nakon kupnje.",
-  },
-  {
-    icon: TrendingUp,
-    title: "Mogućnost financiranja",
-    description: "Fleksibilne opcije financiranja putem vodećih banaka.",
-  },
-  {
-    icon: Heart,
-    title: "Podrška nakon kupnje",
-    description:
-      "Stojimo vam na raspolaganju za sva pitanja i savjete čak i nakon što preuzmete vozilo.",
-  },
-];
-
-const maloprodajaFeatures = [
-  {
-    icon: FileCheck,
-    title: "Provjerena povijest",
-    description: "Uredna dokumentacija i transparentna servisna povijest",
-  },
-  {
-    icon: Shield,
-    title: "Bez iznenađenja",
-    description: "Temeljit pregled svakog vozila prije prodaje",
-  },
-  {
-    icon: CheckCircle,
-    title: "Sigurna kupnja",
-    description: "Realna tržišna cijena bez skrivenih nedostataka",
-  },
-];
-
-const veleprodajaFeatures = [
-  {
-    icon: TrendingUp,
-    title: "Konkurentne cijene",
-    description: "Veleprodajne cijene prilagođene trgovcima",
-  },
-  {
-    icon: Handshake,
-    title: "Fleksibilna suradnja",
-    description: "Partnerstvo usmjereno na zajednički rast",
-  },
-  {
-    icon: Truck,
-    title: "Podrška",
-    description: "Kontinuirana podrška za bolje rezultate",
-  },
-];
-
-const stats = [
-  {
-    icon: FileCheck,
-    value: "100%",
-    label: "Provjerena vozila",
-    sublabel: "s dokumentacijom",
-  },
-  {
-    icon: Shield,
-    value: "12 mj.",
-    label: "G1 Zaštita",
-    sublabel: "jamstvo motora",
-  },
-  {
-    icon: TrendingUp,
-    value: "Kredit",
-    label: "Financiranje",
-    sublabel: "vodeće banke",
-  },
-  {
-    icon: Heart,
-    value: "Non-stop",
-    label: "Podrška",
-    sublabel: "i nakon kupnje",
-  },
-];
-
 export default function ONamaPage() {
+  const t = useTranslations("about");
+
+  const values = [
+    {
+      icon: FileCheck,
+      title: t("values.verified.title"),
+      description: t("values.verified.description"),
+    },
+    {
+      icon: Shield,
+      title: t("values.warranty.title"),
+      description: t("values.warranty.description"),
+    },
+    {
+      icon: TrendingUp,
+      title: t("values.financing.title"),
+      description: t("values.financing.description"),
+    },
+    {
+      icon: Heart,
+      title: t("values.support.title"),
+      description: t("values.support.description"),
+    },
+  ];
+
+  const maloprodajaFeatures = [
+    {
+      icon: FileCheck,
+      title: t("retail.features.history.title"),
+      description: t("retail.features.history.description"),
+    },
+    {
+      icon: Shield,
+      title: t("retail.features.noSurprises.title"),
+      description: t("retail.features.noSurprises.description"),
+    },
+    {
+      icon: CheckCircle,
+      title: t("retail.features.safePurchase.title"),
+      description: t("retail.features.safePurchase.description"),
+    },
+  ];
+
+  const veleprodajaFeatures = [
+    {
+      icon: TrendingUp,
+      title: t("wholesale.features.prices.title"),
+      description: t("wholesale.features.prices.description"),
+    },
+    {
+      icon: Handshake,
+      title: t("wholesale.features.cooperation.title"),
+      description: t("wholesale.features.cooperation.description"),
+    },
+    {
+      icon: Truck,
+      title: t("wholesale.features.support.title"),
+      description: t("wholesale.features.support.description"),
+    },
+  ];
+
+  const stats = [
+    {
+      icon: FileCheck,
+      value: "100%",
+      label: t("stats.verified.label"),
+      sublabel: t("stats.verified.sublabel"),
+    },
+    {
+      icon: Shield,
+      value: t("stats.warranty.value"),
+      label: t("stats.warranty.label"),
+      sublabel: t("stats.warranty.sublabel"),
+    },
+    {
+      icon: TrendingUp,
+      value: t("stats.financing.value"),
+      label: t("stats.financing.label"),
+      sublabel: t("stats.financing.sublabel"),
+    },
+    {
+      icon: Heart,
+      value: t("stats.support.value"),
+      label: t("stats.support.label"),
+      sublabel: t("stats.support.sublabel"),
+    },
+  ];
+
   return (
     <div className="min-h-screen">
       {/* Hero Section - Redesigned with diagonal split */}
@@ -146,7 +146,7 @@ export default function ONamaPage() {
                 transition={{ delay: 0.2 }}
                 className="inline-block px-4 py-1.5 bg-accent/20 backdrop-blur-sm text-white rounded-full text-sm font-medium mb-6"
               >
-                Vaš pouzdani partner
+                {t("hero.yourPartner")}
               </motion.span>
               <h1 className={`${typography.h1} text-white mb-6`}>
                 Produkt Auto
@@ -154,10 +154,7 @@ export default function ONamaPage() {
               <p
                 className={`${typography.bodyLarge} text-white/90 leading-relaxed`}
               >
-                Specijalizirani smo za uvoz, prodaju i veleprodaju provjerenih
-                rabljenih vozila. Naš fokus je isključivo na pouzdanim vozilima
-                s urednom dokumentacijom, provjerenom poviješću i realnom
-                tržišnom cijenom.
+                {t("companyDescription")}
               </p>
             </motion.div>
           </div>
@@ -227,22 +224,19 @@ export default function ONamaPage() {
                       </div>
                       <div>
                         <h2 className="text-2xl font-bold text-foreground">
-                          Maloprodaja
+                          {t("retail.title")}
                         </h2>
                         <p className="text-muted-foreground text-sm">
-                          Za privatne kupce
+                          {t("retail.subtitle")}
                         </p>
                       </div>
                     </div>
 
                     <p className="text-muted-foreground mb-6 leading-relaxed">
-                      Kupcima nudimo sigurnu i transparentnu kupnju — svako
-                      vozilo prolazi temeljit pregled, bez skrivenih nedostataka
-                      i bez neugodnih iznenađenja.
+                      {t("retail.description")}
                       <span className="text-foreground font-medium">
                         {" "}
-                        Ako vam je dosta neizvjesnosti pri kupnji rabljenog
-                        automobila, kod nas ste na pravom mjestu.
+                        {t("retail.highlight")}
                       </span>
                     </p>
 
@@ -273,7 +267,7 @@ export default function ONamaPage() {
 
                     <Link href="/vozila">
                       <Button className="w-full bg-accent hover:bg-accent/90 text-white">
-                        Pregledaj vozila
+                        {t("retail.browseVehicles")}
                         <ArrowRight className="w-4 h-4 ml-2" />
                       </Button>
                     </Link>
@@ -293,22 +287,18 @@ export default function ONamaPage() {
                       </div>
                       <div>
                         <h2 className="text-2xl font-bold text-foreground">
-                          Veleprodaja
+                          {t("wholesale.title")}
                         </h2>
                         <p className="text-muted-foreground text-sm">
-                          Za trgovce vozilima
+                          {t("wholesaleCard.subtitle")}
                         </p>
                       </div>
                     </div>
 
                     <p className="text-muted-foreground mb-6 leading-relaxed">
-                      Produkt Auto je pouzdan partner postojećim i budućim
-                      trgovcima vozilima na području Hrvatske. Nudimo
-                      konkurentne veleprodajne cijene, fleksibilnu suradnju i
-                      podršku s ciljem{" "}
+                      {t("wholesaleCard.description")}{" "}
                       <span className="text-foreground font-medium">
-                        zajedničkog rasta i postizanja boljih rezultata u
-                        autoindustriji.
+                        {t("wholesaleCard.descriptionHighlight")}
                       </span>
                     </p>
 
@@ -342,7 +332,7 @@ export default function ONamaPage() {
                         variant="outline"
                         className="w-full border-primary/50 text-primary hover:bg-primary hover:text-white dark:border-white/50 dark:text-white dark:hover:bg-white dark:hover:text-primary"
                       >
-                        Kontaktiraj nas
+                        {t("wholesaleCard.contactUs")}
                         <ArrowRight className="w-4 h-4 ml-2" />
                       </Button>
                     </Link>
@@ -370,15 +360,14 @@ export default function ONamaPage() {
               className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full mb-6"
             >
               <Heart className="w-5 h-5 text-white" />
-              <span className="text-white/90 font-medium">Naša filozofija</span>
+              <span className="text-white/90 font-medium">
+                {t("philosophy.title")}
+              </span>
             </motion.div>
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-              Pošten pristup, transparentnost i dugoročna suradnja.
+              {t("philosophy.description")}
             </h2>
-            <p className="text-white/80 text-lg">
-              To su temelji na kojima gradimo povjerenje s našim kupcima i
-              partnerima.
-            </p>
+            <p className="text-white/80 text-lg">{t("philosophy.subtitle")}</p>
           </motion.div>
         </div>
       </section>
@@ -389,10 +378,10 @@ export default function ONamaPage() {
           <FadeIn>
             <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-                Zašto odabrati Produkt Auto?
+                {t("values.title")}
               </h2>
               <p className="text-muted-foreground max-w-2xl mx-auto">
-                Vaša sigurnost i zadovoljstvo su nam na prvom mjestu.
+                {t("valuesSubtitle")}
               </p>
             </div>
           </FadeIn>
@@ -428,11 +417,10 @@ export default function ONamaPage() {
           <FadeIn>
             <div className="text-center max-w-2xl mx-auto">
               <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-                Spremni za suradnju?
+                {t("cta.title")}
               </h2>
               <p className="text-muted-foreground mb-8">
-                Bilo da tražite pouzdano vozilo ili ste trgovac koji traži
-                pouzdanog partnera, tu smo za vas.
+                {t("cta.description")}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link href="/vozila">
@@ -441,7 +429,7 @@ export default function ONamaPage() {
                     className="bg-accent hover:bg-accent/90 text-white min-w-[200px]"
                   >
                     <Car className="w-5 h-5 mr-2" />
-                    Pogledaj vozila
+                    {t("cta.viewVehicles")}
                   </Button>
                 </Link>
                 <Link href="/kontakt">
@@ -451,7 +439,7 @@ export default function ONamaPage() {
                     className="border-primary/50 text-primary hover:bg-primary hover:text-white dark:border-white/50 dark:text-white dark:hover:bg-white dark:hover:text-primary min-w-[200px]"
                   >
                     <Handshake className="w-5 h-5 mr-2" />
-                    Postani partner
+                    {t("cta.becomePartner")}
                   </Button>
                 </Link>
               </div>

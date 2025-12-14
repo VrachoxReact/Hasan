@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Clock, ChevronRight } from "lucide-react";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import VoziloCard from "@/components/VoziloCard";
 import { useFavoritiStore } from "@/stores/favoritiStore";
@@ -11,6 +12,7 @@ import { getVoziloById } from "@/lib/vozila";
 import { Vozilo } from "@/types/vozilo";
 
 export default function RecentlyViewed() {
+  const t = useTranslations("recentlyViewed");
   const [recentVozila, setRecentVozila] = useState<Vozilo[]>([]);
   const [mounted, setMounted] = useState(false);
   const getRecentlyViewedIds = useFavoritiStore(
@@ -42,16 +44,14 @@ export default function RecentlyViewed() {
         >
           <div className="flex items-center gap-3">
             <Clock className="w-6 h-6 text-accent" />
-            <h2 className="text-2xl font-bold text-foreground">
-              Nedavno pregledano
-            </h2>
+            <h2 className="text-2xl font-bold text-foreground">{t("title")}</h2>
           </div>
           <Link href="/vozila">
             <Button
               variant="ghost"
               className="text-accent hover:text-accent/80"
             >
-              Sva vozila
+              {t("allVehicles")}
               <ChevronRight className="w-4 h-4 ml-1" />
             </Button>
           </Link>

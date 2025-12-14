@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   X,
@@ -34,6 +34,7 @@ import PriceDisplay from "@/components/PriceDisplay";
 import { useUsporediStore } from "@/stores/usporediStore";
 import { toast } from "sonner";
 import { typography, components } from "@/lib/designTokens";
+import { useTranslations } from "next-intl";
 
 interface QuickViewModalProps {
   vozilo: Vozilo;
@@ -46,6 +47,7 @@ export default function QuickViewModal({
   isOpen,
   onClose,
 }: QuickViewModalProps) {
+  const t = useTranslations("vehicles");
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const { addVozilo, isInList } = useUsporediStore();
   const isComparing = isInList(vozilo.id);
@@ -69,9 +71,11 @@ export default function QuickViewModal({
     if (!isComparing) {
       const success = addVozilo(vozilo);
       if (success) {
-        toast.success(`${vozilo.marka} ${vozilo.model} dodan u usporedbu`);
+        toast.success(
+          t("card.addedToCompare", { brand: vozilo.marka, model: vozilo.model })
+        );
       } else {
-        toast.error("Možete usporediti maksimalno 3 vozila");
+        toast.error(t("card.maxCompareReached"));
       }
     }
   };
@@ -83,7 +87,7 @@ export default function QuickViewModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="w-full max-w-[calc(100%-2rem)] sm:max-w-xl md:max-w-2xl lg:max-w-4xl max-h-[calc(100dvh-4rem)] overflow-y-auto p-4 sm:p-6">
         <DialogHeader>
           <DialogTitle className={typography.h3}>
             {vozilo.marka} {vozilo.model} ({vozilo.godina})
@@ -118,15 +122,15 @@ export default function QuickViewModal({
             <>
               <button
                 onClick={prevImage}
-                className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 hover:bg-white dark:bg-gray-800/90 dark:hover:bg-gray-800 flex items-center justify-center shadow-lg transition-all z-10"
-                aria-label="Prethodna slika"
+                className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 hover:bg-white dark:bg-card/90 dark:hover:bg-card flex items-center justify-center shadow-lg transition-all z-10"
+                aria-label={t("detail.previousImage")}
               >
                 <ChevronLeft className="w-6 h-6" />
               </button>
               <button
                 onClick={nextImage}
-                className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 hover:bg-white dark:bg-gray-800/90 dark:hover:bg-gray-800 flex items-center justify-center shadow-lg transition-all z-10"
-                aria-label="Sljedeća slika"
+                className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 hover:bg-white dark:bg-card/90 dark:hover:bg-card flex items-center justify-center shadow-lg transition-all z-10"
+                aria-label={t("detail.nextImage")}
               >
                 <ChevronRight className="w-6 h-6" />
               </button>
@@ -139,7 +143,7 @@ export default function QuickViewModal({
             {vozilo.slike.length > 5 && (
               <span className="text-white/70">
                 {" "}
-                (+{vozilo.slike.length - 5} više)
+                (+{vozilo.slike.length - 5} {t("quickView.moreImages")})
               </span>
             )}
           </div>
@@ -148,7 +152,9 @@ export default function QuickViewModal({
         {/* Price Display */}
         <div className="flex items-center justify-between py-4 border-y border-border">
           <div>
-            <p className="text-sm text-muted-foreground mb-1">Cijena</p>
+            <p className="text-sm text-muted-foreground mb-1">
+              {t("quickView.price")}
+            </p>
             <PriceDisplay
               price={vozilo.cijena}
               oldPrice={vozilo.staracijena}
@@ -157,7 +163,9 @@ export default function QuickViewModal({
           </div>
           {vozilo.staracijena && vozilo.staracijena > vozilo.cijena && (
             <div className="text-right">
-              <p className="text-sm text-muted-foreground">Ušteda</p>
+              <p className="text-sm text-muted-foreground">
+                {t("card.savings")}
+              </p>
               <p className="text-xl font-bold text-success">
                 {formatCijena(vozilo.staracijena - vozilo.cijena)}
               </p>
@@ -170,14 +178,16 @@ export default function QuickViewModal({
           <div className={components.metadata.container}>
             <Calendar className={components.metadata.icon} />
             <div>
-              <p className="text-xs text-muted-foreground">Godina</p>
+              <p className="text-xs text-muted-foreground">{t("card.year")}</p>
               <p className="font-semibold">{vozilo.godina}</p>
             </div>
           </div>
           <div className={components.metadata.container}>
             <Gauge className={components.metadata.icon} />
             <div>
-              <p className="text-xs text-muted-foreground">Kilometraža</p>
+              <p className="text-xs text-muted-foreground">
+                {t("card.mileage")}
+              </p>
               <p className="font-semibold">
                 {formatKilometraza(vozilo.kilometraza)}
               </p>
@@ -186,14 +196,18 @@ export default function QuickViewModal({
           <div className={components.metadata.container}>
             <Fuel className={components.metadata.icon} />
             <div>
-              <p className="text-xs text-muted-foreground">Gorivo</p>
+              <p className="text-xs text-muted-foreground">
+                {t("quickView.fuel")}
+              </p>
               <p className="font-semibold">{getGorivoLabel(vozilo.gorivo)}</p>
             </div>
           </div>
           <div className={components.metadata.container}>
             <Settings className={components.metadata.icon} />
             <div>
-              <p className="text-xs text-muted-foreground">Mjenjač</p>
+              <p className="text-xs text-muted-foreground">
+                {t("quickView.transmission")}
+              </p>
               <p className="font-semibold">{getMjenjacLabel(vozilo.mjenjac)}</p>
             </div>
           </div>
@@ -215,11 +229,13 @@ export default function QuickViewModal({
             className="w-full sm:w-auto"
           >
             <GitCompare className="w-4 h-4 mr-2" />
-            {isComparing ? "U usporedbi" : "Dodaj u usporedbu"}
+            {isComparing
+              ? t("quickView.inComparison")
+              : t("quickView.addToCompare")}
           </Button>
           <Button asChild className="w-full sm:w-auto">
             <Link href={`/vozila/${vozilo.id}`}>
-              Pogledaj sve detalje
+              {t("quickView.viewAllDetails")}
               <ArrowRight className="w-4 h-4 ml-2" />
             </Link>
           </Button>

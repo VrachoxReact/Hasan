@@ -2,7 +2,8 @@
 
 import * as React from "react";
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
@@ -42,6 +43,7 @@ interface HeroCarouselProps {
 }
 
 export default function HeroCarousel({ children }: HeroCarouselProps) {
+  const t = useTranslations("hero");
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [
     Autoplay({ delay: 5000, stopOnInteraction: false }),
   ]);
@@ -86,7 +88,7 @@ export default function HeroCarousel({ children }: HeroCarouselProps) {
     <section className="relative">
       {/* Carousel Container */}
       <div
-        className="relative h-[70vh] md:h-[80vh] overflow-hidden"
+        className="relative h-[60vh] md:h-[70vh] lg:h-[80vh] overflow-hidden"
         ref={emblaRef}
       >
         <div className="flex h-full">
@@ -140,7 +142,7 @@ export default function HeroCarousel({ children }: HeroCarouselProps) {
                   <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -skew-x-12 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
                   <Car className="w-5 h-5 sm:w-7 sm:h-7 mr-2 sm:mr-3 relative z-10 group-hover:rotate-12 transition-transform" />
                   <span className="relative z-10 tracking-widest drop-shadow-lg">
-                    DOSTUPNA VOZILA
+                    {t("availableVehicles")}
                   </span>
                 </Button>
               </motion.div>
@@ -169,7 +171,7 @@ export default function HeroCarousel({ children }: HeroCarouselProps) {
                   <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -skew-x-12 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
                   <Building2 className="w-5 h-5 sm:w-7 sm:h-7 mr-2 sm:mr-3 relative z-10 group-hover:rotate-12 transition-transform" />
                   <span className="relative z-10 tracking-widest drop-shadow-lg">
-                    VELEPRODAJA VOZILA
+                    {t("wholesale")}
                   </span>
                 </Button>
               </motion.div>

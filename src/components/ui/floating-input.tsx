@@ -244,7 +244,7 @@ const FloatingTextarea = React.forwardRef<
             <span
               className={cn(
                 charCount >= maxLength ? "text-destructive font-medium" : "",
-                charCount >= maxLength * 0.9 ? "text-amber-500" : ""
+                charCount >= maxLength * 0.9 ? "text-warning" : ""
               )}
             >
               {charCount}

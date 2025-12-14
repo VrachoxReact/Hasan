@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useMemo } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import {
   Phone,
@@ -27,57 +27,72 @@ import {
   FloatingInput,
   FloatingTextarea,
 } from "@/components/ui/floating-input";
-import {
-  FadeIn,
-  SlideIn,
-  StaggerContainer,
-  StaggerItem,
-} from "@/components/PageTransition";
+import { FadeIn, SlideIn } from "@/components/PageTransition";
 import { toast } from "sonner";
-import { typography, spacing, components } from "@/lib/designTokens";
+import { typography, components } from "@/lib/designTokens";
 import { contactFormSchema } from "@/lib/schemas";
 import { CONTACT, WORKING_HOURS } from "@/lib/constants";
-
-const contactInfo = [
-  {
-    icon: Phone,
-    title: "Telefon",
-    content: CONTACT.phone,
-    href: `tel:${CONTACT.phoneRaw}`,
-    description: `${WORKING_HOURS.weekdays.label}: ${WORKING_HOURS.weekdays.open} - ${WORKING_HOURS.weekdays.close}`,
-  },
-  {
-    icon: Mail,
-    title: "Email",
-    content: CONTACT.email,
-    href: `mailto:${CONTACT.email}`,
-    description: "Odgovaramo unutar 24h",
-  },
-  {
-    icon: MapPin,
-    title: "Adresa",
-    content: CONTACT.address.street,
-    href: CONTACT.maps.directionsUrl,
-    description: `${CONTACT.address.postalCode} ${CONTACT.address.city}, ${CONTACT.address.country}`,
-  },
-  {
-    icon: Clock,
-    title: "Radno vrijeme",
-    content: `${WORKING_HOURS.weekdays.label}: ${WORKING_HOURS.weekdays.open} - ${WORKING_HOURS.weekdays.close}`,
-    href: null,
-    description: `${WORKING_HOURS.saturday.label}: ${WORKING_HOURS.saturday.open} - ${WORKING_HOURS.saturday.close}`,
-  },
-];
-
-const budgetOptions = [
-  { value: "do-15000", label: "Do 15.000 €" },
-  { value: "15000-25000", label: "15.000 € - 25.000 €" },
-  { value: "25000-40000", label: "25.000 € - 40.000 €" },
-  { value: "40000-60000", label: "40.000 € - 60.000 €" },
-  { value: "preko-60000", label: "Preko 60.000 €" },
-];
+import { useTranslations } from "next-intl";
 
 export default function KontaktPage() {
+  const t = useTranslations("contact");
+  const tCommon = useTranslations("common");
+
+  const contactInfo = useMemo(
+    () => [
+      {
+        icon: Phone,
+        titleKey: "info.phone",
+        content: CONTACT.phone,
+        href: `tel:${CONTACT.phoneRaw}`,
+        description: `${WORKING_HOURS.weekdays.label}: ${WORKING_HOURS.weekdays.open} - ${WORKING_HOURS.weekdays.close}`,
+      },
+      {
+        icon: Mail,
+        titleKey: "info.email",
+        content: CONTACT.email,
+        href: `mailto:${CONTACT.email}`,
+        descriptionKey: "info.responseTime",
+      },
+      {
+        icon: MapPin,
+        titleKey: "info.address",
+        content: CONTACT.address.street,
+        href: CONTACT.maps.directionsUrl,
+        description: `${CONTACT.address.postalCode} ${CONTACT.address.city}, ${CONTACT.address.country}`,
+      },
+      {
+        icon: Clock,
+        titleKey: "info.workingHours",
+        content: `${WORKING_HOURS.weekdays.label}: ${WORKING_HOURS.weekdays.open} - ${WORKING_HOURS.weekdays.close}`,
+        href: null,
+        description: `${WORKING_HOURS.saturday.label}: ${WORKING_HOURS.saturday.open} - ${WORKING_HOURS.saturday.close}`,
+      },
+    ],
+    []
+  );
+
+  const budgetOptions = useMemo(
+    () => [
+      { value: "do-15000", labelKey: "budget.upTo15k" },
+      { value: "15000-25000", labelKey: "budget.15kTo25k" },
+      { value: "25000-40000", labelKey: "budget.25kTo40k" },
+      { value: "40000-60000", labelKey: "budget.40kTo60k" },
+      { value: "preko-60000", labelKey: "budget.over60k" },
+    ],
+    []
+  );
+
+  const partnerBenefits = useMemo(
+    () => [
+      t("info.benefits.prices"),
+      t("info.benefits.terms"),
+      t("info.benefits.selection"),
+      t("info.benefits.delivery"),
+      t("info.benefits.support"),
+    ],
+    [t]
+  );
   const [formData, setFormData] = useState({
     ime: "",
     email: "",
@@ -117,13 +132,13 @@ export default function KontaktPage() {
     const now = Date.now();
     const MIN_SUBMIT_INTERVAL = 5000; // 5 seconds
     if (now - lastSubmitTime.current < MIN_SUBMIT_INTERVAL) {
-      toast.error("Molimo pričekajte prije ponovnog slanja");
+      toast.error(t("form.pleaseWait"));
       return;
     }
 
     // Validate form
     if (!validateForm()) {
-      toast.error("Molimo ispravite greške u obrascu");
+      toast.error(t("form.fixErrors"));
       return;
     }
 
@@ -135,7 +150,7 @@ export default function KontaktPage() {
 
     setIsSubmitting(false);
     setIsSubmitted(true);
-    toast.success("Vaša poruka je uspješno poslana!");
+    toast.success(t("form.success"));
 
     // Reset form after delay
     setTimeout(() => {
@@ -222,18 +237,15 @@ export default function KontaktPage() {
                 transition={{ delay: 0.2 }}
                 className="inline-block px-4 py-1.5 bg-accent/20 backdrop-blur-sm text-white rounded-full text-sm font-medium mb-6"
               >
-                Veleprodaja vozila
+                {t("hero.badge")}
               </motion.span>
               <h1 className={`${typography.h1} text-white mb-6 drop-shadow-lg`}>
-                Postanite naš partner
+                {t("hero.title")}
               </h1>
               <p
                 className={`${typography.bodyLarge} text-white/95 drop-shadow-md max-w-2xl mx-auto`}
               >
-                Bilo da ste već aktivan trgovac ili tek ulazite u
-                autoindustriju, Produkt Auto nudi pouzdano partnerstvo,
-                konkurentne veleprodajne cijene i podršku usmjerenu na
-                zajednički uspjeh.
+                {t("hero.subtitle")}
               </p>
             </div>
           </FadeIn>
@@ -326,12 +338,12 @@ export default function KontaktPage() {
                       </motion.div>
                       <div>
                         <h2 className={`${typography.h3} text-foreground mb-1`}>
-                          Zatražite ponudu
+                          {t("form.title")}
                         </h2>
                         <p
                           className={`${typography.small} text-muted-foreground`}
                         >
-                          Ispunite obrazac i javit ćemo vam se u najkraćem roku
+                          {t("form.subtitle")}
                         </p>
                       </div>
                     </motion.div>
@@ -399,7 +411,7 @@ export default function KontaktPage() {
                             transition={{ delay: 0.3 }}
                             className="text-xl font-bold text-success mb-3"
                           >
-                            Hvala na upitu!
+                            {t("form.thankYou")}
                           </motion.h3>
                           <motion.p
                             initial={{ opacity: 0, y: 20 }}
@@ -407,8 +419,7 @@ export default function KontaktPage() {
                             transition={{ delay: 0.4 }}
                             className="text-success/80"
                           >
-                            Vaš upit je uspješno zaprimljen. Javit ćemo vam se u
-                            najkraćem mogućem roku.
+                            {t("form.successMessage")}
                           </motion.p>
                         </motion.div>
                       ) : (
@@ -426,17 +437,19 @@ export default function KontaktPage() {
                               aria-live="polite"
                               className="sr-only"
                             >
-                              Obrazac sadrži {Object.keys(errors).length}{" "}
                               {Object.keys(errors).length === 1
-                                ? "grešku"
-                                : "greške"}
-                              .
+                                ? t("form.formHasErrors", {
+                                    count: Object.keys(errors).length,
+                                  })
+                                : t("form.formHasErrorsPlural", {
+                                    count: Object.keys(errors).length,
+                                  })}
                             </div>
                           )}
 
                           <div className={components.form.row}>
                             <FloatingInput
-                              label="Ime i prezime *"
+                              label={`${t("form.name")} *`}
                               icon={User}
                               value={formData.ime}
                               className="h-14 text-base"
@@ -451,8 +464,9 @@ export default function KontaktPage() {
                               error={errors.ime}
                             />
                             <FloatingInput
-                              label="Email *"
+                              label={`${t("form.email")} *`}
                               type="email"
+                              inputMode="email"
                               icon={Mail}
                               value={formData.email}
                               className="h-14 text-base"
@@ -470,8 +484,9 @@ export default function KontaktPage() {
 
                           <div className={components.form.row}>
                             <FloatingInput
-                              label="Telefon *"
+                              label={`${t("form.phone")} *`}
                               type="tel"
+                              inputMode="tel"
                               icon={Phone}
                               value={formData.telefon}
                               className="h-14 text-base"
@@ -494,7 +509,9 @@ export default function KontaktPage() {
                               <SelectTrigger className="w-full h-14 px-4 text-base rounded-xl border border-input bg-background transition-all duration-200 focus:border-accent focus:ring-2 focus:ring-accent/20 outline-none">
                                 <div className="flex items-center gap-3">
                                   <Euro className="w-5 h-5 text-muted-foreground shrink-0" />
-                                  <SelectValue placeholder="Odaberite budžet" />
+                                  <SelectValue
+                                    placeholder={t("form.selectBudget")}
+                                  />
                                 </div>
                               </SelectTrigger>
                               <SelectContent>
@@ -503,7 +520,7 @@ export default function KontaktPage() {
                                     key={option.value}
                                     value={option.value}
                                   >
-                                    {option.label}
+                                    {t(option.labelKey)}
                                   </SelectItem>
                                 ))}
                               </SelectContent>
@@ -511,7 +528,7 @@ export default function KontaktPage() {
                           </div>
 
                           <FloatingTextarea
-                            label="Vaša poruka *"
+                            label={`${t("form.message")} *`}
                             icon={MessageSquare}
                             value={formData.poruka}
                             className="min-h-[180px] text-base leading-relaxed"
@@ -559,11 +576,11 @@ export default function KontaktPage() {
                                       }}
                                       className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full mr-2"
                                     />
-                                    Šaljem...
+                                    {t("form.sending")}
                                   </>
                                 ) : (
                                   <>
-                                    Pošalji upit
+                                    {t("form.submit")}
                                     <motion.div
                                       className="ml-2"
                                       animate={{ x: [0, 5, 0] }}
@@ -594,16 +611,10 @@ export default function KontaktPage() {
                 <Card className="bg-gradient-to-br from-primary to-primary/90 text-white border-0 overflow-hidden">
                   <CardContent className="p-8">
                     <h3 className="text-xl font-bold mb-6">
-                      Zašto surađivati s nama?
+                      {t("info.whyWorkWithUs")}
                     </h3>
                     <div className="space-y-4">
-                      {[
-                        "Konkurentne veleprodajne cijene",
-                        "Fleksibilni uvjeti suradnje",
-                        "Širok izbor provjerenih vozila",
-                        "Brza i pouzdana isporuka",
-                        "Podrška usmjerena na vaš uspjeh",
-                      ].map((item, index) => (
+                      {partnerBenefits.map((item, index) => (
                         <motion.div
                           key={index}
                           initial={{ opacity: 0, x: 20 }}
@@ -623,7 +634,10 @@ export default function KontaktPage() {
                 {/* Contact Info Grid */}
                 <div className="grid grid-cols-2 gap-4">
                   {contactInfo.map((item) => (
-                    <Card key={item.title} className="bg-card border-border/50">
+                    <Card
+                      key={item.titleKey}
+                      className="bg-card border-border/50"
+                    >
                       <CardContent className="p-4 text-center">
                         <div
                           className={`w-10 h-10 rounded-xl ${components.icon.background} flex items-center justify-center mx-auto mb-2`}
@@ -633,7 +647,7 @@ export default function KontaktPage() {
                           />
                         </div>
                         <h4 className="font-medium text-foreground text-sm mb-1">
-                          {item.title}
+                          {t(item.titleKey)}
                         </h4>
                         {item.href ? (
                           <a
@@ -670,7 +684,7 @@ export default function KontaktPage() {
                     allowFullScreen
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
-                    title="Lokacija Produkt Auto"
+                    title={t("info.location")}
                   />
                 </div>
               </div>
@@ -685,23 +699,22 @@ export default function KontaktPage() {
           <FadeIn>
             <div className="text-center max-w-2xl mx-auto">
               <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-4">
-                Imate pitanja?
+                {t("cta.title")}
               </h2>
               <p className="text-muted-foreground mb-6">
-                Slobodno nas kontaktirajte putem telefona ili emaila - rado ćemo
-                odgovoriti na sva vaša pitanja o veleprodaji.
+                {t("cta.description")}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <a href={`tel:${CONTACT.phoneRaw}`}>
                   <Button size="lg" className="gap-2">
                     <Phone className="w-5 h-5" />
-                    Nazovite nas
+                    {t("cta.callUs")}
                   </Button>
                 </a>
                 <a href={`mailto:${CONTACT.email}`}>
                   <Button size="lg" variant="outline" className="gap-2">
                     <Mail className="w-5 h-5" />
-                    Pošaljite email
+                    {t("cta.sendEmail")}
                   </Button>
                 </a>
               </div>

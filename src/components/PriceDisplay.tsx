@@ -1,6 +1,7 @@
 "use client";
 
 import { formatCijena } from "@/lib/vozila";
+import { useTranslations } from "next-intl";
 import { savings } from "@/lib/designTokens";
 import { cn } from "@/lib/utils";
 
@@ -31,6 +32,7 @@ export default function PriceDisplay({
   className,
   showSavings = true,
 }: PriceDisplayProps) {
+  const t = useTranslations("vehicles");
   const hasDiscount = oldPrice && oldPrice > price;
   const savingsAmount = hasDiscount ? oldPrice - price : 0;
 
@@ -71,7 +73,7 @@ export default function PriceDisplay({
         </span>
         {showSavings && savingsAmount > 0 && (
           <span className={sizes.savingsText}>
-            <span className={savings.label}>Ušteda: </span>
+            <span className={savings.label}>{t("card.savings")}: </span>
             <span className={savings.amount}>
               {formatSavings(savingsAmount)} €
             </span>

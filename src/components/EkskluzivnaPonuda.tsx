@@ -1,6 +1,7 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
 import { Sparkles, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -9,6 +10,7 @@ import { getEkskluzivnaVozila } from "@/lib/vozila";
 import { typography, spacing } from "@/lib/designTokens";
 
 export default function EkskluzivnaPonuda() {
+  const t = useTranslations("exclusive");
   const ekskluzivnaVozila = getEkskluzivnaVozila().slice(0, 4);
 
   if (ekskluzivnaVozila.length === 0) {
@@ -29,14 +31,12 @@ export default function EkskluzivnaPonuda() {
           className="text-center mb-12"
         >
           <h2 className={`${typography.h2} text-foreground mb-4`}>
-            Ekskluzivna ponuda
+            {t("title")}
           </h2>
           <p
             className={`${typography.body} text-muted-foreground max-w-2xl mx-auto`}
           >
-            Odabrana vozila koja ispunjavaju visoke standarde kvalitete i
-            pouzdanosti – sada dostupna uz pažljivo formirane cijene koje
-            omogućuju stvarnu uštedu.
+            {t("description")}
           </p>
         </motion.div>
 
@@ -69,7 +69,7 @@ export default function EkskluzivnaPonuda() {
               variant="outline"
               className="border-accent text-accent hover:bg-accent hover:text-white transition-all"
             >
-              Pogledaj sve ponude
+              {t("viewAllOffers")}
               <ArrowRight className="w-5 h-5 ml-2" />
             </Button>
           </Link>

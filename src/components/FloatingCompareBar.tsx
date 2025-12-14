@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import Link from "next/link";
+import { useEffect, useState, useRef } from "react";
+import { Link } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { GitCompareArrows, X, ChevronRight } from "lucide-react";
@@ -9,13 +10,42 @@ import { Button } from "@/components/ui/button";
 import { useUsporediStore } from "@/stores/usporediStore";
 
 export default function FloatingCompareBar() {
+  const t = useTranslations("compareBar");
   const { vozila, removeVozilo, clearAll } = useUsporediStore();
   const [mounted, setMounted] = useState(false);
+  const barRef = useRef<HTMLDivElement>(null);
 
   // Prevent hydration mismatch
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  // Update CSS variable for compare bar height coordination
+  useEffect(() => {
+    if (!mounted) return;
+
+    const updateHeight = () => {
+      if (barRef.current && vozila.length > 0) {
+        const height = barRef.current.offsetHeight + 16; // 16px = bottom-4
+        document.documentElement.style.setProperty(
+          "--compare-bar-height",
+          `${height}px`
+        );
+      } else {
+        document.documentElement.style.setProperty(
+          "--compare-bar-height",
+          "0px"
+        );
+      }
+    };
+
+    updateHeight();
+
+    // Cleanup on unmount
+    return () => {
+      document.documentElement.style.setProperty("--compare-bar-height", "0px");
+    };
+  }, [mounted, vozila.length]);
 
   if (!mounted) return null;
 
@@ -25,11 +55,12 @@ export default function FloatingCompareBar() {
     <AnimatePresence>
       {count > 0 && (
         <motion.div
+          ref={barRef}
           initial={{ y: 100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 100, opacity: 0 }}
           transition={{ type: "spring", stiffness: 300, damping: 30 }}
-          className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-2rem)] max-w-2xl"
+          className="fixed bottom-[calc(1rem+env(safe-area-inset-bottom))] left-1/2 -translate-x-1/2 z-50 w-[calc(100%-2rem)] max-w-2xl"
         >
           <div className="bg-card border border-border shadow-2xl rounded-2xl p-4 backdrop-blur-sm">
             <div className="flex items-center gap-4">
@@ -40,10 +71,10 @@ export default function FloatingCompareBar() {
                 </div>
                 <div className="hidden sm:block">
                   <p className="text-sm font-medium text-foreground">
-                    Usporedba vozila
+                    {t("vehicleComparison")}
                   </p>
                   <p className="text-xs text-muted-foreground">
-                    {count} od 3 vozila odabrano
+                    {t("selectedCount", { count, max: 3 })}
                   </p>
                 </div>
               </div>
@@ -64,7 +95,10 @@ export default function FloatingCompareBar() {
                     <button
                       onClick={() => removeVozilo(vozilo.id)}
                       className="absolute -top-2 -right-2 w-7 h-7 bg-destructive text-white rounded-full flex items-center justify-center opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity shadow-md"
-                      aria-label={`Ukloni ${vozilo.marka} ${vozilo.model}`}
+                      aria-label={t("removeVehicle", {
+                        brand: vozilo.marka,
+                        model: vozilo.model,
+                      })}
                     >
                       <X className="w-4 h-4" />
                     </button>
@@ -88,7 +122,7 @@ export default function FloatingCompareBar() {
                   onClick={clearAll}
                   className="text-muted-foreground hover:text-foreground hidden sm:flex"
                 >
-                  Obriši
+                  {t("clear")}
                 </Button>
                 <Link href="/usporedi">
                   <Button
@@ -97,8 +131,10 @@ export default function FloatingCompareBar() {
                     className="gap-1"
                     disabled={count < 2}
                   >
-                    <span className="hidden sm:inline">Usporedi</span>
-                    <span className="sm:hidden">Usporedi ({count})</span>
+                    <span className="hidden sm:inline">{t("compare")}</span>
+                    <span className="sm:hidden">
+                      {t("compareWithCount", { count })}
+                    </span>
                     <ChevronRight className="w-4 h-4" />
                   </Button>
                 </Link>
