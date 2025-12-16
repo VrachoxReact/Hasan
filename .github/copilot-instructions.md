@@ -1,308 +1,127 @@
-# GitHub Copilot Instructions - Produkt Auto
+# Produkt Auto - AI Coding Agent Instructions
 
 ## Project Overview
 
-This is a **Next.js 16** car dealership website for "Produkt Auto" - a Croatian used car sales company specializing in **import, retail, and wholesale of verified used vehicles**. The website is fully in **Croatian language** and uses modern React patterns with TypeScript.
+Next.js 16 (App Router) vehicle dealership site with **Croatian/English/German i18n**, Sanity CMS, and Zustand state management. Focuses on premium used vehicles with comparison, favorites, and financing calculator features.
 
-## Tech Stack
+## Key Architecture Patterns
 
-- **Framework**: Next.js 16.0.7 with App Router
-- **Language**: TypeScript (strict mode)
-- **Styling**: Tailwind CSS v4 with custom design tokens
-- **UI Components**: Radix UI primitives + shadcn/ui components
-- **State Management**: Zustand (for favorites, comparison)
-- **Animations**: Framer Motion
-- **Icons**: Lucide React
-- **Testing**: Vitest + React Testing Library
-- **Carousel**: Embla Carousel
+### Internationalization (next-intl)
 
-## Project Structure
+- **Routing**: Locale-prefixed routes via `[locale]` dynamic segment. Croatian (default) has no prefix, EN/DE use `/en`, `/de`
+- **Locales**: Defined in `src/i18n/routing.ts` as `["hr", "en", "de"]`
+- **Navigation**: Always use `Link` from `@/i18n/navigation`, never Next.js Link directly
+- **Translations**: Access via `useTranslations("namespace")` hook. Message files in `src/i18n/messages/{locale}.json`
+- **Server Components**: Call `await setRequestLocale(locale)` at top of page components for proper locale context
 
-```
-src/
-├── app/                    # Next.js App Router pages
-│   ├── page.tsx           # Landing page
-│   ├── vozila/            # Vehicle listings & details
-│   ├── favoriti/          # Favorites page
-│   ├── usporedi/          # Compare vehicles page
-│   ├── kontakt/           # Veleprodaja (wholesale) page
-│   ├── o-nama/            # About us
-│   ├── privatnost/        # Privacy policy
-│   └── uvjeti/            # Terms & conditions
-├── components/            # React components
-│   ├── ui/               # shadcn/ui base components
-│   └── *.tsx             # Feature components
-├── lib/                   # Utilities & helpers
-│   ├── constants.ts      # Contact info, company data
-│   ├── designTokens.ts   # Typography, spacing, component styles
-│   ├── vozila.ts         # Vehicle data functions
-│   └── utils.ts          # General utilities (cn, etc.)
-├── stores/               # Zustand stores
-│   ├── favoritiStore.ts  # Favorites management
-│   └── usporediStore.ts  # Vehicle comparison (max 3)
-├── types/                # TypeScript types
-│   └── vozilo.ts         # Vehicle interface & constants
-└── data/
-    └── vozila.json       # Vehicle data
-```
+### State Management (Zustand + Persist)
 
-## Navigation Structure
+- **Hydration Pattern**: All persisted stores use `skipHydration: true` and manual rehydration via `StoreHydration` component
+- **Critical**: Check `hasHydrated` state before rendering UI dependent on store data to prevent SSR/client mismatches
+- **Example**: `usporediStore` limits vehicle comparison to 3 items, stores in localStorage as `usporedi-storage`
+- **Stores**: `favoritiStore` (favorites), `usporediStore` (comparison)
 
-The main navigation order is:
-1. **Početna** (/) - Home/Landing page
-2. **Vozila** (/vozila) - Vehicle listings
-3. **Veleprodaja** (/kontakt) - Wholesale partner page (formerly "Kontakt")
-4. **O Nama** (/o-nama) - About us
+### Sanity CMS Integration
 
-## Design System
+- **Admin Panel**: Embedded at `/admin` route (configured in `sanity.config.ts`)
+- **Content Fetching**: Use functions from `src/sanity/lib/fetch.ts` with proper caching strategies
+- **Schema**: Vehicle schema at `src/sanity/schemas/vozilo.ts` with groups: `osnovni`, `tehnika`, `slike`, `dodatno`
+- **Images**: Use `@sanity/image-url` builder from `src/sanity/lib/client.ts` for optimized image URLs
 
-### Always use design tokens from `@/lib/designTokens`:
+### Design System & Styling
 
-```typescript
-import { typography, spacing, components } from "@/lib/designTokens";
+- **Color System**: Custom semantic tokens documented in `docs/COLOR_SYSTEM.md`
+  - Use `text-savings` and `text-savings-label` for price discounts (NOT `text-success`)
+  - Bronze/copper for "Ušteda" labels, teal-green for discounted prices
+- **Design Tokens**: Centralized in `src/lib/designTokens.ts` - use these constants instead of hardcoded values
+- **UI Components**: Radix UI + shadcn/ui in `src/components/ui/`. Modify via `components.json` config
 
-// Typography
-typography.h1, typography.h2, typography.h3, typography.h4;
-typography.body, typography.bodyLarge, typography.bodySmall;
+### Data & Validation
 
-// Spacing
-spacing.section.small, spacing.section.medium, spacing.section.large;
-spacing.card.small, spacing.card.medium, spacing.card.large;
-spacing.gap.tight, spacing.gap.default, spacing.gap.loose;
+- **Vehicle Type**: `Vozilo` interface in `src/types/vozilo.ts` defines all vehicle properties
+- **Validation**: Zod schemas in `src/lib/schemas.ts` with **localized error messages**
+  - Use `getContactFormSchema(locale)` for locale-specific validation
+- **Honeypot**: Contact forms include `hp` field for spam prevention (should remain empty)
 
-// Components
-components.button.primary, components.button.secondary;
-components.card.default, components.card.elevated;
-components.price.card, components.price.list, components.price.detail;
-components.icon.accent, components.icon.background;
-```
+## Critical Developer Workflows
 
-### Color Palette (CSS Variables)
-
-- `--primary`: Deep navy blue (text, headers)
-- `--accent`: Bright sapphire blue (CTAs, interactive elements)
-- `--premium`: Gold/orange (exclusive offers badge)
-- `--success`: Green (general positive feedback)
-- `--savings`: Teal-green OKLCH (price savings - sophisticated, trustworthy)
-- `--savings-label`: Bronze/copper OKLCH ("Ušteda" labels)
-- `--muted`: Light blue-gray backgrounds
-- `--destructive`: Red (errors, important alerts)
-
-### Savings Color System
-
-Use semantic tokens from `designTokens.savings` for all price-related displays:
-
-```typescript
-import { savings, badges } from "@/lib/designTokens";
-
-// Savings display
-savings.price; // New/discounted price (teal-green)
-savings.label; // "Ušteda" text (bronze/copper)
-savings.amount; // Savings amount (teal-green)
-savings.oldPrice; // Strikethrough original price
-savings.background; // Subtle savings badge background
-
-// Badges
-badges.ekskluzivno; // Gold gradient for exclusive offers
-badges.istaknuto; // Accent blue for featured
-```
-
-## Key Components
-
-### VoziloCard
-
-Vehicle card with image, badges, prices, favorite/compare buttons.
-
-- Lazy loads images with intersection observer
-- Shows "Ekskluzivno" (exclusive) badge with gold gradient
-- Shows "Ušteda X €" (savings) badge on discounted vehicles
-- Quick view modal on desktop hover
-
-### HeroCarousel
-
-Landing page carousel with CTA buttons.
-
-- "DOSTUPNA VOZILA" → /vozila
-- "VELEPRODAJA VOZILA" → /kontakt
-- Subtle pulsing glow animation on buttons
-
-### HeroSearch
-
-Quick vehicle search overlay on hero.
-
-- Filters: Proizvođač, Model, Godina, Gorivo, Mjenjač, Cijena
-- Shows matching vehicle count dynamically
-
-### PriceDisplay
-
-Unified price display component.
-
-- Variants: "card", "list", "detail"
-- Shows old price (strikethrough), new price, savings
-
-## Croatian Language
-
-All UI text must be in Croatian:
-
-- "Vozila" = Vehicles
-- "Favoriti" = Favorites
-- "Usporedi" = Compare
-- "Veleprodaja" = Wholesale
-- "O Nama" = About Us
-- "Pretraži" = Search
-- "Cijena" = Price
-- "Ušteda" = Savings
-- "Godina" = Year
-- "Kilometraža" = Mileage
-- "Gorivo" = Fuel
-- "Mjenjač" = Transmission
-- "Ekskluzivno" = Exclusive
-- "Istaknuto" = Featured
-- "Gospodarska" = Commercial (vehicles)
-- "Postanite naš partner" = Become our partner
-
-## Zustand Stores
-
-### useFavoritiStore
-
-```typescript
-toggleFavorit(vozilo: Vozilo): boolean
-isFavorit(id: string): boolean
-getFavoriti(): Vozilo[]
-```
-
-### useUsporediStore
-
-```typescript
-addVozilo(vozilo: Vozilo): boolean  // max 3 vehicles
-removeVozilo(id: string): void
-isInList(id: string): boolean
-getVozila(): Vozilo[]
-```
-
-## Vehicle Interface (Vozilo)
-
-```typescript
-interface Vozilo {
-  id: string;
-  marka: string; // Brand (Audi, BMW, etc.)
-  model: string;
-  godina: number; // Year
-  cijena: number; // Current price
-  staracijena?: number; // Original price (for discounts)
-  kilometraza: number; // Mileage in km
-  gorivo: "benzin" | "dizel" | "hibrid" | "elektricni";
-  mjenjac: "rucni" | "automatski";
-  snaga: number; // Power in kW
-  boja: string; // Color
-  opis: string; // Description
-  slike: string[]; // Image URLs
-  istaknuto: boolean; // Featured
-  ekskluzivno?: boolean; // Exclusive offer
-  datumObjave: string; // Publication date
-  karakteristike: string[]; // Features
-}
-```
-
-## Code Style Guidelines
-
-1. **Use "use client"** directive for components with interactivity
-2. **Import paths**: Always use `@/` alias (e.g., `@/components/ui/button`)
-3. **Component exports**: Use `export default function ComponentName()`
-4. **Formatting**: Use Prettier defaults (already configured)
-5. **Images**: Use Next.js `Image` component with proper sizing
-6. **Animations**: Use Framer Motion for animations
-7. **Toasts**: Use `sonner` for notifications (`toast.success()`, `toast.error()`)
-
-## Testing
+### Testing (Vitest + Testing Library)
 
 ```bash
-npm run test        # Run tests
-npm run test:ui     # Vitest UI
-npm run test:coverage
+npm test              # Run tests
+npm run test:ui       # Interactive UI mode
+npm run test:coverage # With coverage (thresholds: 80%)
 ```
 
-## Common Patterns
+- **Setup**: `src/__tests__/setup.ts` mocks `next-intl` and `@/i18n/navigation`
+- **Pattern**: Tests colocated in `src/__tests__/{components,lib,stores}/`
+- **i18n Mocking**: Uses Croatian messages by default. Access via mocked `useTranslations`
 
-### Page Layout
+### Running Development
 
-```tsx
-export default function PageName() {
-  return (
-    <div className="min-h-screen">
-      {/* Hero Section */}
-      <section className="relative py-20 md:py-28 overflow-hidden">...</section>
-
-      {/* Content Section */}
-      <section className={`${spacing.section.medium} bg-background`}>
-        <div className="container mx-auto px-4">...</div>
-      </section>
-    </div>
-  );
-}
+```bash
+npm run dev    # Starts dev server at localhost:3000
+npm run build  # Production build
+npm run lint   # ESLint
 ```
 
-### Card with Animation
+- **Sanity Studio**: Access at `http://localhost:3000/admin` after dev server starts
+- **Hot Reload**: Works for code changes; locale changes require page refresh
 
-```tsx
-<motion.div
-  initial={{ opacity: 0, y: 20 }}
-  whileInView={{ opacity: 1, y: 0 }}
-  viewport={{ once: true }}
-  transition={{ duration: 0.4 }}
->
-  <Card className={components.card.elevated}>
-    <CardContent className={spacing.card.medium}>...</CardContent>
-  </Card>
-</motion.div>
+### Environment Variables Required
+
+```env
+NEXT_PUBLIC_SANITY_PROJECT_ID=<your-project-id>
+NEXT_PUBLIC_SANITY_DATASET=production
+NEXT_PUBLIC_SITE_URL=https://produktauto.hr
+CONTACT_EMAIL=produktauto@gmail.com
+# Optional (not yet integrated):
+# RESEND_API_KEY=<for-future-email-integration>
 ```
 
-## Contact Information
+## Common Patterns & Conventions
 
-Use constants from `@/lib/constants`:
+### Client/Server Component Split
 
-```typescript
-import { CONTACT, COMPANY, WORKING_HOURS } from "@/lib/constants";
+- **Server Default**: All components are Server Components unless marked `"use client"`
+- **Client Indicators**: Hooks (useState, useEffect), event handlers, browser APIs, Zustand stores
+- **Dynamic Imports**: Use for heavy client components (e.g., `QuickViewModal` in `VoziloCard.tsx`)
 
-// Contact
-CONTACT.phone; // "+385 99 166 3776"
-CONTACT.email; // "produktauto@gmail.com"
-CONTACT.address.full; // "Ulica Milana Prpića 120, 49243 Oroslavje, Hrvatska"
-CONTACT.whatsapp.url;
-CONTACT.social.facebook;
+### Path Aliases
 
-// Company
-COMPANY.name; // "Produkt Auto"
-COMPANY.legalName; // "Produkt Auto j.d.o.o."
-COMPANY.tagline;
+- **`@/*`**: Maps to `src/*` (configured in `tsconfig.json`)
+- Always use absolute imports: `import { Vozilo } from "@/types/vozilo"`
 
-// Working Hours: Mon-Sat 09:00-17:00
-WORKING_HOURS.weekdays; // { open: "09:00", close: "17:00" }
-WORKING_HOURS.saturday; // { open: "09:00", close: "17:00" }
-```
+### Component File Naming
 
-## Git Workflow
+- **Pages**: `page.tsx` in route folders
+- **Layouts**: `layout.tsx` with locale support
+- **Components**: PascalCase files (e.g., `VoziloCard.tsx`, `FloatingWhatsApp.tsx`)
 
-- Branch: `master`
-- Repository: https://github.com/VrachoxReact/Hasan
-- Commit messages: Descriptive, in English
+### Contact Information
 
-## Key Pages Content
+- **Single Source**: All contact details in `src/lib/constants.ts` under `CONTACT` and `WORKING_HOURS` exports
+- Never hardcode phone numbers, addresses, or social links - always import from constants
 
-### O Nama (/o-nama)
-- Hero with company description
-- Stats section with 4 cards (Provjerena vozila, G1 Zaštita, Financiranje, Podrška)
-- Two-column layout: Maloprodaja (retail) & Veleprodaja (wholesale) cards
-- Philosophy banner: "Pošten pristup, transparentnost i dugoročna suradnja"
-- "Zašto odabrati Produkt Auto?" section with 4 values
+### Image Optimization
 
-### Veleprodaja (/kontakt)
-- Hero: "Postanite naš partner" with wholesale description
-- Left side: Contact form ("Zatražite ponudu")
-- Right side: Partner benefits, contact info grid, map
-- Target audience: Existing and new vehicle traders in Croatia
+- **Next.js Image**: Always use `next/image` with `priority={true}` for above-fold images
+- **Allowed Domains**: Configured in `next.config.ts` (cdn.sanity.io, unsplash, pexels, etc.)
+- **Formats**: AVIF + WebP with quality [75, 85]
 
-### Quick Filters on /vozila
-- Luksuzna (✨) - 40,000€ - 100,000€
-- Ekonomična (💰) - 0€ - 20,000€
-- Gospodarska (🚚) - 15,000€ - 35,000€
+## Anti-Patterns to Avoid
+
+- ❌ Using `next/link` instead of `@/i18n/navigation` Link
+- ❌ Accessing Zustand stores before hydration check
+- ❌ Hardcoding colors instead of using design tokens
+- ❌ Using `text-success` for price discounts (use `text-savings`)
+- ❌ Creating localized schemas without checking `getContactFormSchema` pattern
+- ❌ Rendering vehicle comparison UI before checking `hasHydrated` flag
+
+## Quick Reference
+
+- **Type Definitions**: `src/types/vozilo.ts`
+- **Utils**: `src/lib/utils.ts` (includes `cn()` for Tailwind merging)
+- **Vehicle Helpers**: `src/lib/vozila.ts` (formatKilometraza, filterVozila, etc.)
+- **Locale Config**: `src/i18n/routing.ts`
+- **Test Mocks**: `src/__tests__/setup.ts`

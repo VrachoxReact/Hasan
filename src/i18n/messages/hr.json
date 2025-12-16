@@ -51,7 +51,8 @@
       "backToHome": "Povratak na početnu"
     },
     "whatsapp": {
-      "defaultMessage": "Pozdrav! Zanima me ponuda vozila."
+      "defaultMessage": "Pozdrav! Zanima me ponuda vozila.",
+      "ariaLabel": "Kontaktirajte nas putem WhatsApp-a"
     },
     "workingHours": {
       "weekdays": "Ponedjeljak - Petak",
@@ -71,6 +72,10 @@
     }
   },
   "home": {
+    "meta": {
+      "title": "Produkt Auto - Kvalitetna rabljena vozila | Najbolje cijene u Hrvatskoj",
+      "description": "Prodaja rabljenih vozila s jamstvom kvalitete. Provjerena vozila, potpuna povijest, najbolje cijene. Posjetite nas u Zagrebu!"
+    },
     "hero": {
       "title": "Kvalitetna rabljena vozila",
       "subtitle": "Pronađite savršeno vozilo po najboljoj cijeni"
@@ -122,7 +127,12 @@
   "vehicles": {
     "pageTitle": "Naša ponuda vozila",
     "pageSubtitle": "Pronađite savršeno vozilo iz naše ponude od {count} kvalitetnih automobila",
+    "searchPlaceholder": "Pretraži po marki, modelu, opisu...",
     "pageDescription": "Pregledajte našu ponudu kvalitetnih rabljenih vozila",
+    "searchLabel": "Pretraži vozila",
+    "viewModeGrid": "Prikaz u mreži",
+    "viewModeList": "Prikaz u listi",
+    "exclusiveOnly": "Samo ekskluzivna vozila",
     "noResults": "Nema vozila koja odgovaraju filterima",
     "noResultsDescription": "Pokušajte promijeniti ili obrisati neke filtere kako biste vidjeli više rezultata",
     "clearFilters": "Obriši filtere",
@@ -220,7 +230,8 @@
       "linkCopied": "Link kopiran u međuspremnik",
       "gallery": "Galerija",
       "previousImage": "Prethodna slika",
-      "nextImage": "Sljedeća slika"
+      "nextImage": "Sljedeća slika",
+      "financing": "Financiranje"
     },
     "quickView": {
       "moreImages": "više",
@@ -260,6 +271,10 @@
     "compareWithCount": "Usporedi ({count})"
   },
   "compare": {
+    "meta": {
+      "title": "Usporedi vozila | Produkt Auto",
+      "description": "Usporedite do 3 vozila istovremeno. Pregledajte specifikacije, cijene i opremu na jednom mjestu."
+    },
     "pageTitle": "Usporedi vozila",
     "pageDescription": "Usporedite do 3 vozila istovremeno",
     "emptyTitle": "Nema vozila za usporedbu",
@@ -294,6 +309,10 @@
     }
   },
   "favorites": {
+    "meta": {
+      "title": "Moji favoriti | Produkt Auto",
+      "description": "Pregledajte svoja spremljena vozila. Usporedite favorite i pronađite savršen automobil."
+    },
     "pageTitle": "Moji favoriti",
     "pageDescription": "Vaša spremljena vozila",
     "emptyTitle": "Nemate spremljenih favorita",
@@ -307,6 +326,10 @@
     "removedFromFavorites": "uklonjeno iz favorita"
   },
   "about": {
+    "meta": {
+      "title": "O Nama | Produkt Auto - Kvalitetna rabljena vozila",
+      "description": "Upoznajte Produkt Auto - vašeg pouzdanog partnera za kvalitetna rabljena vozila. Više od 10 godina iskustva u prodaji automobila."
+    },
     "pageTitle": "O Nama",
     "pageDescription": "Upoznajte Produkt Auto - vašeg pouzdanog partnera za kvalitetna rabljena vozila",
     "hero": {
@@ -570,6 +593,76 @@
     "closeGallery": "Zatvori galeriju (Escape)",
     "galleryNavigation": "Navigacija galerije",
     "showImage": "Prikaži sliku {number}"
+  },
+  "privacy": {
+    "meta": {
+      "title": "Politika privatnosti | Produkt Auto",
+      "description": "Saznajte kako Produkt Auto štiti vaše osobne podatke. GDPR sukladnost i sigurnost vaših podataka."
+    },
+    "pageTitle": "Politika privatnosti",
+    "pageDescription": "Vaša privatnost nam je važna. Saznajte kako prikupljamo, koristimo i štitimo vaše podatke.",
+    "lastUpdated": "Zadnje ažuriranje: Prosinac 2025",
+    "sections": {
+      "dataCollection": {
+        "title": "Prikupljanje podataka",
+        "content": "Prikupljamo samo podatke koji su nužni za pružanje naših usluga. To uključuje:\n\n• Ime i prezime\n• Email adresa\n• Broj telefona\n• Podatke o vozilima koja vas zanimaju\n\nSve podatke prikupljamo isključivo uz vašu privolu i koristimo ih samo u svrhe za koje su namijenjeni."
+      },
+      "dataProtection": {
+        "title": "Zaštita podataka",
+        "content": "Vaši osobni podaci su zaštićeni najmodernijim sigurnosnim mjerama:\n\n• SSL enkripcija svih komunikacija\n• Sigurno pohranjivanje podataka\n• Ograničen pristup podacima samo ovlaštenim osobama\n• Redovite sigurnosne provjere i ažuriranja\n\nNikada ne dijelimo vaše podatke s trećim stranama bez vašeg izričitog pristanka."
+      },
+      "cookies": {
+        "title": "Korištenje kolačića",
+        "content": "Naša web stranica koristi kolačiće kako bi vam pružila najbolje korisničko iskustvo:\n\n• Neophodni kolačići - za osnovne funkcije stranice\n• Analitički kolačići - za razumijevanje kako koristite stranicu\n• Funkcijski kolačići - za pamćenje vaših preferenci\n\nMožete kontrolirati kolačiće putem postavki vašeg preglednika."
+      },
+      "yourRights": {
+        "title": "Vaša prava",
+        "content": "Sukladno GDPR uredbi, imate sljedeća prava:\n\n• Pravo pristupa vašim osobnim podacima\n• Pravo na ispravak netočnih podataka\n• Pravo na brisanje podataka (\"pravo na zaborav\")\n• Pravo na ograničenje obrade\n• Pravo na prenosivost podataka\n• Pravo na prigovor\n\nZa ostvarivanje bilo kojeg od ovih prava, kontaktirajte nas."
+      }
+    },
+    "contact": {
+      "title": "Kontakt za privatnost",
+      "description": "Za sva pitanja vezana uz privatnost i zaštitu podataka, kontaktirajte nas:"
+    }
+  },
+  "terms": {
+    "meta": {
+      "title": "Uvjeti korištenja | Produkt Auto",
+      "description": "Pročitajte uvjete korištenja web stranice Produkt Auto. Informacije o kupnji vozila, jamstvu i plaćanju."
+    },
+    "pageTitle": "Uvjeti korištenja",
+    "pageDescription": "Molimo pročitajte ove uvjete pažljivo prije korištenja naše web stranice i usluga.",
+    "lastUpdated": "Verzija 1.0 | Zadnje ažuriranje: Prosinac 2025",
+    "sections": {
+      "general": {
+        "title": "1. Opći uvjeti",
+        "content": "Korištenjem web stranice Produkt Auto j.d.o.o. prihvaćate ove uvjete korištenja. Molimo vas da ih pažljivo pročitate prije korištenja naših usluga.\n\nZadržavamo pravo izmjene ovih uvjeta u bilo kojem trenutku. Nastavak korištenja stranice nakon izmjena smatra se prihvaćanjem novih uvjeta."
+      },
+      "vehicleInfo": {
+        "title": "2. Informacije o vozilima",
+        "content": "Sve informacije o vozilima na našoj stranici pružene su u dobroj vjeri i prema našem najboljem znanju:\n\n• Fotografije vozila su stvarne i aktualne\n• Specifikacije i oprema su provjerene prije objave\n• Cijene su izražene u eurima (€) i uključuju PDV\n• Dostupnost vozila podložna je promjenama\n\nPreporučujemo osobni pregled vozila prije kupnje."
+      },
+      "pricing": {
+        "title": "3. Cijene i plaćanje",
+        "content": "Sve cijene na stranici su informativnog karaktera:\n\n• Konačna cijena utvrđuje se ugovorom o kupoprodaji\n• Rezervacija vozila moguća je uz predujam\n• Prihvaćamo plaćanje gotovinom, karticama i bankovnim transferom\n• Mogućnost financiranja putem leasing kuća\n\nZa detaljne informacije o plaćanju, kontaktirajte našu prodaju."
+      },
+      "warranty": {
+        "title": "4. Jamstvo i reklamacije",
+        "content": "Sva vozila prodana putem naše tvrtke dolaze sa:\n\n• Provjerenom poviješću vozila\n• Jamstvom na motor i mjenjač (ovisno o vozilu)\n• Mogućnošću produljenog jamstva\n• 14-dnevnim pravom na povrat za potrošače\n\nReklamacije se zaprimaju pisanim putem u zakonskom roku."
+      },
+      "liability": {
+        "title": "5. Ograničenje odgovornosti",
+        "content": "Produkt Auto j.d.o.o. ne odgovara za:\n\n• Tipografske greške na stranici\n• Privremenu nedostupnost stranice\n• Štetu nastalu korištenjem informacija sa stranice\n• Odluke donesene na temelju informacija na stranici\n\nTrudimo se održavati točnost svih informacija, ali preporučujemo provjeru prije kupnje."
+      },
+      "disputes": {
+        "title": "6. Rješavanje sporova",
+        "content": "U slučaju spora:\n\n• Prvo pokušavamo riješiti spor mirnim putem\n• Primjenjuje se hrvatsko pravo\n• Nadležan je sud u Zagrebu\n• Potrošači mogu koristiti alternativno rješavanje sporova"
+      }
+    },
+    "questions": {
+      "title": "Imate pitanja?",
+      "description": "Za sva pitanja vezana uz uvjete korištenja, slobodno nas kontaktirajte."
+    }
   },
   "metadata": {
     "title": "Produkt Auto - Kvalitetna rabljena vozila",

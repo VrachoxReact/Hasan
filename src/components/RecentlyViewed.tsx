@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useMemo } from "react";
 import { motion } from "framer-motion";
 import { Clock, ChevronRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
@@ -13,23 +13,16 @@ import { Vozilo } from "@/types/vozilo";
 
 export default function RecentlyViewed() {
   const t = useTranslations("recentlyViewed");
-  const [recentVozila, setRecentVozila] = useState<Vozilo[]>([]);
-  const [mounted, setMounted] = useState(false);
-  const getRecentlyViewedIds = useFavoritiStore(
-    (state) => state.getRecentlyViewedIds
-  );
+  const recentlyViewed = useFavoritiStore((state) => state.recentlyViewed);
 
-  useEffect(() => {
-    setMounted(true);
-    const ids = getRecentlyViewedIds();
-    const vozila = ids
+  const recentVozila = useMemo(() => {
+    return recentlyViewed
       .map((id) => getVoziloById(id))
       .filter((v): v is Vozilo => v !== undefined)
       .slice(0, 4);
-    setRecentVozila(vozila);
-  }, [getRecentlyViewedIds]);
+  }, [recentlyViewed]);
 
-  if (!mounted || recentVozila.length === 0) {
+  if (recentVozila.length === 0) {
     return null;
   }
 

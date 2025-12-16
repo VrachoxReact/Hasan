@@ -1,20 +1,28 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import HeroSearch from "@/components/HeroSearch";
+import type { HTMLAttributes, ReactNode } from "react";
 
-// Mock next/navigation
+// Mock i18n router
 const mockPush = vi.fn();
-vi.mock("next/navigation", () => ({
+vi.mock("@/i18n/navigation", () => ({
   useRouter: () => ({
     push: mockPush,
+    replace: vi.fn(),
   }),
 }));
 
 // Mock framer-motion
 vi.mock("framer-motion", () => ({
   motion: {
-    div: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+    div: ({
+      children,
+      ...props
+    }: HTMLAttributes<HTMLDivElement> & { children?: ReactNode }) => (
+      <div {...props}>{children}</div>
+    ),
   },
+  AnimatePresence: ({ children }: { children?: ReactNode }) => <>{children}</>,
 }));
 
 describe("HeroSearch", () => {
@@ -26,7 +34,7 @@ describe("HeroSearch", () => {
     render(<HeroSearch />);
 
     // Check for select placeholders (used as labels in compact design)
-    expect(screen.getByText("Proizvodžač")).toBeInTheDocument();
+    expect(screen.getByText("Proizvođač")).toBeInTheDocument();
     expect(screen.getByText("Model")).toBeInTheDocument();
     expect(screen.getByText("Godina od")).toBeInTheDocument();
     expect(screen.getByText("Tip goriva")).toBeInTheDocument();
@@ -44,18 +52,9 @@ describe("HeroSearch", () => {
   it("should navigate to vehicles page when search clicked", () => {
     render(<HeroSearch />);
 
-    // Search button shows the matching count, find the button element
-    const buttons = screen.getAllByRole("button");
-    // The last button in the grid is the search button
-    const searchButton = buttons.find(
-      (btn) => !btn.getAttribute("role")?.includes("combobox")
-    );
-    expect(searchButton).toBeTruthy();
-
-    if (searchButton) {
-      fireEvent.click(searchButton);
-      expect(mockPush).toHaveBeenCalledWith("/vozila");
-    }
+    const searchButtons = screen.getAllByRole("button", { name: /Pretraži/i });
+    fireEvent.click(searchButtons[0]);
+    expect(mockPush).toHaveBeenCalledWith("/vozila");
   });
 
   it("should have five combobox selects", () => {

@@ -19,12 +19,12 @@ export default function AnimatedCounter({
   const [count, setCount] = useState(0);
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
-  const [hasAnimated, setHasAnimated] = useState(false);
+  const hasAnimatedRef = useRef(false);
 
   useEffect(() => {
-    if (!isInView || hasAnimated) return;
+    if (!isInView || hasAnimatedRef.current) return;
+    hasAnimatedRef.current = true;
 
-    setHasAnimated(true);
     let startTime: number | null = null;
     const startValue = 0;
     const endValue = value;
@@ -59,11 +59,11 @@ export default function AnimatedCounter({
     ).matches;
 
     if (prefersReducedMotion) {
-      setCount(value);
+      requestAnimationFrame(() => setCount(value));
     } else {
       requestAnimationFrame(animate);
     }
-  }, [isInView, value, duration, hasAnimated]);
+  }, [isInView, value, duration]);
 
   return (
     <motion.div

@@ -1,11 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  X,
   Calendar,
   Gauge,
   Fuel,
@@ -27,8 +26,6 @@ import { Vozilo } from "@/types/vozilo";
 import {
   formatCijena,
   formatKilometraza,
-  getGorivoLabel,
-  getMjenjacLabel,
 } from "@/lib/vozila";
 import PriceDisplay from "@/components/PriceDisplay";
 import { useUsporediStore } from "@/stores/usporediStore";
@@ -81,9 +78,11 @@ export default function QuickViewModal({
   };
 
   // Reset image index when modal opens
-  useState(() => {
-    if (isOpen) setCurrentImageIndex(0);
-  });
+  useEffect(() => {
+    if (!isOpen) return;
+    const id = requestAnimationFrame(() => setCurrentImageIndex(0));
+    return () => cancelAnimationFrame(id);
+  }, [isOpen]);
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -199,7 +198,7 @@ export default function QuickViewModal({
               <p className="text-xs text-muted-foreground">
                 {t("quickView.fuel")}
               </p>
-              <p className="font-semibold">{getGorivoLabel(vozilo.gorivo)}</p>
+              <p className="font-semibold">{t(`fuel.${vozilo.gorivo}`)}</p>
             </div>
           </div>
           <div className={components.metadata.container}>
@@ -208,7 +207,9 @@ export default function QuickViewModal({
               <p className="text-xs text-muted-foreground">
                 {t("quickView.transmission")}
               </p>
-              <p className="font-semibold">{getMjenjacLabel(vozilo.mjenjac)}</p>
+              <p className="font-semibold">
+                {t(`transmission.${vozilo.mjenjac}`)}
+              </p>
             </div>
           </div>
         </div>

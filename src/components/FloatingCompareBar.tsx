@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
@@ -11,45 +11,45 @@ import { useUsporediStore } from "@/stores/usporediStore";
 
 export default function FloatingCompareBar() {
   const t = useTranslations("compareBar");
-  const { vozila, removeVozilo, clearAll } = useUsporediStore();
-  const [mounted, setMounted] = useState(false);
+  const vozila = useUsporediStore((state) => state.vozila);
+  const removeVozilo = useUsporediStore((state) => state.removeVozilo);
+  const clearAll = useUsporediStore((state) => state.clearAll);
   const barRef = useRef<HTMLDivElement>(null);
-
-  // Prevent hydration mismatch
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const count = vozila.length;
 
   // Update CSS variable for compare bar height coordination
   useEffect(() => {
-    if (!mounted) return;
-
-    const updateHeight = () => {
-      if (barRef.current && vozila.length > 0) {
-        const height = barRef.current.offsetHeight + 16; // 16px = bottom-4
-        document.documentElement.style.setProperty(
-          "--compare-bar-height",
-          `${height}px`
-        );
-      } else {
-        document.documentElement.style.setProperty(
-          "--compare-bar-height",
-          "0px"
-        );
-      }
+    const root = document.documentElement;
+    const setHeight = (height: number) => {
+      root.style.setProperty("--compare-bar-height", `${height}px`);
     };
+
+    if (count === 0 || !barRef.current) {
+      setHeight(0);
+      return;
+    }
+
+    const element = barRef.current;
+    const updateHeight = () => setHeight(element.offsetHeight + 16); // 16px = bottom-4
 
     updateHeight();
 
-    // Cleanup on unmount
+    const cleanupFns: Array<() => void> = [];
+
+    if (typeof ResizeObserver !== "undefined") {
+      const observer = new ResizeObserver(updateHeight);
+      observer.observe(element);
+      cleanupFns.push(() => observer.disconnect());
+    }
+
+    window.addEventListener("resize", updateHeight);
+    cleanupFns.push(() => window.removeEventListener("resize", updateHeight));
+
     return () => {
-      document.documentElement.style.setProperty("--compare-bar-height", "0px");
+      cleanupFns.forEach((fn) => fn());
+      setHeight(0);
     };
-  }, [mounted, vozila.length]);
-
-  if (!mounted) return null;
-
-  const count = vozila.length;
+  }, [count]);
 
   return (
     <AnimatePresence>

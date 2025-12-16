@@ -1,6 +1,7 @@
 "use client";
 
 import { useLocale } from "next-intl";
+import { useSearchParams } from "next/navigation";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import { routing, type Locale } from "@/i18n/routing";
 import { Globe, Check } from "lucide-react";
@@ -28,9 +29,12 @@ export default function LanguageSwitcher() {
   const locale = useLocale() as Locale;
   const router = useRouter();
   const pathname = usePathname();
+  const searchParams = useSearchParams();
 
   const handleLocaleChange = (newLocale: Locale) => {
-    router.replace(pathname, { locale: newLocale });
+    const queryString = searchParams.toString();
+    const target = queryString ? `${pathname}?${queryString}` : pathname;
+    router.replace(target, { locale: newLocale });
   };
 
   return (
@@ -39,7 +43,7 @@ export default function LanguageSwitcher() {
         <Button
           variant="ghost"
           size="sm"
-          className="h-9 px-2 gap-1.5 text-foreground/60 hover:text-foreground hover:bg-accent/10 dark:text-white/80 dark:hover:text-white dark:hover:bg-white/10 rounded-xl focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          className="cursor-pointer h-9 px-2 gap-1.5 text-foreground/60 hover:text-foreground hover:bg-accent/10 dark:text-white/80 dark:hover:text-white dark:hover:bg-white/10 rounded-xl focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
         >
           <Globe className="w-4 h-4" />
           <span className="text-sm hidden sm:inline">

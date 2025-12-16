@@ -178,6 +178,55 @@ export default function HeroCarousel({ children }: HeroCarouselProps) {
             </Link>
           </motion.div>
         </div>
+
+        {/* Navigation arrows */}
+        <div className="absolute inset-0 z-20 pointer-events-none hidden md:flex items-center justify-between px-4">
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            onClick={scrollPrev}
+            disabled={!canScrollPrev}
+            className={cn(
+              "pointer-events-auto h-12 w-12 rounded-full bg-white/15 hover:bg-white/25 text-white backdrop-blur-sm border border-white/20",
+              !canScrollPrev && "opacity-50"
+            )}
+            aria-label="Previous slide"
+          >
+            <ChevronLeft className="h-6 w-6" />
+          </Button>
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            onClick={scrollNext}
+            disabled={!canScrollNext}
+            className={cn(
+              "pointer-events-auto h-12 w-12 rounded-full bg-white/15 hover:bg-white/25 text-white backdrop-blur-sm border border-white/20",
+              !canScrollNext && "opacity-50"
+            )}
+            aria-label="Next slide"
+          >
+            <ChevronRight className="h-6 w-6" />
+          </Button>
+        </div>
+
+        {/* Pagination dots */}
+        <div className="absolute bottom-5 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2">
+          {heroSlides.map((slide, index) => (
+            <button
+              key={slide.id}
+              type="button"
+              onClick={() => scrollTo(index)}
+              className={cn(
+                "h-2.5 rounded-full transition-all bg-white/50 hover:bg-white",
+                selectedIndex === index ? "w-8 bg-white" : "w-2.5"
+              )}
+              aria-label={`Go to slide ${index + 1}`}
+              aria-current={selectedIndex === index ? "true" : undefined}
+            />
+          ))}
+        </div>
       </div>
 
       {/* Search Form Overlay - positioned to overlap bottom of carousel and top of next section */}

@@ -5,25 +5,56 @@ import { z } from "zod";
  * Centralized validation with Croatian error messages
  */
 
-// Contact Form Schema
-export const contactFormSchema = z.object({
-  ime: z
-    .string()
-    .min(1, "Ovo polje je obavezno")
-    .min(2, "Ime mora imati minimalno 2 znaka")
-    .max(100, "Ime ne smije biti duže od 100 znakova"),
-  email: z.string().min(1, "Ovo polje je obavezno").email("Email nije valjan"),
-  telefon: z
-    .string()
-    .min(1, "Ovo polje je obavezno")
-    .regex(/^\+?[\d\s-]{9,}$/, "Broj telefona nije valjan"),
-  budzet: z.string().optional(),
-  poruka: z
-    .string()
-    .min(1, "Ovo polje je obavezno")
-    .min(10, "Poruka mora imati minimalno 10 znakova")
-    .max(1000, "Poruka ne smije biti duža od 1000 znakova"),
-});
+// Contact Form Schema (localized)
+const contactMessages = {
+  hr: {
+    required: "Ovo polje je obavezno",
+    nameMin: "Ime mora imati minimalno 2 znaka",
+    nameMax: "Ime ne smije biti duže od 100 znakova",
+    email: "Email nije valjan",
+    phone: "Broj telefona nije valjan",
+    messageMin: "Poruka mora imati minimalno 10 znakova",
+    messageMax: "Poruka ne smije biti duža od 1000 znakova",
+  },
+  en: {
+    required: "This field is required",
+    nameMin: "Name must be at least 2 characters",
+    nameMax: "Name must not exceed 100 characters",
+    email: "Email is not valid",
+    phone: "Phone number is not valid",
+    messageMin: "Message must be at least 10 characters",
+    messageMax: "Message must not exceed 1000 characters",
+  },
+  de: {
+    required: "Dieses Feld ist erforderlich",
+    nameMin: "Name muss mindestens 2 Zeichen lang sein",
+    nameMax: "Name darf 100 Zeichen nicht ueberschreiten",
+    email: "E-Mail ist nicht gueltig",
+    phone: "Telefonnummer ist nicht gueltig",
+    messageMin: "Nachricht muss mindestens 10 Zeichen haben",
+    messageMax: "Nachricht darf 1000 Zeichen nicht ueberschreiten",
+  },
+} as const;
+
+type ContactLocale = keyof typeof contactMessages;
+
+export const getContactFormSchema = (locale: string) => {
+  const m = contactMessages[(locale as ContactLocale) || "hr"] || contactMessages.hr;
+  return z.object({
+    ime: z.string().min(1, m.required).min(2, m.nameMin).max(100, m.nameMax),
+    email: z.string().min(1, m.required).email(m.email),
+    telefon: z.string().min(1, m.required).regex(/^\+?[\d\s-]{9,}$/, m.phone),
+    budzet: z.string().optional(),
+    poruka: z
+      .string()
+      .min(1, m.required)
+      .min(10, m.messageMin)
+      .max(1000, m.messageMax),
+    hp: z.string().optional(),
+  });
+};
+
+export const contactFormSchema = getContactFormSchema("hr");
 
 export type ContactFormData = z.infer<typeof contactFormSchema>;
 
@@ -106,3 +137,5 @@ export function validateVozila(data: unknown[]): {
 
   return { valid, errors };
 }
+
+

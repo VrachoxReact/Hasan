@@ -1,23 +1,55 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import ImageGallery from "@/components/ImageGallery";
+import type {
+  ButtonHTMLAttributes,
+  HTMLAttributes,
+  ImgHTMLAttributes,
+  ReactNode,
+} from "react";
+
+type NextImageMockProps = Omit<ImgHTMLAttributes<HTMLImageElement>, "src"> & {
+  alt: string;
+  src: string;
+  priority?: boolean;
+  fill?: boolean;
+};
 
 // Mock next/image
 vi.mock("next/image", () => ({
-  default: ({ alt, src, priority, ...props }: any) => (
-    <img alt={alt} src={src} data-priority={priority} {...props} />
-  ),
+  default: ({ alt, src, priority, ...props }: NextImageMockProps) => {
+    const domProps: Record<string, unknown> = { ...props };
+    delete domProps.fill;
+
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img
+        alt={alt}
+        src={src}
+        data-priority={priority}
+        {...(domProps as ImgHTMLAttributes<HTMLImageElement>)}
+      />
+    );
+  },
 }));
 
 // Mock framer-motion
 vi.mock("framer-motion", () => ({
   motion: {
-    div: ({ children, ...props }: any) => <div {...props}>{children}</div>,
-    button: ({ children, ...props }: any) => (
+    div: ({
+      children,
+      ...props
+    }: HTMLAttributes<HTMLDivElement> & { children?: ReactNode }) => (
+      <div {...props}>{children}</div>
+    ),
+    button: ({
+      children,
+      ...props
+    }: ButtonHTMLAttributes<HTMLButtonElement> & { children?: ReactNode }) => (
       <button {...props}>{children}</button>
     ),
   },
-  AnimatePresence: ({ children }: any) => <>{children}</>,
+  AnimatePresence: ({ children }: { children?: ReactNode }) => <>{children}</>,
 }));
 
 describe("ImageGallery", () => {

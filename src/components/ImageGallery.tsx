@@ -36,6 +36,28 @@ export default function ImageGallery({ images, alt }: ImageGalleryProps) {
     if (e.key === "Escape") setIsLightboxOpen(false);
   };
 
+  const openLightbox = () => {
+    setIsLightboxOpen(true);
+
+    // Show zoom hint (mobile only, once per device)
+    if (typeof window === "undefined") return;
+    const isMobile = window.innerWidth < 1024;
+    if (!isMobile) return;
+
+    try {
+      const hintShown = localStorage.getItem("zoom-hint-shown");
+      if (hintShown) return;
+
+      setShowZoomHint(true);
+      window.setTimeout(() => {
+        setShowZoomHint(false);
+        localStorage.setItem("zoom-hint-shown", "true");
+      }, 3000);
+    } catch {
+      // Ignore storage errors (private mode, blocked storage, etc.)
+    }
+  };
+
   // Focus trap and scroll lock effect
   useEffect(() => {
     if (isLightboxOpen) {
@@ -44,20 +66,6 @@ export default function ImageGallery({ images, alt }: ImageGalleryProps) {
 
       // Lock scroll
       document.body.style.overflow = "hidden";
-
-      // Check if we should show zoom hint (mobile only)
-      if (typeof window !== "undefined") {
-        const isMobile = window.innerWidth < 1024;
-        const hintShown = localStorage.getItem("zoom-hint-shown");
-
-        if (isMobile && !hintShown) {
-          setShowZoomHint(true);
-          setTimeout(() => {
-            setShowZoomHint(false);
-            localStorage.setItem("zoom-hint-shown", "true");
-          }, 3000);
-        }
-      }
 
       // Focus close button
       setTimeout(() => {
@@ -104,7 +112,7 @@ export default function ImageGallery({ images, alt }: ImageGalleryProps) {
       <div className="relative rounded-2xl overflow-hidden bg-muted">
         <div
           className="aspect-[16/10] relative cursor-zoom-in group"
-          onClick={() => setIsLightboxOpen(true)}
+          onClick={openLightbox}
         >
           <Image
             src={images[currentIndex]}

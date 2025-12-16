@@ -51,7 +51,8 @@
       "backToHome": "Zur Startseite zurückkehren"
     },
     "whatsapp": {
-      "defaultMessage": "Hallo! Ich interessiere mich für Ihr Fahrzeugangebot."
+      "defaultMessage": "Hallo! Ich interessiere mich für Ihr Fahrzeugangebot.",
+      "ariaLabel": "Kontaktieren Sie uns über WhatsApp"
     },
     "workingHours": {
       "weekdays": "Montag - Freitag",
@@ -71,6 +72,10 @@
     }
   },
   "home": {
+    "meta": {
+      "title": "Produkt Auto - Qualitäts-Gebrauchtfahrzeuge | Beste Preise in Kroatien",
+      "description": "Verkauf von Gebrauchtfahrzeugen mit Qualitätsgarantie. Geprüfte Fahrzeuge, vollständige Historie, beste Preise. Besuchen Sie uns in Zagreb!"
+    },
     "hero": {
       "title": "Qualitäts-Gebrauchtwagen",
       "subtitle": "Finden Sie das perfekte Fahrzeug zum besten Preis"
@@ -122,7 +127,12 @@
   "vehicles": {
     "pageTitle": "Unsere Fahrzeugauswahl",
     "pageSubtitle": "Finden Sie das perfekte Fahrzeug aus unserer Auswahl von {count} Qualitätsautos",
+    "searchPlaceholder": "Suche nach Marke, Modell, Beschreibung...",
     "pageDescription": "Durchsuchen Sie unsere Auswahl an Qualitäts-Gebrauchtwagen",
+    "searchLabel": "Fahrzeuge suchen",
+    "viewModeGrid": "Rasteransicht",
+    "viewModeList": "Listenansicht",
+    "exclusiveOnly": "Nur exklusive Fahrzeuge",
     "noResults": "Keine Fahrzeuge entsprechen den Filtern",
     "noResultsDescription": "Versuchen Sie, einige Filter zu ändern oder zu löschen, um mehr Ergebnisse zu sehen",
     "clearFilters": "Filter löschen",
@@ -220,7 +230,8 @@
       "linkCopied": "Link in die Zwischenablage kopiert",
       "gallery": "Galerie",
       "previousImage": "Vorheriges Bild",
-      "nextImage": "Nächstes Bild"
+      "nextImage": "Nächstes Bild",
+      "financing": "Finanzierung"
     },
     "quickView": {
       "moreImages": "mehr",
@@ -260,6 +271,10 @@
     "compareWithCount": "Vergleichen ({count})"
   },
   "compare": {
+    "meta": {
+      "title": "Fahrzeuge vergleichen | Produkt Auto",
+      "description": "Vergleichen Sie bis zu 3 Fahrzeuge nebeneinander. Überprüfen Sie Spezifikationen, Preise und Ausstattung an einem Ort."
+    },
     "pageTitle": "Fahrzeuge vergleichen",
     "pageDescription": "Vergleichen Sie bis zu 3 Fahrzeuge gleichzeitig",
     "emptyTitle": "Keine Fahrzeuge zum Vergleichen",
@@ -294,6 +309,10 @@
     }
   },
   "favorites": {
+    "meta": {
+      "title": "Meine Favoriten | Produkt Auto",
+      "description": "Sehen Sie Ihre gespeicherten Fahrzeuge. Vergleichen Sie Favoriten und finden Sie Ihr perfektes Auto."
+    },
     "pageTitle": "Meine Favoriten",
     "pageDescription": "Ihre gespeicherten Fahrzeuge",
     "emptyTitle": "Keine gespeicherten Favoriten",
@@ -307,6 +326,10 @@
     "removedFromFavorites": "aus Favoriten entfernt"
   },
   "about": {
+    "meta": {
+      "title": "Über uns | Produkt Auto - Qualitäts-Gebrauchtwagen",
+      "description": "Lernen Sie Produkt Auto kennen - Ihr zuverlässiger Partner für Qualitäts-Gebrauchtwagen. Über 10 Jahre Erfahrung im Autoverkauf."
+    },
     "pageTitle": "Über uns",
     "pageDescription": "Lernen Sie Produkt Auto kennen - Ihr zuverlässiger Partner für Qualitäts-Gebrauchtwagen",
     "hero": {
@@ -570,6 +593,76 @@
     "closeGallery": "Galerie schließen (Escape)",
     "galleryNavigation": "Galerie-Navigation",
     "showImage": "Bild {number} anzeigen"
+  },
+  "privacy": {
+    "meta": {
+      "title": "Datenschutzerklärung | Produkt Auto",
+      "description": "Erfahren Sie, wie Produkt Auto Ihre persönlichen Daten schützt. DSGVO-Konformität und Datensicherheit."
+    },
+    "pageTitle": "Datenschutzerklärung",
+    "pageDescription": "Ihre Privatsphäre ist uns wichtig. Erfahren Sie, wie wir Ihre Daten sammeln, verwenden und schützen.",
+    "lastUpdated": "Zuletzt aktualisiert: Dezember 2025",
+    "sections": {
+      "dataCollection": {
+        "title": "Datenerhebung",
+        "content": "Wir erheben nur Daten, die für die Erbringung unserer Dienstleistungen erforderlich sind. Dazu gehören:\n\n• Vollständiger Name\n• E-Mail-Adresse\n• Telefonnummer\n• Informationen über Fahrzeuge, die Sie interessieren\n\nAlle Daten werden nur mit Ihrer Zustimmung erhoben und ausschließlich für den vorgesehenen Zweck verwendet."
+      },
+      "dataProtection": {
+        "title": "Datenschutz",
+        "content": "Ihre persönlichen Daten sind durch modernste Sicherheitsmaßnahmen geschützt:\n\n• SSL-Verschlüsselung aller Kommunikation\n• Sichere Datenspeicherung\n• Beschränkter Zugang nur für autorisiertes Personal\n• Regelmäßige Sicherheitsüberprüfungen und Updates\n\nWir teilen Ihre Daten niemals ohne Ihre ausdrückliche Zustimmung mit Dritten."
+      },
+      "cookies": {
+        "title": "Verwendung von Cookies",
+        "content": "Unsere Website verwendet Cookies, um Ihnen das beste Benutzererlebnis zu bieten:\n\n• Wesentliche Cookies - für grundlegende Website-Funktionen\n• Analyse-Cookies - um zu verstehen, wie Sie die Website nutzen\n• Funktionale Cookies - um Ihre Präferenzen zu speichern\n\nSie können Cookies über Ihre Browsereinstellungen kontrollieren."
+      },
+      "yourRights": {
+        "title": "Ihre Rechte",
+        "content": "Gemäß DSGVO haben Sie folgende Rechte:\n\n• Recht auf Zugang zu Ihren persönlichen Daten\n• Recht auf Berichtigung unrichtiger Daten\n• Recht auf Löschung (\"Recht auf Vergessenwerden\")\n• Recht auf Einschränkung der Verarbeitung\n• Recht auf Datenübertragbarkeit\n• Widerspruchsrecht\n\nUm eines dieser Rechte auszuüben, kontaktieren Sie uns bitte."
+      }
+    },
+    "contact": {
+      "title": "Datenschutz-Kontakt",
+      "description": "Bei allen Fragen zum Datenschutz kontaktieren Sie uns:"
+    }
+  },
+  "terms": {
+    "meta": {
+      "title": "Nutzungsbedingungen | Produkt Auto",
+      "description": "Lesen Sie die Nutzungsbedingungen der Produkt Auto Website. Informationen zu Fahrzeugkäufen, Garantie und Zahlung."
+    },
+    "pageTitle": "Nutzungsbedingungen",
+    "pageDescription": "Bitte lesen Sie diese Bedingungen sorgfältig, bevor Sie unsere Website und Dienste nutzen.",
+    "lastUpdated": "Version 1.0 | Zuletzt aktualisiert: Dezember 2025",
+    "sections": {
+      "general": {
+        "title": "1. Allgemeine Bedingungen",
+        "content": "Mit der Nutzung der Website von Produkt Auto j.d.o.o. akzeptieren Sie diese Nutzungsbedingungen. Bitte lesen Sie sie sorgfältig, bevor Sie unsere Dienste nutzen.\n\nWir behalten uns das Recht vor, diese Bedingungen jederzeit zu ändern. Die weitere Nutzung der Website nach Änderungen gilt als Akzeptanz der neuen Bedingungen."
+      },
+      "vehicleInfo": {
+        "title": "2. Fahrzeuginformationen",
+        "content": "Alle Fahrzeuginformationen auf unserer Website werden nach bestem Wissen und Gewissen bereitgestellt:\n\n• Fahrzeugfotos sind aktuell und authentisch\n• Spezifikationen und Ausstattung werden vor der Veröffentlichung überprüft\n• Preise sind in Euro (€) angegeben und enthalten MwSt.\n• Fahrzeugverfügbarkeit kann sich ändern\n\nWir empfehlen eine persönliche Besichtigung vor dem Kauf."
+      },
+      "pricing": {
+        "title": "3. Preise und Zahlung",
+        "content": "Alle Preise auf der Website dienen nur zur Information:\n\n• Der endgültige Preis wird im Kaufvertrag festgelegt\n• Fahrzeugreservierung ist mit Anzahlung möglich\n• Wir akzeptieren Barzahlung, Kartenzahlung und Banküberweisung\n• Finanzierung über Leasinggesellschaften möglich\n\nFür detaillierte Zahlungsinformationen kontaktieren Sie unser Verkaufsteam."
+      },
+      "warranty": {
+        "title": "4. Garantie und Reklamationen",
+        "content": "Alle über unser Unternehmen verkauften Fahrzeuge kommen mit:\n\n• Verifizierter Fahrzeughistorie\n• Motor- und Getriebegarantie (fahrzeugabhängig)\n• Erweiterte Garantieoptionen\n• 14-tägiges Rückgaberecht für Verbraucher\n\nReklamationen werden schriftlich innerhalb der gesetzlichen Frist angenommen."
+      },
+      "liability": {
+        "title": "5. Haftungsbeschränkung",
+        "content": "Produkt Auto j.d.o.o. haftet nicht für:\n\n• Tippfehler auf der Website\n• Vorübergehende Nichtverfügbarkeit der Website\n• Schäden durch Nutzung der Website-Informationen\n• Entscheidungen basierend auf Website-Informationen\n\nWir bemühen uns um Genauigkeit aller Informationen, empfehlen aber Überprüfung vor dem Kauf."
+      },
+      "disputes": {
+        "title": "6. Streitbeilegung",
+        "content": "Im Streitfall:\n\n• Versuchen wir zunächst eine gütliche Einigung\n• Es gilt kroatisches Recht\n• Zuständig ist das Gericht in Zagreb\n• Verbraucher können alternative Streitbeilegung nutzen"
+      }
+    },
+    "questions": {
+      "title": "Haben Sie Fragen?",
+      "description": "Bei Fragen zu den Nutzungsbedingungen kontaktieren Sie uns gerne."
+    }
   },
   "metadata": {
     "title": "Produkt Auto - Qualitäts-Gebrauchtwagen",

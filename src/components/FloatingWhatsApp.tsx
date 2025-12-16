@@ -3,19 +3,17 @@
 import { motion } from "framer-motion";
 import { MessageCircle } from "lucide-react";
 import { useTranslations } from "next-intl";
-
-const WHATSAPP_NUMBER = "385912345678";
+import { CONTACT } from "@/lib/constants";
 
 export default function FloatingWhatsApp() {
   const t = useTranslations("common.whatsapp");
 
   return (
     <motion.a
-      href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
-        t("defaultMessage")
-      )}`}
+      href={CONTACT.whatsapp.messageUrl(t("defaultMessage"))}
       target="_blank"
       rel="noopener noreferrer"
+      aria-label={t("ariaLabel")}
       className="fixed bottom-24 right-6 z-40 sm:hidden"
       initial={{ scale: 0 }}
       animate={{ scale: 1 }}

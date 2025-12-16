@@ -1,9 +1,11 @@
-import { create } from "zustand";
+﻿import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { Vozilo } from "@/types/vozilo";
 
 interface UsporediStore {
   vozila: Vozilo[];
+  hasHydrated: boolean;
+  setHasHydrated: (hydrated: boolean) => void;
   addVozilo: (vozilo: Vozilo) => boolean;
   removeVozilo: (id: string) => void;
   clearAll: () => void;
@@ -14,6 +16,8 @@ export const useUsporediStore = create<UsporediStore>()(
   persist(
     (set, get) => ({
       vozila: [],
+      hasHydrated: false,
+      setHasHydrated: (hydrated) => set({ hasHydrated: hydrated }),
       addVozilo: (vozilo) => {
         const current = get().vozila;
         if (current.length >= 3) {
@@ -37,6 +41,10 @@ export const useUsporediStore = create<UsporediStore>()(
     }),
     {
       name: "usporedi-storage",
+      skipHydration: true,
+      onRehydrateStorage: () => (state) => {
+        state?.setHasHydrated(true);
+      },
     }
   )
 );

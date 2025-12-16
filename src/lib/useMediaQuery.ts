@@ -1,27 +1,38 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useSyncExternalStore } from "react";
 
 export function useMediaQuery(query: string): boolean {
-  const [matches, setMatches] = useState(false);
+  const getSnapshot = () => {
+    if (typeof window === "undefined" || !("matchMedia" in window)) return false;
+    return window.matchMedia(query).matches;
+  };
 
-  useEffect(() => {
+  const getServerSnapshot = () => false;
+
+  const subscribe = (onStoreChange: () => void) => {
+    if (typeof window === "undefined" || !("matchMedia" in window)) {
+      return () => {};
+    }
+
     const media = window.matchMedia(query);
+    const listener = () => onStoreChange();
 
-    // Set initial value
-    setMatches(media.matches);
+    // Modern browsers
+    if ("addEventListener" in media) {
+      media.addEventListener("change", listener);
+      return () => media.removeEventListener("change", listener);
+    }
 
-    // Create listener
-    const listener = (event: MediaQueryListEvent) => {
-      setMatches(event.matches);
+    // Safari < 14 fallback
+    const legacyMedia = media as MediaQueryList & {
+      addListener?: (listener: (event: MediaQueryListEvent) => void) => void;
+      removeListener?: (listener: (event: MediaQueryListEvent) => void) => void;
     };
 
-    // Add listener
-    media.addEventListener("change", listener);
+    legacyMedia.addListener?.(listener);
+    return () => legacyMedia.removeListener?.(listener);
+  };
 
-    // Cleanup
-    return () => media.removeEventListener("change", listener);
-  }, [query]);
-
-  return matches;
+  return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 }

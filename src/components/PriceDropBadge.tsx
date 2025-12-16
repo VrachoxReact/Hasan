@@ -3,7 +3,6 @@
 import { motion } from "framer-motion";
 import { TrendingDown } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { savings } from "@/lib/designTokens";
 
 interface PriceDropBadgeProps {
   originalPrice: number;

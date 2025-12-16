@@ -1,9 +1,10 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import VoziloCard from "@/components/VoziloCard";
 import { useUsporediStore } from "@/stores/usporediStore";
 import { useFavoritiStore } from "@/stores/favoritiStore";
 import type { Vozilo } from "@/types/vozilo";
+import type { HTMLAttributes, ReactNode } from "react";
 
 // Mock stores
 vi.mock("@/stores/usporediStore");
@@ -23,6 +24,7 @@ vi.mock("next/link", () => ({
 // Mock next/image
 vi.mock("next/image", () => ({
   default: ({ alt, src }: { alt: string; src: string }) => (
+    // eslint-disable-next-line @next/next/no-img-element
     <img alt={alt} src={src} />
   ),
 }));
@@ -30,7 +32,32 @@ vi.mock("next/image", () => ({
 // Mock framer-motion
 vi.mock("framer-motion", () => ({
   motion: {
-    div: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+    div: ({
+      children,
+      ...props
+    }: HTMLAttributes<HTMLDivElement> &
+      Record<string, unknown> & { children?: ReactNode }) => {
+      const domProps: Record<string, unknown> = { ...props };
+      for (const key of [
+        "whileInView",
+        "viewport",
+        "initial",
+        "animate",
+        "exit",
+        "transition",
+        "variants",
+        "whileHover",
+        "whileTap",
+        "layout",
+        "layoutId",
+      ]) {
+        delete domProps[key];
+      }
+
+      return (
+        <div {...(domProps as HTMLAttributes<HTMLDivElement>)}>{children}</div>
+      );
+    },
   },
 }));
 
@@ -55,6 +82,13 @@ const mockVozilo: Vozilo = {
 };
 
 describe("VoziloCard", () => {
+  const mockedUseUsporediStore = useUsporediStore as unknown as {
+    mockReturnValue: (value: unknown) => void;
+  };
+  const mockedUseFavoritiStore = useFavoritiStore as unknown as {
+    mockReturnValue: (value: unknown) => void;
+  };
+
   const mockAddVozilo = vi.fn();
   const mockRemoveVozilo = vi.fn();
   const mockIsInList = vi.fn();
@@ -64,13 +98,13 @@ describe("VoziloCard", () => {
   beforeEach(() => {
     vi.clearAllMocks();
 
-    (useUsporediStore as any).mockReturnValue({
+    mockedUseUsporediStore.mockReturnValue({
       addVozilo: mockAddVozilo,
       removeVozilo: mockRemoveVozilo,
       isInList: mockIsInList,
     });
 
-    (useFavoritiStore as any).mockReturnValue({
+    mockedUseFavoritiStore.mockReturnValue({
       toggleFavorit: mockToggleFavorit,
       isFavorit: mockIsFavorit,
     });
@@ -153,8 +187,11 @@ describe("VoziloCard", () => {
   it("should navigate to detail page when card is clicked", () => {
     render(<VoziloCard vozilo={mockVozilo} />);
 
-    const link = screen.getByRole("link");
-    expect(link).toHaveAttribute("href", "/vozila/test-1");
+    const links = screen.getAllByRole("link");
+    const mainLink = links.find((link) =>
+      link.getAttribute("href")?.includes("/vozila/test-1")
+    );
+    expect(mainLink).toHaveAttribute("href", "/vozila/test-1");
   });
 
   it("should handle image loading state", async () => {

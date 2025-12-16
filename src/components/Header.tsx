@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { Link, usePathname } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
-import { useState, useEffect, useRef, useMemo } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, GitCompare, Phone, MessageCircle, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -13,7 +13,6 @@ import { useUsporediStore } from "@/stores/usporediStore";
 import { useFavoritiStore } from "@/stores/favoritiStore";
 import ThemeToggle from "@/components/ThemeToggle";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
-import { typography } from "@/lib/designTokens";
 import { CONTACT } from "@/lib/constants";
 
 export default function Header() {
@@ -23,17 +22,15 @@ export default function Header() {
   const navLinks = [
     { href: "/" as const, label: t("nav.home") },
     { href: "/vozila" as const, label: t("nav.vehicles") },
-    { href: "/kontakt" as const, label: t("nav.wholesale") },
+    { href: "/kontakt" as const, label: t("nav.contact") },
     { href: "/o-nama" as const, label: t("nav.about") },
   ];
   const [isScrolled, setIsScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
   const vozila = useUsporediStore((state) => state.vozila);
   const favoriti = useFavoritiStore((state) => state.favoriti);
 
   useEffect(() => {
-    setMounted(true);
     let ticking = false;
     const handleScroll = () => {
       if (!ticking) {
@@ -48,37 +45,8 @@ export default function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const compareCount = useMemo(
-    () => (mounted ? vozila.length : 0),
-    [mounted, vozila.length]
-  );
-  const favoritiCount = useMemo(
-    () => (mounted ? favoriti.length : 0),
-    [mounted, favoriti.length]
-  );
-
-  // Track previous counts for badge animation
-  const prevCompareCount = useRef(compareCount);
-  const prevFavoritiCount = useRef(favoritiCount);
-  const [compareAnimating, setCompareAnimating] = useState(false);
-  const [favoritiAnimating, setFavoritiAnimating] = useState(false);
-
-  // Animate badges when counts change
-  useEffect(() => {
-    if (compareCount !== prevCompareCount.current && compareCount > 0) {
-      setCompareAnimating(true);
-      setTimeout(() => setCompareAnimating(false), 600);
-    }
-    prevCompareCount.current = compareCount;
-  }, [compareCount]);
-
-  useEffect(() => {
-    if (favoritiCount !== prevFavoritiCount.current && favoritiCount > 0) {
-      setFavoritiAnimating(true);
-      setTimeout(() => setFavoritiAnimating(false), 600);
-    }
-    prevFavoritiCount.current = favoritiCount;
-  }, [favoritiCount]);
+  const compareCount = vozila.length;
+  const favoritiCount = favoriti.length;
 
   return (
     <>
@@ -152,7 +120,7 @@ export default function Header() {
                 href={CONTACT.whatsapp.messageUrl(t("whatsapp.defaultMessage"))}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hidden lg:flex"
+                className="hidden lg:flex cursor-pointer"
                 aria-label={t("header.contactViaWhatsApp")}
               >
                 <Button
@@ -167,6 +135,7 @@ export default function Header() {
               {/* Compare Button */}
               <Link
                 href="/usporedi"
+                className="cursor-pointer"
                 aria-label={`${t("nav.compare")}${
                   compareCount > 0 ? ` (${compareCount})` : ""
                 }`}
@@ -181,8 +150,9 @@ export default function Header() {
                   <AnimatePresence>
                     {compareCount > 0 && (
                       <motion.div
+                        key={compareCount}
                         initial={{ scale: 0 }}
-                        animate={{ scale: compareAnimating ? [1, 1.3, 1] : 1 }}
+                        animate={{ scale: [0, 1.3, 1] }}
                         exit={{ scale: 0 }}
                         transition={{ duration: 0.3 }}
                         className="absolute -top-2 -right-2"
@@ -203,7 +173,7 @@ export default function Header() {
               {/* Favorites Button - Improved accessibility */}
               <Link
                 href="/favoriti"
-                className="hidden sm:block"
+                className="hidden sm:block cursor-pointer"
                 aria-label={`${t("nav.favorites")}${
                   favoritiCount > 0 ? ` (${favoritiCount})` : ""
                 }`}
@@ -222,8 +192,9 @@ export default function Header() {
                   <AnimatePresence>
                     {favoritiCount > 0 && (
                       <motion.div
+                        key={favoritiCount}
                         initial={{ scale: 0 }}
-                        animate={{ scale: favoritiAnimating ? [1, 1.3, 1] : 1 }}
+                        animate={{ scale: [0, 1.3, 1] }}
                         exit={{ scale: 0 }}
                         transition={{ duration: 0.3 }}
                         className="absolute -top-2 -right-2"
@@ -242,7 +213,9 @@ export default function Header() {
               </Link>
 
               {/* Language Switcher */}
-              <LanguageSwitcher />
+              <Suspense fallback={<div className="w-10 h-10" />}>
+                <LanguageSwitcher />
+              </Suspense>
 
               {/* Theme Toggle */}
               <ThemeToggle />

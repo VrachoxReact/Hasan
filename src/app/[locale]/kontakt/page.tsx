@@ -28,15 +28,17 @@ import {
   FloatingTextarea,
 } from "@/components/ui/floating-input";
 import { FadeIn, SlideIn } from "@/components/PageTransition";
+import LazyMap from "@/components/LazyMap";
 import { toast } from "sonner";
 import { typography, components } from "@/lib/designTokens";
-import { contactFormSchema } from "@/lib/schemas";
-import { CONTACT, WORKING_HOURS } from "@/lib/constants";
+import { getContactFormSchema } from "@/lib/schemas";
+import { COMPANY, CONTACT, WORKING_HOURS } from "@/lib/constants";
 import { useTranslations } from "next-intl";
+import { useLocale } from "next-intl";
 
 export default function KontaktPage() {
   const t = useTranslations("contact");
-  const tCommon = useTranslations("common");
+  const locale = useLocale();
 
   const contactInfo = useMemo(
     () => [
@@ -99,6 +101,7 @@ export default function KontaktPage() {
     telefon: "",
     budzet: "",
     poruka: "",
+    hp: "",
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -107,7 +110,7 @@ export default function KontaktPage() {
   const shouldReduceMotion = useReducedMotion();
 
   const validateForm = (): boolean => {
-    const result = contactFormSchema.safeParse(formData);
+    const result = getContactFormSchema(locale).safeParse(formData);
 
     if (!result.success) {
       const newErrors: Record<string, string> = {};
@@ -145,12 +148,27 @@ export default function KontaktPage() {
     lastSubmitTime.current = now;
     setIsSubmitting(true);
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...formData, locale }),
+      });
 
-    setIsSubmitting(false);
-    setIsSubmitted(true);
-    toast.success(t("form.success"));
+      const result = await response.json();
+
+      if (!response.ok || !result.success) {
+        throw new Error(result.error || "Failed to send message");
+      }
+
+      setIsSubmitted(true);
+      toast.success(t("form.success"));
+    } catch (error) {
+      console.error("Form submission error:", error);
+      toast.error(t("form.error"));
+    } finally {
+      setIsSubmitting(false);
+    }
 
     // Reset form after delay
     setTimeout(() => {
@@ -161,50 +179,55 @@ export default function KontaktPage() {
         telefon: "",
         budzet: "",
         poruka: "",
+        hp: "",
       });
       setErrors({});
     }, 3000);
   };
 
   // JSON-LD structured data for LocalBusiness
+  const baseUrl = (
+    process.env.NEXT_PUBLIC_SITE_URL || "https://produktauto.hr"
+  ).replace(/\/$/, "");
+
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "AutomotiveBusiness",
-    name: "Produkt Auto",
-    image: "https://produktauto.hr/logo.png",
-    "@id": "https://produktauto.hr",
-    url: "https://produktauto.hr",
-    telephone: "+385911234567",
-    email: "info@produktauto.hr",
+    name: COMPANY.name,
+    image: `${baseUrl}/logoweb.png`,
+    "@id": baseUrl,
+    url: baseUrl,
+    telephone: CONTACT.phoneRaw,
+    email: CONTACT.email,
     address: {
       "@type": "PostalAddress",
-      streetAddress: "Ulica grada Vukovara 271",
-      addressLocality: "Zagreb",
-      postalCode: "10000",
+      streetAddress: CONTACT.address.street,
+      addressLocality: CONTACT.address.city,
+      postalCode: CONTACT.address.postalCode,
       addressCountry: "HR",
     },
     geo: {
       "@type": "GeoCoordinates",
-      latitude: 45.8014399,
-      longitude: 15.9819711,
+      latitude: CONTACT.geo.latitude,
+      longitude: CONTACT.geo.longitude,
     },
     openingHoursSpecification: [
       {
         "@type": "OpeningHoursSpecification",
         dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-        opens: "08:00",
-        closes: "18:00",
+        opens: WORKING_HOURS.weekdays.open,
+        closes: WORKING_HOURS.weekdays.close,
       },
       {
         "@type": "OpeningHoursSpecification",
         dayOfWeek: "Saturday",
-        opens: "09:00",
-        closes: "14:00",
+        opens: WORKING_HOURS.saturday.open,
+        closes: WORKING_HOURS.saturday.close,
       },
     ],
     priceRange: "€€€",
-    description:
-      "Vaš pouzdani partner za kupnju kvalitetnih rabljenih vozila u Hrvatskoj.",
+    description: COMPANY.description,
+    sameAs: Object.values(CONTACT.social),
   };
 
   return (
@@ -431,6 +454,21 @@ export default function KontaktPage() {
                           onSubmit={handleSubmit}
                           className={components.form.group}
                         >
+                          {/* Honeypot field for bots */}
+                          <div className="hidden" aria-hidden="true">
+                            <label htmlFor="company-field">Company</label>
+                            <input
+                              id="company-field"
+                              name="company-field"
+                              type="text"
+                              autoComplete="off"
+                              tabIndex={-1}
+                              value={formData.hp}
+                              onChange={(e) =>
+                                setFormData({ ...formData, hp: e.target.value })
+                              }
+                            />
+                          </div>
                           {Object.keys(errors).length > 0 && (
                             <div
                               role="alert"
@@ -675,18 +713,12 @@ export default function KontaktPage() {
                 </div>
 
                 {/* Map */}
-                <div className="rounded-2xl overflow-hidden border border-border shadow-sm h-[250px]">
-                  <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2781.5024881073784!2d15.9819711!3d45.8014399!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4765d6f5f5555555%3A0x5555555555555555!2sUlica%20grada%20Vukovara%20271%2C%2010000%2C%20Zagreb!5e0!3m2!1shr!2shr!4v1701874800000!5m2!1shr!2shr"
-                    width="100%"
-                    height="100%"
-                    style={{ border: 0 }}
-                    allowFullScreen
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                    title={t("info.location")}
-                  />
-                </div>
+                <LazyMap
+                  src={CONTACT.maps.embedUrl}
+                  title={t("info.location")}
+                  minHeight="250px"
+                  className="rounded-2xl overflow-hidden border border-border shadow-sm"
+                />
               </div>
             </SlideIn>
           </div>

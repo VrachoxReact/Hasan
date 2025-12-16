@@ -19,22 +19,24 @@ export function getVozila(): Vozilo[] {
     }
 
     validatedVozila = valid as Vozilo[];
-    console.log(`✅ Loaded ${validatedVozila.length} valid vehicles`);
+    if (process.env.NODE_ENV === "development") {
+      console.log(`✅ Loaded ${validatedVozila.length} valid vehicles`);
+    }
   }
 
   return validatedVozila;
 }
 
 export function getVoziloById(id: string): Vozilo | undefined {
-  return vozilaData.vozila.find((v) => v.id === id) as Vozilo | undefined;
+  return getVozila().find((v) => v.id === id);
 }
 
 export function getIstaknutaVozila(): Vozilo[] {
-  return vozilaData.vozila.filter((v) => v.istaknuto) as Vozilo[];
+  return getVozila().filter((v) => v.istaknuto);
 }
 
 export function getEkskluzivnaVozila(): Vozilo[] {
-  return vozilaData.vozila.filter((v) => v.ekskluzivno) as Vozilo[];
+  return getVozila().filter((v) => v.ekskluzivno);
 }
 
 export function filterVozila(
@@ -42,12 +44,21 @@ export function filterVozila(
   filters: FilterOptions
 ): Vozilo[] {
   return vozila.filter((vozilo) => {
+    // Free-text search across multiple fields
+    if (filters.search) {
+      const searchLower = filters.search.toLowerCase();
+      const searchableText = `${vozilo.marka} ${vozilo.model} ${vozilo.opis} ${
+        vozilo.boja
+      } ${vozilo.karakteristike.join(" ")}`.toLowerCase();
+      if (!searchableText.includes(searchLower)) return false;
+    }
     if (filters.marka && vozilo.marka !== filters.marka) return false;
     if (
       filters.model &&
       !vozilo.model.toLowerCase().includes(filters.model.toLowerCase())
     )
       return false;
+    if (filters.ekskluzivno && !vozilo.ekskluzivno) return false;
     if (filters.godinaOd && vozilo.godina < filters.godinaOd) return false;
     if (filters.godinaDo && vozilo.godina > filters.godinaDo) return false;
     if (filters.cijenaOd && vozilo.cijena < filters.cijenaOd) return false;

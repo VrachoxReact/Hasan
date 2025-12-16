@@ -5,13 +5,14 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
-import "../globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import FloatingWhatsApp from "@/components/FloatingWhatsApp";
-import FloatingCompareBar from "@/components/FloatingCompareBar";
 import { Toaster } from "@/components/ui/sonner";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
+import StoreHydration from "@/components/StoreHydration";
+import FloatingOverlays from "@/components/FloatingOverlays";
+
+import "../globals.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -39,6 +40,11 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
 
+  const siteUrl =
+    (process.env.NEXT_PUBLIC_SITE_URL ||
+      process.env.SITE_URL ||
+      "https://produktauto.hr")?.replace(/\/$/, "") || "https://produktauto.hr";
+
   const titles: Record<string, string> = {
     hr: "Produkt Auto - Kvalitetna rabljena vozila",
     en: "Produkt Auto - Quality Used Vehicles",
@@ -58,6 +64,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 
   return {
+    metadataBase: new URL(siteUrl),
     title: {
       default: titles[locale] || titles.hr,
       template: "%s | Produkt Auto",
@@ -75,10 +82,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       "Volkswagen",
     ],
     authors: [{ name: "Produkt Auto" }],
+    alternates: {
+      canonical: locale === "hr" ? "/" : `/${locale}`,
+      languages: {
+        hr: "/",
+        en: "/en",
+        de: "/de",
+      },
+    },
     openGraph: {
       type: "website",
       locale: ogLocales[locale] || ogLocales.hr,
       siteName: "Produkt Auto",
+      url: locale === "hr" ? "/" : `/${locale}`,
     },
   };
 }
@@ -108,8 +124,6 @@ export default async function LocaleLayout({ children, params }: Props) {
                 try {
                   const stored = localStorage.getItem('produktauto-theme');
                   const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                  // Dark is default - only show light if explicitly stored as 'light'
-                  // or if stored as 'system' and user prefers light
                   const isLight = stored === 'light' || (stored === 'system' && !prefersDark);
                   if (!isLight) {
                     document.documentElement.classList.add('dark');
@@ -133,6 +147,7 @@ export default async function LocaleLayout({ children, params }: Props) {
             enableSystem
             disableTransitionOnChange
           >
+            <StoreHydration />
             {/* Skip to main content link for accessibility */}
             <a
               href="#main-content"
@@ -152,8 +167,7 @@ export default async function LocaleLayout({ children, params }: Props) {
               </main>
             </ErrorBoundary>
             <Footer />
-            <FloatingCompareBar />
-            <FloatingWhatsApp />
+            <FloatingOverlays />
             <Toaster position="bottom-right" richColors />
           </ThemeProvider>
         </NextIntlClientProvider>

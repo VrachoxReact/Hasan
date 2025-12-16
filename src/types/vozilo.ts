@@ -19,6 +19,7 @@ export interface Vozilo {
 }
 
 export interface FilterOptions {
+  search?: string;
   marka?: string;
   model?: string;
   godinaOd?: number;
@@ -28,6 +29,7 @@ export interface FilterOptions {
   gorivo?: string[];
   kilometrazaDo?: number;
   mjenjac?: string;
+   ekskluzivno?: boolean;
 }
 
 export const MARKE = [

@@ -1,10 +1,12 @@
-import { create } from "zustand";
+﻿import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { Vozilo } from "@/types/vozilo";
 
 interface FavoritiState {
   favoriti: Vozilo[];
-  recentlyViewed: string[]; // Store IDs only
+  recentlyViewed: string[];
+  hasHydrated: boolean;
+  setHasHydrated: (hydrated: boolean) => void;
   addFavorit: (vozilo: Vozilo) => boolean;
   removeFavorit: (id: string) => void;
   isFavorit: (id: string) => boolean;
@@ -19,6 +21,8 @@ export const useFavoritiStore = create<FavoritiState>()(
     (set, get) => ({
       favoriti: [],
       recentlyViewed: [],
+      hasHydrated: false,
+      setHasHydrated: (hydrated) => set({ hasHydrated: hydrated }),
 
       addFavorit: (vozilo) => {
         const { favoriti } = get();
@@ -54,9 +58,7 @@ export const useFavoritiStore = create<FavoritiState>()(
 
       addRecentlyViewed: (id) => {
         const { recentlyViewed } = get();
-        // Remove if already exists, then add to front
         const filtered = recentlyViewed.filter((vid) => vid !== id);
-        // Keep only last 10 viewed
         const updated = [id, ...filtered].slice(0, 10);
         set({ recentlyViewed: updated });
       },
@@ -67,6 +69,10 @@ export const useFavoritiStore = create<FavoritiState>()(
     }),
     {
       name: "favoriti-storage",
+      skipHydration: true,
+      onRehydrateStorage: () => (state) => {
+        state?.setHasHydrated(true);
+      },
     }
   )
 );

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
 import { Input } from "@/components/ui/input";
@@ -15,6 +15,8 @@ interface KalkulatorFinanciranjaProps {
   cijenaVozila: number;
 }
 
+const TERM_OPTIONS = [36, 60, 84] as const;
+
 export default function KalkulatorFinanciranja({
   cijenaVozila,
 }: KalkulatorFinanciranjaProps) {
@@ -25,7 +27,7 @@ export default function KalkulatorFinanciranja({
   const [copySuccess, setCopySuccess] = useState(false);
 
   // Helper function to calculate financing for any term
-  const calculateForTerm = (term: number) => {
+  const calculateForTerm = useCallback((term: number) => {
     const glavnica = cijenaVozila - predujam;
     const mjesecnaKamata = kamatnaStopa / 100 / 12;
 
@@ -45,18 +47,17 @@ export default function KalkulatorFinanciranja({
       ukupnoZaPlacanje: ukupno,
       ukupnaKamata: kamata,
     };
-  };
+  }, [cijenaVozila, predujam, kamatnaStopa]);
 
   const { mjesecnaRata, ukupnoZaPlacanje, ukupnaKamata } = useMemo(
     () => calculateForTerm(brojRata),
-    [cijenaVozila, predujam, brojRata, kamatnaStopa]
+    [calculateForTerm, brojRata]
   );
 
   // Comparison options
-  const termOptions = [36, 60, 84];
   const comparisonCalculations = useMemo(
-    () => termOptions.map((term) => ({ term, ...calculateForTerm(term) })),
-    [cijenaVozila, predujam, kamatnaStopa]
+    () => TERM_OPTIONS.map((term) => ({ term, ...calculateForTerm(term) })),
+    [calculateForTerm]
   );
 
   // Copy calculation to clipboard
@@ -81,7 +82,7 @@ export default function KalkulatorFinanciranja({
       setCopySuccess(true);
       toast.success(t("copied"));
       setTimeout(() => setCopySuccess(false), 2000);
-    } catch (err) {
+    } catch {
       toast.error(t("copyError"));
     }
   };
@@ -252,7 +253,7 @@ export default function KalkulatorFinanciranja({
                 }`}
               >
                 <p className="text-xs text-muted-foreground mb-1">
-                  {t("months", { count: term })}
+                  {term} {t("months")}
                 </p>
                 <p className="text-lg font-bold text-accent">
                   {formatCijena(Math.round(rata))}

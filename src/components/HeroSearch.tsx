@@ -26,11 +26,14 @@ import {
   GORIVA,
   MJENJACI,
 } from "@/types/vozilo";
-import { getVozila } from "@/lib/vozila";
 
 const MAX_PRICE = 100000;
 
-export default function HeroSearch() {
+type HeroSearchProps = {
+  totalVehicles?: number;
+};
+
+export default function HeroSearch({ totalVehicles }: HeroSearchProps = {}) {
   const router = useRouter();
   const t = useTranslations("search");
   const [marka, setMarka] = useState<string>("");
@@ -52,20 +55,6 @@ export default function HeroSearch() {
     setMarka(value);
     setModel("");
   };
-
-  // Count matching vehicles
-  const matchingCount = useMemo(() => {
-    const vozila = getVozila();
-    return vozila.filter((v) => {
-      if (marka && v.marka !== marka) return false;
-      if (model && v.model !== model) return false;
-      if (godina && v.godina < parseInt(godina)) return false;
-      if (gorivo && v.gorivo !== gorivo) return false;
-      if (mjenjac && v.mjenjac !== mjenjac) return false;
-      if (v.cijena < priceRange[0] || v.cijena > priceRange[1]) return false;
-      return true;
-    }).length;
-  }, [marka, model, godina, gorivo, mjenjac, priceRange]);
 
   // Count active additional filters
   const activeFiltersCount = useMemo(() => {
@@ -278,7 +267,8 @@ export default function HeroSearch() {
             className="h-11 text-sm font-semibold bg-accent hover:bg-accent/90 text-white"
           >
             <Search className="w-4 h-4 mr-2" />
-            {t("search")} ({matchingCount})
+            {t("search")}
+            {typeof totalVehicles === "number" ? ` (${totalVehicles})` : ""}
           </Button>
         </div>
 
@@ -288,7 +278,8 @@ export default function HeroSearch() {
           className="w-full h-12 mt-3 text-sm font-semibold bg-accent hover:bg-accent/90 text-white lg:hidden"
         >
           <Search className="w-4 h-4 mr-2" />
-          {t("searchVehicles")} ({matchingCount})
+          {t("searchVehicles")}
+          {typeof totalVehicles === "number" ? ` (${totalVehicles})` : ""}
         </Button>
       </div>
     </motion.div>

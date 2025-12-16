@@ -3,7 +3,7 @@
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
-import { Sparkles, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import VoziloCard from "@/components/VoziloCard";
 import { getEkskluzivnaVozila } from "@/lib/vozila";
@@ -19,7 +19,7 @@ export default function EkskluzivnaPonuda() {
 
   return (
     <section
-      className={`${spacing.section} bg-gradient-to-b from-accent/5 to-background pt-8 md:pt-10 -mt-4`}
+      className={`${spacing.section.medium} bg-gradient-to-b from-accent/5 to-background pt-8 md:pt-10 -mt-4`}
     >
       <div className="container mx-auto px-4">
         {/* Section Header */}

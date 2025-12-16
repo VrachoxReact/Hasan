@@ -1,55 +1,68 @@
 import { MetadataRoute } from "next";
 import { getVozila } from "@/lib/vozila";
+import { routing } from "@/i18n/routing";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://produktauto.hr";
+  const baseUrl =
+    (process.env.NEXT_PUBLIC_SITE_URL ||
+      process.env.SITE_URL ||
+      "https://produktauto.hr")?.replace(/\/$/, "") || "https://produktauto.hr";
   const vozila = getVozila();
 
-  // Generate vehicle URLs
-  const vehicleUrls = vozila.map((vozilo) => ({
-    url: `${baseUrl}/vozila/${vozilo.id}`,
-    lastModified: new Date(vozilo.datumObjave),
-    changeFrequency: "weekly" as const,
-    priority: 0.8,
-  }));
+  const getLocalePrefix = (locale: string) => {
+    if (routing.localePrefix === "as-needed" && locale === routing.defaultLocale)
+      return "";
+    return `/${locale}`;
+  };
 
-  return [
-    {
-      url: baseUrl,
-      lastModified: new Date(),
-      changeFrequency: "daily",
-      priority: 1,
+  const withLocale = (locale: string, pathname: string) =>
+    `${baseUrl}${getLocalePrefix(locale)}${pathname}`;
+
+  const alternatesFor = (pathname: string) => ({
+    languages: {
+      ...Object.fromEntries(
+        routing.locales.map((locale) => [locale, withLocale(locale, pathname)])
+      ),
+      "x-default": withLocale(routing.defaultLocale, pathname),
     },
+  });
+
+  const staticRoutes = [
+    { pathname: "", changeFrequency: "daily" as const, priority: 1 },
+    { pathname: "/vozila", changeFrequency: "daily" as const, priority: 0.9 },
+    { pathname: "/usporedi", changeFrequency: "weekly" as const, priority: 0.5 },
+    { pathname: "/favoriti", changeFrequency: "weekly" as const, priority: 0.5 },
+    { pathname: "/o-nama", changeFrequency: "monthly" as const, priority: 0.7 },
+    { pathname: "/kontakt", changeFrequency: "monthly" as const, priority: 0.8 },
     {
-      url: `${baseUrl}/vozila`,
-      lastModified: new Date(),
-      changeFrequency: "daily",
-      priority: 0.9,
+      pathname: "/privatnost",
+      changeFrequency: "monthly" as const,
+      priority: 0.4,
     },
-    {
-      url: `${baseUrl}/usporedi`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.5,
-    },
-    {
-      url: `${baseUrl}/favoriti`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.5,
-    },
-    {
-      url: `${baseUrl}/o-nama`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/kontakt`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.8,
-    },
-    ...vehicleUrls,
+    { pathname: "/uvjeti", changeFrequency: "monthly" as const, priority: 0.4 },
   ];
+
+  const staticUrls: MetadataRoute.Sitemap = staticRoutes.map(
+    ({ pathname, changeFrequency, priority }) => ({
+      url: withLocale(routing.defaultLocale, pathname),
+      lastModified: new Date(),
+      changeFrequency,
+      priority,
+      alternates: alternatesFor(pathname),
+    })
+  );
+
+  const vehicleUrls: MetadataRoute.Sitemap = vozila.map((vozilo) => {
+    const pathname = `/vozila/${vozilo.id}`;
+    return {
+      url: withLocale(routing.defaultLocale, pathname),
+      lastModified: new Date(vozilo.datumObjave),
+      changeFrequency: "weekly" as const,
+      priority: 0.8,
+      alternates: alternatesFor(pathname),
+      images: vozilo.slike?.[0] ? [vozilo.slike[0]] : undefined,
+    };
+  });
+
+  return [...staticUrls, ...vehicleUrls];
 }
