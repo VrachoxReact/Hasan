@@ -8,8 +8,16 @@ import { routing } from "./i18n/routing";
  */
 const intlMiddleware = createMiddleware(routing);
 
+// Force Croatian as the default when no locale is in the URL.
+// Without this, next-intl may redirect based on the browser's Accept-Language
+// (e.g. many browsers default to English -> /en).
+const intlMiddlewareNoDetect = createMiddleware({
+  ...routing,
+  localeDetection: false,
+});
+
 export function proxy(request: NextRequest) {
-  return intlMiddleware(request);
+  return intlMiddlewareNoDetect(request);
 }
 
 export const config = {
