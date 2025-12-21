@@ -9,11 +9,11 @@ function run(cmd, args) {
 }
 
 // Prisma will validate required env vars in schema.
-// On Vercel, DATABASE_URL is provided by your Postgres provider integration (e.g. Neon/Supabase).
+// On Vercel, DATABASE_URL and DATABASE_URL_UNPOOLED are provided by your Postgres provider integration (e.g. Neon).
 // Locally, you may not have DB configured during install (e.g. CI), so skip.
-if (!process.env.DATABASE_URL) {
+if (!process.env.DATABASE_URL || !process.env.DATABASE_URL_UNPOOLED) {
   console.log(
-    "[postinstall] Skipping prisma generate (DATABASE_URL not set)."
+    "[postinstall] Skipping prisma generate (DATABASE_URL / DATABASE_URL_UNPOOLED not set)."
   );
   process.exit(0);
 }
