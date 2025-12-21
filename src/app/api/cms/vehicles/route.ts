@@ -10,8 +10,21 @@ export async function GET(request: NextRequest) {
   const unauthorized = requireCmsAuth(request);
   if (unauthorized) return unauthorized;
 
-  const data = await listVehicles();
-  return NextResponse.json(data);
+  try {
+    const data = await listVehicles();
+    return NextResponse.json(data);
+  } catch (error) {
+    return NextResponse.json(
+      {
+        error: "CMS_DB_UNAVAILABLE",
+        message:
+          "CMS baza nije dostupna. Na Vercelu SQLite datoteka (file:./data/app.db) ne radi. Postavi DATABASE_URL na hosted bazu (npr. Vercel Postgres/Neon/Supabase) u Vercel Environment Variables.",
+        details:
+          process.env.NODE_ENV === "development" ? String(error) : undefined,
+      },
+      { status: 503 }
+    );
+  }
 }
 
 export async function POST(request: NextRequest) {
@@ -27,6 +40,19 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const vehicle = await upsertVehicle(parsed.data);
-  return NextResponse.json({ vehicle });
+  try {
+    const vehicle = await upsertVehicle(parsed.data);
+    return NextResponse.json({ vehicle });
+  } catch (error) {
+    return NextResponse.json(
+      {
+        error: "CMS_DB_UNAVAILABLE",
+        message:
+          "CMS baza nije dostupna. Provjeri DATABASE_URL u Vercelu (Production).",
+        details:
+          process.env.NODE_ENV === "development" ? String(error) : undefined,
+      },
+      { status: 503 }
+    );
+  }
 }

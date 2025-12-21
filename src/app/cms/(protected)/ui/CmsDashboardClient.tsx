@@ -62,7 +62,10 @@ export default function CmsDashboardClient() {
     setError(null);
     try {
       const res = await fetch("/api/cms/vehicles", { cache: "no-store" });
-      if (!res.ok) throw new Error("Ne mogu učitati vozila");
+      if (!res.ok) {
+        const data = await res.json().catch(() => null);
+        throw new Error(data?.message || data?.error || "Ne mogu učitati vozila");
+      }
       const data = (await res.json()) as VehiclesResponse;
       setGeneral(data.ostala);
       setExclusive(data.ekskluzivna);

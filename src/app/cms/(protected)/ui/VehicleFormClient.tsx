@@ -101,7 +101,10 @@ export default function VehicleFormClient({
         const res = await fetch(`/api/cms/vehicles/${vehicleId}`, {
           cache: "no-store",
         });
-        if (!res.ok) throw new Error("Ne mogu učitati vozilo");
+        if (!res.ok) {
+          const data = await res.json().catch(() => null);
+          throw new Error(data?.message || data?.error || "Ne mogu učitati vozilo");
+        }
         const data = await res.json();
         const vehicle = data.vehicle;
         setV({

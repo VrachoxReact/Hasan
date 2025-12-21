@@ -19,6 +19,19 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  await setExclusiveOrder(parsed.data.exclusiveIdsInOrder);
-  return NextResponse.json({ ok: true });
+  try {
+    await setExclusiveOrder(parsed.data.exclusiveIdsInOrder);
+    return NextResponse.json({ ok: true });
+  } catch (error) {
+    return NextResponse.json(
+      {
+        error: "CMS_DB_UNAVAILABLE",
+        message:
+          "CMS baza nije dostupna. Provjeri DATABASE_URL u Vercelu (Production).",
+        details:
+          process.env.NODE_ENV === "development" ? String(error) : undefined,
+      },
+      { status: 503 }
+    );
+  }
 }

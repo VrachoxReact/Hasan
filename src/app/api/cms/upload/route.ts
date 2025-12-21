@@ -19,6 +19,19 @@ export async function POST(request: NextRequest) {
   const unauthorized = requireCmsAuth(request);
   if (unauthorized) return unauthorized;
 
+  // Vercel Serverless/Edge functions cannot reliably write to the project filesystem.
+  // This CMS upload endpoint requires a persistent object storage in production.
+  if (process.env.VERCEL && !process.env.BLOB_READ_WRITE_TOKEN) {
+    return NextResponse.json(
+      {
+        error: "CMS_UPLOAD_UNAVAILABLE",
+        message:
+          "Upload na Vercelu zahtijeva object storage (npr. Vercel Blob / S3 / R2). Dodaj BLOB_READ_WRITE_TOKEN i prebaci upload na Blob, ili koristi drugi storage.",
+      },
+      { status: 503 }
+    );
+  }
+
   const formData = await request.formData();
   const files = formData
     .getAll("files")

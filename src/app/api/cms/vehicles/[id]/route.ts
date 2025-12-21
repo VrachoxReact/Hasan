@@ -18,11 +18,24 @@ export async function GET(
   const unauthorized = requireCmsAuth(request);
   if (unauthorized) return unauthorized;
 
-  const { id } = await params;
-  const vehicle = await getVehicle(id);
-  if (!vehicle)
-    return NextResponse.json({ error: "NOT_FOUND" }, { status: 404 });
-  return NextResponse.json({ vehicle });
+  try {
+    const { id } = await params;
+    const vehicle = await getVehicle(id);
+    if (!vehicle)
+      return NextResponse.json({ error: "NOT_FOUND" }, { status: 404 });
+    return NextResponse.json({ vehicle });
+  } catch (error) {
+    return NextResponse.json(
+      {
+        error: "CMS_DB_UNAVAILABLE",
+        message:
+          "CMS baza nije dostupna. Provjeri DATABASE_URL u Vercelu (Production).",
+        details:
+          process.env.NODE_ENV === "development" ? String(error) : undefined,
+      },
+      { status: 503 }
+    );
+  }
 }
 
 export async function PUT(
@@ -42,8 +55,21 @@ export async function PUT(
     );
   }
 
-  const vehicle = await upsertVehicle(parsed.data);
-  return NextResponse.json({ vehicle });
+  try {
+    const vehicle = await upsertVehicle(parsed.data);
+    return NextResponse.json({ vehicle });
+  } catch (error) {
+    return NextResponse.json(
+      {
+        error: "CMS_DB_UNAVAILABLE",
+        message:
+          "CMS baza nije dostupna. Provjeri DATABASE_URL u Vercelu (Production).",
+        details:
+          process.env.NODE_ENV === "development" ? String(error) : undefined,
+      },
+      { status: 503 }
+    );
+  }
 }
 
 export async function PATCH(
@@ -59,8 +85,21 @@ export async function PATCH(
     return NextResponse.json({ error: "VALIDATION" }, { status: 400 });
   }
 
-  await setVehicleExclusive(id, body.ekskluzivno);
-  return NextResponse.json({ ok: true });
+  try {
+    await setVehicleExclusive(id, body.ekskluzivno);
+    return NextResponse.json({ ok: true });
+  } catch (error) {
+    return NextResponse.json(
+      {
+        error: "CMS_DB_UNAVAILABLE",
+        message:
+          "CMS baza nije dostupna. Provjeri DATABASE_URL u Vercelu (Production).",
+        details:
+          process.env.NODE_ENV === "development" ? String(error) : undefined,
+      },
+      { status: 503 }
+    );
+  }
 }
 
 export async function DELETE(
@@ -70,7 +109,20 @@ export async function DELETE(
   const unauthorized = requireCmsAuth(request);
   if (unauthorized) return unauthorized;
 
-  const { id } = await params;
-  await deleteVehicle(id);
-  return NextResponse.json({ ok: true });
+  try {
+    const { id } = await params;
+    await deleteVehicle(id);
+    return NextResponse.json({ ok: true });
+  } catch (error) {
+    return NextResponse.json(
+      {
+        error: "CMS_DB_UNAVAILABLE",
+        message:
+          "CMS baza nije dostupna. Provjeri DATABASE_URL u Vercelu (Production).",
+        details:
+          process.env.NODE_ENV === "development" ? String(error) : undefined,
+      },
+      { status: 503 }
+    );
+  }
 }
