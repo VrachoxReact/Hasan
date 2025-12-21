@@ -3,6 +3,7 @@ import type { NextRequest } from "next/server";
 import path from "node:path";
 import { promises as fs } from "node:fs";
 import crypto from "node:crypto";
+import { put } from "@vercel/blob";
 import { requireCmsAuth } from "@/app/api/cms/_auth";
 
 export const runtime = "nodejs";
@@ -19,14 +20,17 @@ export async function POST(request: NextRequest) {
   const unauthorized = requireCmsAuth(request);
   if (unauthorized) return unauthorized;
 
-  // Vercel Serverless/Edge functions cannot reliably write to the project filesystem.
-  // This CMS upload endpoint requires a persistent object storage in production.
-  if (process.env.VERCEL && !process.env.BLOB_READ_WRITE_TOKEN) {
+  const isVercel = !!process.env.VERCEL;
+  const hasBlob = !!process.env.BLOB_READ_WRITE_TOKEN;
+
+  // Vercel Serverless functions cannot persist writes to the project filesystem.
+  // In production on Vercel we use Vercel Blob.
+  if (isVercel && !hasBlob) {
     return NextResponse.json(
       {
         error: "CMS_UPLOAD_UNAVAILABLE",
         message:
-          "Upload na Vercelu zahtijeva object storage (npr. Vercel Blob / S3 / R2). Dodaj BLOB_READ_WRITE_TOKEN i prebaci upload na Blob, ili koristi drugi storage.",
+          "Upload na Vercelu zahtijeva Vercel Blob. Dodaj BLOB_READ_WRITE_TOKEN u Vercel Environment Variables (Production).",
       },
       { status: 503 }
     );
@@ -40,9 +44,6 @@ export async function POST(request: NextRequest) {
   if (files.length === 0) {
     return NextResponse.json({ error: "Nema datoteka" }, { status: 400 });
   }
-
-  const uploadDir = path.join(process.cwd(), "public", "uploads");
-  await fs.mkdir(uploadDir, { recursive: true });
 
   const urls: string[] = [];
 
@@ -67,9 +68,21 @@ export async function POST(request: NextRequest) {
     }
 
     const basename = `${crypto.randomUUID()}${ext}`;
-    const filePath = path.join(uploadDir, basename);
-    await fs.writeFile(filePath, buffer);
-    urls.push(`/uploads/${basename}`);
+
+    if (isVercel) {
+      const blob = await put(`uploads/${basename}`, buffer, {
+        access: "public",
+        contentType: file.type || undefined,
+        addRandomSuffix: false,
+      });
+      urls.push(blob.url);
+    } else {
+      const uploadDir = path.join(process.cwd(), "public", "uploads");
+      await fs.mkdir(uploadDir, { recursive: true });
+      const filePath = path.join(uploadDir, basename);
+      await fs.writeFile(filePath, buffer);
+      urls.push(`/uploads/${basename}`);
+    }
   }
 
   return NextResponse.json({ urls });
