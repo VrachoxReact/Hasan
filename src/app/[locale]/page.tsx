@@ -11,7 +11,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "home" });
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://produktauto.hr";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://produktauto.com";
   const localizedUrl = locale === "hr" ? siteUrl : `${siteUrl}/${locale}`;
 
   return {

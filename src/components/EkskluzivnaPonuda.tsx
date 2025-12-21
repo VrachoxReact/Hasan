@@ -6,12 +6,28 @@ import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import VoziloCard from "@/components/VoziloCard";
-import { getEkskluzivnaVozila } from "@/lib/vozila";
+import { useEffect, useState } from "react";
+import type { Vozilo } from "@/types/vozilo";
 import { typography, spacing } from "@/lib/designTokens";
 
 export default function EkskluzivnaPonuda() {
   const t = useTranslations("exclusive");
-  const ekskluzivnaVozila = getEkskluzivnaVozila().slice(0, 4);
+  const [ekskluzivnaVozila, setEkskluzivnaVozila] = useState<Vozilo[]>([]);
+
+  useEffect(() => {
+    let active = true;
+    (async () => {
+      const res = await fetch("/api/vehicles?exclusive=1&limit=4", {
+        cache: "no-store",
+      });
+      if (!res.ok) return;
+      const data = await res.json();
+      if (active) setEkskluzivnaVozila((data.vozila ?? []) as Vozilo[]);
+    })();
+    return () => {
+      active = false;
+    };
+  }, []);
 
   if (ekskluzivnaVozila.length === 0) {
     return null;

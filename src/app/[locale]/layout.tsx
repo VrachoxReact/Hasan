@@ -41,9 +41,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
 
   const siteUrl =
-    (process.env.NEXT_PUBLIC_SITE_URL ||
+    (
+      process.env.NEXT_PUBLIC_SITE_URL ||
       process.env.SITE_URL ||
-      "https://produktauto.hr")?.replace(/\/$/, "") || "https://produktauto.hr";
+      "https://produktauto.com"
+    )?.replace(/\/$/, "") || "https://produktauto.com";
 
   const titles: Record<string, string> = {
     hr: "Produkt Auto - Kvalitetna rabljena vozila",

@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import { getTranslations } from "next-intl/server";
-import { getVozila } from "@/lib/vozila";
+import { getVozilaDb } from "@/lib/vozilaDb";
 import VozilaClient from "./VozilaClient";
 import type { Metadata } from "next";
 
@@ -36,11 +36,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-// Static data; rebuild when content changes
-export const revalidate = 3600;
+// CMS-driven data (no stale caching)
+export const revalidate = 0;
 
-export default function VozilaPage() {
-  const allVozila = getVozila();
+export default async function VozilaPage() {
+  const allVozila = await getVozilaDb();
   return (
     <Suspense fallback={<div className="min-h-screen" />}>
       <VozilaClient initialVozila={allVozila} />

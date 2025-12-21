@@ -201,7 +201,7 @@ function formatEmailContent(data: ContactFormData): string {
           </div>
         </div>
         <div class="footer">
-          Ova poruka je poslana putem kontakt forme na produktauto.hr
+          Ova poruka je poslana putem kontakt forme na produktauto.com
         </div>
       </div>
     </body>
@@ -247,7 +247,7 @@ async function sendEmail(options: EmailOptions): Promise<EmailResult> {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          from: "Produkt Auto <noreply@produktauto.hr>",
+          from: "Produkt Auto <noreply@produktauto.com>",
           to: options.to,
           subject: options.subject,
           html: options.html,
@@ -277,7 +277,7 @@ async function sendEmail(options: EmailOptions): Promise<EmailResult> {
         },
         body: JSON.stringify({
           personalizations: [{ to: [{ email: options.to }] }],
-          from: { email: "noreply@produktauto.hr", name: "Produkt Auto" },
+          from: { email: "noreply@produktauto.com", name: "Produkt Auto" },
           reply_to: { email: options.replyTo },
           subject: options.subject,
           content: [{ type: "text/html", value: options.html }],

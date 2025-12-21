@@ -187,7 +187,7 @@ export default function KontaktPage() {
 
   // JSON-LD structured data for LocalBusiness
   const baseUrl = (
-    process.env.NEXT_PUBLIC_SITE_URL || "https://produktauto.hr"
+    process.env.NEXT_PUBLIC_SITE_URL || "https://produktauto.com"
   ).replace(/\/$/, "");
 
   const structuredData = {

@@ -1,16 +1,24 @@
 import { MetadataRoute } from "next";
-import { getVozila } from "@/lib/vozila";
+import { getVozilaDb } from "@/lib/vozilaDb";
 import { routing } from "@/i18n/routing";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl =
-    (process.env.NEXT_PUBLIC_SITE_URL ||
+    (
+      process.env.NEXT_PUBLIC_SITE_URL ||
       process.env.SITE_URL ||
-      "https://produktauto.hr")?.replace(/\/$/, "") || "https://produktauto.hr";
-  const vozila = getVozila();
+      "https://produktauto.com"
+    )?.replace(/\/$/, "") || "https://produktauto.com";
+  const vozila = await getVozilaDb();
 
   const getLocalePrefix = (locale: string) => {
-    if (routing.localePrefix === "as-needed" && locale === routing.defaultLocale)
+    if (
+      routing.localePrefix === "as-needed" &&
+      locale === routing.defaultLocale
+    )
       return "";
     return `/${locale}`;
   };
@@ -30,10 +38,22 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes = [
     { pathname: "", changeFrequency: "daily" as const, priority: 1 },
     { pathname: "/vozila", changeFrequency: "daily" as const, priority: 0.9 },
-    { pathname: "/usporedi", changeFrequency: "weekly" as const, priority: 0.5 },
-    { pathname: "/favoriti", changeFrequency: "weekly" as const, priority: 0.5 },
+    {
+      pathname: "/usporedi",
+      changeFrequency: "weekly" as const,
+      priority: 0.5,
+    },
+    {
+      pathname: "/favoriti",
+      changeFrequency: "weekly" as const,
+      priority: 0.5,
+    },
     { pathname: "/o-nama", changeFrequency: "monthly" as const, priority: 0.7 },
-    { pathname: "/kontakt", changeFrequency: "monthly" as const, priority: 0.8 },
+    {
+      pathname: "/kontakt",
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+    },
     {
       pathname: "/privatnost",
       changeFrequency: "monthly" as const,

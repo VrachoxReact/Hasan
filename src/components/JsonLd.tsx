@@ -9,13 +9,13 @@ export function OrganizationJsonLd() {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "AutoDealer",
-    "@id": "https://produktauto.hr/#organization",
+    "@id": "https://produktauto.com/#organization",
     name: COMPANY.legalName,
     alternateName: COMPANY.name,
     description: COMPANY.description,
-    url: "https://produktauto.hr",
-    logo: "https://produktauto.hr/logo.png",
-    image: "https://produktauto.hr/og-image.jpg",
+    url: "https://produktauto.com",
+    logo: "https://produktauto.com/logo.png",
+    image: "https://produktauto.com/og-image.jpg",
     telephone: CONTACT.phone,
     email: CONTACT.email,
     foundingDate: COMPANY.founded.toString(),
@@ -163,7 +163,7 @@ export function VehicleJsonLd({
       seller: {
         "@type": "AutoDealer",
         name: COMPANY.legalName,
-        url: "https://produktauto.hr",
+        url: "https://produktauto.com",
       },
       url,
     },
@@ -206,18 +206,18 @@ export function WebsiteJsonLd() {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "@id": "https://produktauto.hr/#website",
+    "@id": "https://produktauto.com/#website",
     name: COMPANY.name,
-    url: "https://produktauto.hr",
+    url: "https://produktauto.com",
     publisher: {
-      "@id": "https://produktauto.hr/#organization",
+      "@id": "https://produktauto.com/#organization",
     },
     potentialAction: {
       "@type": "SearchAction",
       target: {
         "@type": "EntryPoint",
         urlTemplate:
-          "https://produktauto.hr/vozila?search={search_term_string}",
+          "https://produktauto.com/vozila?search={search_term_string}",
       },
       "query-input": "required name=search_term_string",
     },

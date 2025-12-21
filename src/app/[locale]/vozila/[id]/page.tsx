@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getVozila, getVoziloById } from "@/lib/vozila";
+import { getVozilaDb, getVoziloByIdDb } from "@/lib/vozilaDb";
 import VoziloDetailClient from "@/components/VoziloDetailClient";
 import { VehicleJsonLd, BreadcrumbJsonLd } from "@/components/JsonLd";
 
@@ -8,13 +8,11 @@ type Props = {
   params: Promise<{ id: string; locale: string }>;
 };
 
-export function generateStaticParams() {
-  return getVozila().map((vozilo) => ({ id: vozilo.id }));
-}
+export const revalidate = 0;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
-  const vozilo = getVoziloById(id);
+  const vozilo = await getVoziloByIdDb(id);
 
   if (!vozilo) {
     return {
@@ -54,13 +52,13 @@ const transmissionMap: Record<string, string> = {
 
 export default async function VoziloDetailPage({ params }: Props) {
   const { id, locale } = await params;
-  const vozilo = getVoziloById(id);
+  const vozilo = await getVoziloByIdDb(id);
 
   if (!vozilo) {
     notFound();
   }
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://produktauto.hr";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://produktauto.com";
   const vehicleUrl =
     locale === "hr"
       ? `${siteUrl}/vozila/${id}`

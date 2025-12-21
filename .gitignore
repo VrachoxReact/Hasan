@@ -37,6 +37,10 @@ yarn-error.log*
 # vercel
 .vercel
 
+# local databases
+/data/*.db
+/prisma/data/*.db
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
@@ -48,3 +52,7 @@ next-env.d.ts
 
 # lighthouse
 /.lighthouseci/
+
+# deployment artifacts
+*.zip
+*.tar.gz

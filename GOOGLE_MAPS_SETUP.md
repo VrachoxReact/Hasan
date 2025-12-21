@@ -23,8 +23,8 @@ In the "Application restrictions" section:
   ```
   localhost:3000/*
   localhost:*
-  produktauto.hr/*
-  *.produktauto.hr/*
+  produktauto.com/*
+  *.produktauto.com/*
   ```
 
 If you're deploying to Vercel or another platform, also add:

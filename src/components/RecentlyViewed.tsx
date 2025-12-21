@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { Clock, ChevronRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
@@ -8,19 +8,39 @@ import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import VoziloCard from "@/components/VoziloCard";
 import { useFavoritiStore } from "@/stores/favoritiStore";
-import { getVoziloById } from "@/lib/vozila";
 import { Vozilo } from "@/types/vozilo";
 
 export default function RecentlyViewed() {
   const t = useTranslations("recentlyViewed");
   const recentlyViewed = useFavoritiStore((state) => state.recentlyViewed);
 
-  const recentVozila = useMemo(() => {
-    return recentlyViewed
-      .map((id) => getVoziloById(id))
-      .filter((v): v is Vozilo => v !== undefined)
-      .slice(0, 4);
-  }, [recentlyViewed]);
+  const [recentVozila, setRecentVozila] = useState<Vozilo[]>([]);
+
+  const idsParam = useMemo(
+    () => recentlyViewed.slice(0, 10).join(","),
+    [recentlyViewed]
+  );
+
+  useEffect(() => {
+    let active = true;
+    if (!idsParam) {
+      setRecentVozila([]);
+      return;
+    }
+    (async () => {
+      const res = await fetch(
+        `/api/vehicles?ids=${encodeURIComponent(idsParam)}`,
+        { cache: "no-store" }
+      );
+      if (!res.ok) return;
+      const data = await res.json();
+      const vozila = (data.vozila ?? []) as Vozilo[];
+      if (active) setRecentVozila(vozila.slice(0, 4));
+    })();
+    return () => {
+      active = false;
+    };
+  }, [idsParam]);
 
   if (recentVozila.length === 0) {
     return null;
