@@ -18,7 +18,7 @@ export async function GET(request: NextRequest) {
       {
         error: "CMS_DB_UNAVAILABLE",
         message:
-          "CMS baza nije dostupna. Na Vercelu SQLite datoteka (file:./data/app.db) ne radi. Postavi DATABASE_URL na hosted bazu (npr. Vercel Postgres/Neon/Supabase) u Vercel Environment Variables.",
+          "CMS baza nije dostupna. Na Vercelu SQLite datoteka (file:./data/app.db) ne radi. Ako koristiš Vercel Postgres, postavi POSTGRES_PRISMA_URL i POSTGRES_URL_NON_POOLING (preko Vercel Postgres integracije) u Production env varijable.",
         details:
           process.env.NODE_ENV === "development" ? String(error) : undefined,
       },
@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
       {
         error: "CMS_DB_UNAVAILABLE",
         message:
-          "CMS baza nije dostupna. Provjeri DATABASE_URL u Vercelu (Production).",
+          "CMS baza nije dostupna. Provjeri POSTGRES_PRISMA_URL i POSTGRES_URL_NON_POOLING u Vercelu (Production).",
         details:
           process.env.NODE_ENV === "development" ? String(error) : undefined,
       },

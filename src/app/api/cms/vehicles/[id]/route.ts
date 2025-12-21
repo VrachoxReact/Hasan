@@ -29,7 +29,7 @@ export async function GET(
       {
         error: "CMS_DB_UNAVAILABLE",
         message:
-          "CMS baza nije dostupna. Provjeri DATABASE_URL u Vercelu (Production).",
+          "CMS baza nije dostupna. Provjeri POSTGRES_PRISMA_URL i POSTGRES_URL_NON_POOLING u Vercelu (Production).",
         details:
           process.env.NODE_ENV === "development" ? String(error) : undefined,
       },
@@ -63,7 +63,7 @@ export async function PUT(
       {
         error: "CMS_DB_UNAVAILABLE",
         message:
-          "CMS baza nije dostupna. Provjeri DATABASE_URL u Vercelu (Production).",
+          "CMS baza nije dostupna. Provjeri POSTGRES_PRISMA_URL i POSTGRES_URL_NON_POOLING u Vercelu (Production).",
         details:
           process.env.NODE_ENV === "development" ? String(error) : undefined,
       },
@@ -93,7 +93,7 @@ export async function PATCH(
       {
         error: "CMS_DB_UNAVAILABLE",
         message:
-          "CMS baza nije dostupna. Provjeri DATABASE_URL u Vercelu (Production).",
+          "CMS baza nije dostupna. Provjeri POSTGRES_PRISMA_URL i POSTGRES_URL_NON_POOLING u Vercelu (Production).",
         details:
           process.env.NODE_ENV === "development" ? String(error) : undefined,
       },
@@ -118,7 +118,7 @@ export async function DELETE(
       {
         error: "CMS_DB_UNAVAILABLE",
         message:
-          "CMS baza nije dostupna. Provjeri DATABASE_URL u Vercelu (Production).",
+          "CMS baza nije dostupna. Provjeri POSTGRES_PRISMA_URL i POSTGRES_URL_NON_POOLING u Vercelu (Production).",
         details:
           process.env.NODE_ENV === "development" ? String(error) : undefined,
       },
