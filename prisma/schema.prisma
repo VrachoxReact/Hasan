@@ -4,12 +4,9 @@ generator client {
 
 datasource db {
   provider  = "postgresql"
-  // Vercel Postgres integration provides this.
-  // This avoids accidental SQLite-style DATABASE_URL values (file:...) breaking deploys.
-  url       = env("POSTGRES_PRISMA_URL")
-  // Migrations should use the non-pooling connection.
-  // Vercel Postgres provides this via integration.
-  directUrl = env("POSTGRES_URL_NON_POOLING")
+  // Hosted Postgres connection string (Neon/Supabase/etc on Vercel).
+  // Must start with postgresql:// (or postgres://).
+  url       = env("DATABASE_URL")
 }
 
 model Vehicle {
