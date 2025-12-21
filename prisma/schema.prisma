@@ -4,7 +4,9 @@ generator client {
 
 datasource db {
   provider  = "postgresql"
-  url       = env("DATABASE_URL")
+  // Vercel Postgres integration provides this.
+  // This avoids accidental SQLite-style DATABASE_URL values (file:...) breaking deploys.
+  url       = env("POSTGRES_PRISMA_URL")
 }
 
 model Vehicle {
