@@ -34,16 +34,29 @@ const contactMessages = {
     messageMin: "Nachricht muss mindestens 10 Zeichen haben",
     messageMax: "Nachricht darf 1000 Zeichen nicht ueberschreiten",
   },
+  fr: {
+    required: "Ce champ est obligatoire",
+    nameMin: "Le nom doit contenir au moins 2 caractères",
+    nameMax: "Le nom ne doit pas dépasser 100 caractères",
+    email: "L'adresse e-mail n'est pas valide",
+    phone: "Le numéro de téléphone n'est pas valide",
+    messageMin: "Le message doit contenir au moins 10 caractères",
+    messageMax: "Le message ne doit pas dépasser 1000 caractères",
+  },
 } as const;
 
 type ContactLocale = keyof typeof contactMessages;
 
 export const getContactFormSchema = (locale: string) => {
-  const m = contactMessages[(locale as ContactLocale) || "hr"] || contactMessages.hr;
+  const m =
+    contactMessages[(locale as ContactLocale) || "hr"] || contactMessages.hr;
   return z.object({
     ime: z.string().min(1, m.required).min(2, m.nameMin).max(100, m.nameMax),
     email: z.string().min(1, m.required).email(m.email),
-    telefon: z.string().min(1, m.required).regex(/^\+?[\d\s-]{9,}$/, m.phone),
+    telefon: z
+      .string()
+      .min(1, m.required)
+      .regex(/^\+?[\d\s-]{9,}$/, m.phone),
     budzet: z.string().optional(),
     poruka: z
       .string()
@@ -137,5 +150,3 @@ export function validateVozila(data: unknown[]): {
 
   return { valid, errors };
 }
-
-

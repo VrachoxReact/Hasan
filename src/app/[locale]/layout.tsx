@@ -51,18 +51,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     hr: "Produkt Auto - Kvalitetna rabljena vozila",
     en: "Produkt Auto - Quality Used Vehicles",
     de: "Produkt Auto - Qualitäts-Gebrauchtwagen",
+    fr: "Produkt Auto - Véhicules d'occasion de qualité",
   };
 
   const descriptions: Record<string, string> = {
     hr: "Vaš pouzdani partner za kupnju kvalitetnih rabljenih vozila u Hrvatskoj. Pregledajte našu ponudu premium automobila s jamstvom kvalitete.",
     en: "Your reliable partner for buying quality used vehicles in Croatia. Browse our selection of premium cars with quality guarantee.",
     de: "Ihr zuverlässiger Partner für den Kauf von Qualitäts-Gebrauchtwagen in Kroatien. Durchsuchen Sie unsere Auswahl an Premium-Autos mit Qualitätsgarantie.",
+    fr: "Votre partenaire fiable pour acheter des véhicules d'occasion de qualité en Croatie. Découvrez notre sélection de voitures premium avec garantie de qualité.",
   };
 
   const ogLocales: Record<string, string> = {
     hr: "hr_HR",
     en: "en_US",
     de: "de_DE",
+    fr: "fr_FR",
   };
 
   return {
@@ -90,6 +93,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         hr: "/",
         en: "/en",
         de: "/de",
+        fr: "/fr",
       },
     },
     openGraph: {
@@ -157,6 +161,8 @@ export default async function LocaleLayout({ children, params }: Props) {
             >
               {locale === "en"
                 ? "Skip to main content"
+                : locale === "fr"
+                ? "Aller au contenu principal"
                 : locale === "de"
                 ? "Zum Hauptinhalt springen"
                 : "Preskoči na glavni sadržaj"}

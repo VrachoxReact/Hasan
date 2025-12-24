@@ -17,12 +17,14 @@ const localeNames: Record<Locale, string> = {
   hr: "Hrvatski",
   en: "English",
   de: "Deutsch",
+  fr: "Français",
 };
 
 const localeFlags: Record<Locale, string> = {
   hr: "🇭🇷",
   en: "🇬🇧",
   de: "🇩🇪",
+  fr: "🇫🇷",
 };
 
 export default function LanguageSwitcher() {

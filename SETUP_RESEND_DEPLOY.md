@@ -88,6 +88,7 @@ Projekt ima API rutu `/api/contact` koja prima podatke iz kontakt forme i šalje
 ```bash
 RESEND_API_KEY="re_tvoj_api_key_ovdje"
 CONTACT_EMAIL="produktauto@gmail.com"
+RESEND_FROM="Produkt Auto <onboarding@resend.dev>"
 ```
 
 - `RESEND_API_KEY` je API ključ iz Resend dashboarda
@@ -143,6 +144,12 @@ Ako si verificirao domenu, ažuriraj kod u `src/app/api/contact/route.ts`:
 
 ```typescript
 from: "info@produktauto.com", // Koristi verificiranu domenu
+```
+
+Ili (preporučeno), postavi `RESEND_FROM` u env varijable (lokalno i na Vercelu), bez izmjene koda:
+
+```bash
+RESEND_FROM="Produkt Auto <info@produktauto.com>"
 ```
 
 ---

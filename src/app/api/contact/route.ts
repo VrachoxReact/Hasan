@@ -236,6 +236,8 @@ async function sendEmail(options: EmailOptions): Promise<EmailResult> {
   // Check if we have email service configured
   const resendApiKey = process.env.RESEND_API_KEY;
   const sendgridApiKey = process.env.SENDGRID_API_KEY;
+  const resendFrom =
+    process.env.RESEND_FROM || "Produkt Auto <onboarding@resend.dev>";
 
   if (resendApiKey) {
     // Use Resend
@@ -247,7 +249,7 @@ async function sendEmail(options: EmailOptions): Promise<EmailResult> {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          from: "Produkt Auto <noreply@produktauto.com>",
+          from: resendFrom,
           to: options.to,
           subject: options.subject,
           html: options.html,
