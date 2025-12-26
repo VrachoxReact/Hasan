@@ -103,6 +103,10 @@ export async function POST(request: NextRequest) {
         {
           success: false,
           error: "Failed to send message. Please try again later.",
+          debug:
+            process.env.NODE_ENV === "development"
+              ? emailSent.error
+              : undefined,
         },
         { status: 500 }
       );
@@ -258,12 +262,14 @@ async function sendEmail(options: EmailOptions): Promise<EmailResult> {
       });
 
       if (!response.ok) {
-        const error = await response.text();
-        return { success: false, error };
+        const errorText = await response.text();
+        console.error("Resend API Error:", errorText);
+        return { success: false, error: `Resend API Error: ${errorText}` };
       }
 
       return { success: true };
     } catch (error) {
+      console.error("Resend Fetch Error:", error);
       return { success: false, error: String(error) };
     }
   }
@@ -297,9 +303,12 @@ async function sendEmail(options: EmailOptions): Promise<EmailResult> {
     }
   }
 
-  // No email service configured - log to console in development
-  if (process.env.NODE_ENV === "development") {
-    console.log("=== EMAIL WOULD BE SENT ===");
+  // No email service configured - log to console in development or preview
+  if (
+    process.env.NODE_ENV === "development" ||
+    process.env.VERCEL_ENV === "preview"
+  ) {
+    console.log("=== EMAIL WOULD BE SENT (MOCKED) ===");
     console.log("To:", options.to);
     console.log("Subject:", options.subject);
     console.log("Reply-To:", options.replyTo);
@@ -308,6 +317,9 @@ async function sendEmail(options: EmailOptions): Promise<EmailResult> {
   }
 
   // In production without email service, return error
+  console.error(
+    "CRITICAL: Email service not configured. RESEND_API_KEY or SENDGRID_API_KEY is missing."
+  );
   return {
     success: false,
     error:
