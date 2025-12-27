@@ -14,6 +14,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import HeroCarousel from "@/components/HeroCarousel";
 import HeroSearch from "@/components/HeroSearch";
 import EkskluzivnaPonuda from "@/components/EkskluzivnaPonuda";
+import HomeMap from "@/components/HomeMap";
 import {
   FadeIn,
   StaggerContainer,
@@ -137,82 +138,7 @@ export default function HomeClient() {
       </section>
 
       {/* Map Section */}
-      <section className={spacing.section.medium}>
-        <div className="container mx-auto px-4">
-          <FadeIn>
-            <div className="text-center mb-12">
-              <h2 className={`${typography.h2} text-foreground mb-4`}>
-                {t("map.title")}
-              </h2>
-              <div
-                className={`flex items-center justify-center gap-2 ${typography.body} text-muted-foreground`}
-              >
-                <MapPin className={`w-5 h-5 ${components.icon.accent}`} />
-                <span>Ulica Milana Prpića 120, 49243 Oroslavje</span>
-              </div>
-            </div>
-          </FadeIn>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-            <FadeIn>
-              <div className="rounded-2xl overflow-hidden shadow-lg border border-border h-full">
-                <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2775.5!2d15.9408!3d45.9167!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4765cf00000000%3A0x0!2sUlica%20Milana%20Prpi%C4%87a%20120%2C%2049243%20Oroslavje!5e0!3m2!1shr!2shr!4v1701874800000!5m2!1shr!2shr"
-                  width="100%"
-                  height="100%"
-                  style={{ border: 0, minHeight: "450px" }}
-                  allowFullScreen
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                  title={t("map.locationTitle")}
-                />
-              </div>
-            </FadeIn>
-
-            <FadeIn>
-              <Card className="h-full">
-                <CardContent className="p-8">
-                  <h3 className={`${typography.h3} text-foreground mb-4`}>
-                    Produkt Auto j.d.o.o.
-                  </h3>
-                  <div className="space-y-4 text-muted-foreground">
-                    <p className={typography.body}>
-                      {t("map.companyDescription1")}
-                    </p>
-                    <p className={typography.body}>
-                      {t("map.companyDescription2")}
-                    </p>
-                    <p className={typography.body}>
-                      {t("map.companyDescription3")}
-                    </p>
-                    <div className="flex flex-col sm:flex-row gap-4 pt-4 border-t border-border">
-                      <div className="flex-1">
-                        <p className="text-sm font-semibold text-foreground mb-1">
-                          {t("map.workingHoursTitle")}
-                        </p>
-                        <p className="text-sm">
-                          {tCommon("workingHours.weekdays")}: 09:00 - 17:00
-                        </p>
-                        <p className="text-sm">
-                          {tCommon("workingHours.sunday")}:{" "}
-                          {tCommon("footer.closed")}
-                        </p>
-                      </div>
-                      <div className="flex-1">
-                        <p className="text-sm font-semibold text-foreground mb-1">
-                          {tCommon("footer.contact")}
-                        </p>
-                        <p className="text-sm">Tel: +385 99 166 3776</p>
-                        <p className="text-sm">Email: produktauto@gmail.com</p>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </FadeIn>
-          </div>
-        </div>
-      </section>
+      <HomeMap />
     </>
   );
 }

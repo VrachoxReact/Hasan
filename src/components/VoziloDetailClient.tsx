@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
 import { Link } from "@/i18n/navigation";
@@ -51,13 +51,21 @@ export default function VoziloDetailClient({ vozilo }: { vozilo: Vozilo }) {
   const tCompare = useTranslations("compare");
 
   const hasHydrated = useFavoritiStore((state) => state.hasHydrated);
-  const addRecentlyViewed = useFavoritiStore((state) => state.addRecentlyViewed);
+  const addRecentlyViewed = useFavoritiStore(
+    (state) => state.addRecentlyViewed
+  );
   const isFavorit = useFavoritiStore((state) => state.isFavorit);
   const toggleFavorit = useFavoritiStore((state) => state.toggleFavorit);
 
   const isInList = useUsporediStore((state) => state.isInList);
   const addVozilo = useUsporediStore((state) => state.addVozilo);
   const removeVozilo = useUsporediStore((state) => state.removeVozilo);
+
+  const [currentUrl, setCurrentUrl] = useState("");
+
+  useEffect(() => {
+    setCurrentUrl(window.location.href);
+  }, []);
 
   useEffect(() => {
     if (!hasHydrated) return;
@@ -94,7 +102,10 @@ export default function VoziloDetailClient({ vozilo }: { vozilo: Vozilo }) {
     const added = addVozilo(vozilo);
     if (added) {
       toast.success(
-        tVehicles("addedToCompare", { brand: vozilo.marka, model: vozilo.model })
+        tVehicles("addedToCompare", {
+          brand: vozilo.marka,
+          model: vozilo.model,
+        })
       );
     } else {
       toast.error(tVehicles("maxCompare"));
@@ -124,8 +135,8 @@ export default function VoziloDetailClient({ vozilo }: { vozilo: Vozilo }) {
     ? vozilo.staracijena - vozilo.cijena
     : null;
 
-  const whatsappMessage = `${vozilo.marka} ${vozilo.model} (${vozilo.godina}) - ${
-    typeof window !== "undefined" ? window.location.href : ""
+  const whatsappMessage = `${vozilo.marka} ${vozilo.model} (${vozilo.godina})${
+    currentUrl ? ` - ${currentUrl}` : ""
   }`;
 
   const specs: Spec[] = [

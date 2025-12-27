@@ -3,13 +3,9 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
-  // Hosted Postgres connection string (Neon/Supabase/etc on Vercel).
-  // Must start with postgresql:// (or postgres://).
-  url       = env("DATABASE_URL")
-
-  // For Prisma migrations/DDL use a non-pooled connection when available.
-  directUrl = env("DATABASE_URL_UNPOOLED")
+  provider  = "sqlite"
+  // Using hardcoded URL to avoid environment variable issues in local dev
+  url       = "file:./data/app.db"
 }
 
 model Vehicle {

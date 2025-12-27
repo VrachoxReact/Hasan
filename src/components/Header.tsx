@@ -97,7 +97,7 @@ export default function Header() {
             <div className="w-28 md:w-32" />
 
             {/* Desktop Navigation - centered */}
-            <div className="hidden md:flex items-center gap-1 absolute left-1/2 -translate-x-1/2">
+            <div className="hidden lg:flex items-center gap-1 flex-1 justify-center">
               {navLinks.map((link) => (
                 <Link
                   key={link.href}
@@ -115,20 +115,20 @@ export default function Header() {
 
             {/* Actions: WhatsApp, Compare, Favorites, Theme */}
             <div className="flex items-center gap-2 md:gap-3">
-              {/* WhatsApp Button - Large desktop only */}
+              {/* WhatsApp Button - Visible on all screens, icon only on mobile */}
               <a
                 href={CONTACT.whatsapp.messageUrl(t("whatsapp.defaultMessage"))}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hidden lg:flex cursor-pointer"
+                className="flex cursor-pointer"
                 aria-label={t("header.contactViaWhatsApp")}
               >
                 <Button
                   size="sm"
-                  className="bg-whatsapp hover:bg-whatsapp/90 text-whatsapp-foreground gap-1.5"
+                  className="bg-whatsapp hover:bg-whatsapp/90 text-whatsapp-foreground gap-1.5 px-3 sm:px-4"
                 >
                   <MessageCircle className="w-4 h-4" />
-                  <span>WhatsApp</span>
+                  <span className="hidden sm:inline">WhatsApp</span>
                 </Button>
               </a>
 
@@ -222,7 +222,7 @@ export default function Header() {
 
               {/* Mobile Menu */}
               <Sheet open={isOpen} onOpenChange={setIsOpen}>
-                <SheetTrigger asChild className="md:hidden">
+                <SheetTrigger asChild className="lg:hidden">
                   <Button
                     variant="ghost"
                     size="icon"

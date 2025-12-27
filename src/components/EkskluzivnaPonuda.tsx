@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import VoziloCard from "@/components/VoziloCard";
+import ExclusiveVehicleCard from "@/components/ExclusiveVehicleCard";
 import { useEffect, useState } from "react";
 import type { Vozilo } from "@/types/vozilo";
 import { typography, spacing } from "@/lib/designTokens";
@@ -57,7 +57,7 @@ export default function EkskluzivnaPonuda() {
         </motion.div>
 
         {/* Vehicles Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10 md:scale-[1.15] md:origin-center">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
           {ekskluzivnaVozila.map((vozilo, index) => (
             <motion.div
               key={vozilo.id}
@@ -65,8 +65,9 @@ export default function EkskluzivnaPonuda() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: index * 0.1 }}
+              className="h-full"
             >
-              <VoziloCard vozilo={vozilo} />
+              <ExclusiveVehicleCard vozilo={vozilo} />
             </motion.div>
           ))}
         </div>
